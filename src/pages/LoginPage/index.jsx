@@ -7,8 +7,8 @@ export const LoginPage = () => {
   const [error, setError] = useState({ id: false, pw: false });
 
   const sty = [
-    "border focus:ring-1 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
-    "border border-red-500 text-sm pl-2 pr-11 py-3 ",
+    "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
+    "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3",
   ];
 
   const navigate = useNavigate();
@@ -17,6 +17,7 @@ export const LoginPage = () => {
     navigate("/signup");
   };
 
+  // 존재하지 않는 id라면 modal창 출력
   const onMain = () => {
     if (!username) {
       setError({ ...error, id: true });
@@ -34,14 +35,14 @@ export const LoginPage = () => {
     <>
       <div className="flex h-screen flex-col justify-center items-center">
         <div className="text-main_color text-3xl">
-          <div className="pr-16 pb-5 font-bold">caloreat</div>
+          <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
         <div className="flex flex-row ml-6">
           <div className="flex flex-col">
             <input
               className={error.id ? sty[1] : sty[0]}
               type="text"
-              placeholder="아이디 및 email을 입력하세요"
+              placeholder="이메일 및 아이디를 입력하세요"
               value={username}
               onChange={(e) => {
                 setUsername(e.target.value);
@@ -61,7 +62,7 @@ export const LoginPage = () => {
           </div>
           <div>
             <button
-              className="bg-main_color text-white rounded-lg ml-7 px-3 py-2 mt-20 text-sm"
+              className="bg-main_color text-white rounded-lg ml-7 px-3 py-2 mt-20 text-sm cursor-pointer"
               onClick={onMain}
             >
               로그인
@@ -69,7 +70,7 @@ export const LoginPage = () => {
           </div>
         </div>
 
-        <div className="text-xs mt-2">
+        <div className="text-xs mt-2 ml-2 ">
           <span>아직 회원이 아니라면?</span>{" "}
           <span
             className="text-main_color cursor-pointer underline ml-1"
