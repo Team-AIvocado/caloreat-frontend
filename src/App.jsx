@@ -1,13 +1,15 @@
-import './App.css'
-import { LoginPage } from './pages/LoginPage'
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
+import { Testpage } from "./pages/TestPage";
 
-function App() {
-
+const App = () => {
   return (
-    <>
-      <LoginPage/>
-    </>
-  )
-}
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Testpage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
-export default App
+export default App;
