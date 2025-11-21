@@ -8,7 +8,7 @@ export const LoginPage = () => {
 
   const sty = [
     "border focus:ring-1 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
-    "border focus:ring-1 focus:outline-none focus:border-red-500 border-border_color text-sm pl-2 pr-11 py-3 ",
+    "border border-red-500 text-sm pl-2 pr-11 py-3 ",
   ];
 
   const navigate = useNavigate();
@@ -21,10 +21,11 @@ export const LoginPage = () => {
     if (!username) {
       setError({ ...error, id: true });
       return;
-    } else setError();
+    } else setError({ ...error, id: false });
     if (!password) {
       setError({ ...error, pw: true });
-    }
+      return;
+    } else setError({ ...error, pw: false });
 
     navigate("/main");
   };
@@ -38,18 +39,24 @@ export const LoginPage = () => {
         <div className="flex flex-row ml-6">
           <div className="flex flex-col">
             <input
-              className={sty[0]}
+              className={error.id ? sty[1] : sty[0]}
               type="text"
               placeholder="아이디 및 email을 입력하세요"
               value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              onChange={(e) => {
+                setUsername(e.target.value);
+                setError({ ...error, id: false });
+              }}
             />
             <input
-              className={sty[0]}
+              className={error.pw ? sty[1] : sty[0]}
               type="password"
               placeholder="비밀번호를 입력하세요"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setError({ ...error, pw: false });
+              }}
             />
           </div>
           <div>
