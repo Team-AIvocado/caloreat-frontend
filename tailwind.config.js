@@ -8,9 +8,6 @@ export default {
             main_color : '#3A7DFF',
             border_color: '#DCDCDC',
       },
-      fontFamily: {
-        pretendard: ['Pretendard', 'sans-serif'],
-      },
     },
   },
   plugins: [],
