@@ -3,6 +3,7 @@ import "./App.css";
 import { LoginPage } from "./pages/LoginPage";
 import { SignUpPage } from "./pages/SignUpPage";
 import { MainPage } from "./pages/MainPage";
+import { UserInfoPage } from "./pages/UserInfoPage";
 
 const App = () => {
   return (
@@ -11,6 +12,7 @@ const App = () => {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
+          <Route path="/userinfo" element={<UserInfoPage />} />
           <Route path="/main" element={<MainPage />} />
         </Routes>
       </BrowserRouter>

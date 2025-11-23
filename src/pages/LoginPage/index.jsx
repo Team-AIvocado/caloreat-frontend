@@ -30,7 +30,8 @@ export const LoginPage = () => {
       return;
     } else setError({ ...error, pw: false });
 
-    navigate("/main");
+    navigate("/userinfo");
+    // navigate("/main");
   };
 
   return (
