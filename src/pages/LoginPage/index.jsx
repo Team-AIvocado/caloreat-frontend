@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const LoginPage = () => {
-  const [username, setUsername] = useState("");
+  const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
 
@@ -18,12 +18,14 @@ export const LoginPage = () => {
   };
 
   // 존재하지 않는 id라면 modal창 출력
+  // 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
+  // 사전 정보가 있다면 main으로 이동
   const onMain = () => {
-    if (!username) {
+    if (!userId.trim()) {
       setError({ ...error, id: true });
       return;
     } else setError({ ...error, id: false });
-    if (!password) {
+    if (!password.trim()) {
       setError({ ...error, pw: true });
       return;
     } else setError({ ...error, pw: false });
@@ -43,9 +45,9 @@ export const LoginPage = () => {
               className={error.id ? sty[1] : sty[0]}
               type="text"
               placeholder="이메일 및 아이디를 입력하세요"
-              value={username}
+              value={userId}
               onChange={(e) => {
-                setUsername(e.target.value);
+                setUserId(e.target.value);
                 setError({ ...error, id: false });
               }}
             />
