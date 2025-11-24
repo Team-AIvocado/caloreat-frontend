@@ -190,7 +190,7 @@ export const UserInfoPage = () => {
             </div>
           </div>
           <button
-            className="bg-main_color text-white rounded-lg ml-7 px-8 py-2 mt-3 text-sm cursor-pointer"
+            className="bg-main_color text-white rounded-lg px-8 py-2 mt-3 text-sm cursor-pointer"
             onClick={onMain}
           >
             시작하기
