@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../api/axios";
+import { login, test } from "../../services/users";
 
 export const LoginPage = () => {
   const [userId, setUserId] = useState("");
@@ -18,19 +18,10 @@ export const LoginPage = () => {
     navigate("/signup");
   };
 
-  const test = async () => {
-    try {
-      const response = await api.get("/");
-      console.log(response);
-    } catch (e) {
-      console.log("failed to fetch data", e);
-    }
-  };
-
   //TODO: 존재하지 않는 id라면 modal창 출력
   //TODO: 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
   // 사전 정보가 있다면 main으로 이동
-  const onMain = () => {
+  const onMain = async () => {
     if (!userId.trim()) {
       setError({ ...error, id: true });
       return;
@@ -40,9 +31,16 @@ export const LoginPage = () => {
       return;
     } else setError({ ...error, pw: false });
 
-    test();
-    // navigate("/userinfo");
-    // navigate("/main");
+    // test();
+    try {
+      const response = await login(userId, password);
+      console.log("login success", response);
+      navigate("/userinfo");
+      // navigate("/main");
+    } catch (e) {
+      console.error("login failure", e);
+      alert("존재하지 않는 사용자입니다.");
+    }
   };
 
   return (
