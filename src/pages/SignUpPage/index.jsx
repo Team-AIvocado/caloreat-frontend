@@ -123,7 +123,11 @@ export const SignUpPage = () => {
     <>
       <div className="flex h-screen flex-col justify-center items-center">
         <div className="text-main_color text-3xl">
-          <div className="pb-10 font-bold">caloreat</div>
+          <div className="pb-10 font-bold">
+            <span className="cursor-pointer" onClick={() => navigate("/")}>
+              caloreat
+            </span>
+          </div>
         </div>
         <div className="flex flex-row">
           <div className="flex flex-col">

@@ -37,11 +37,11 @@ export const LoginPage = () => {
   return (
     <>
       <div className="flex h-screen flex-col justify-center items-center">
-        <div className="text-main_color text-3xl">
+        <div className="text-main_color text-3xl ml-11">
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
         <div className="flex flex-row ml-6">
-          <div className="flex flex-col">
+          <div className="flex flex-col ml-10">
             <input
               className={error.id ? sty[1] : sty[0]}
               type="text"
