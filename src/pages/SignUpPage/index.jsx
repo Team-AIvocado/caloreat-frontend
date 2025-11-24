@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 export const SignUpPage = () => {
   const [userEmail, setUserEmail] = useState("");
   const [userId, setUserId] = useState("");
-  const [userName, setUserName] = useState("");
+  const [nickname, setNickName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [dbCheck, setdbCheck] = useState({ email: false, id: false });
@@ -38,8 +38,8 @@ export const SignUpPage = () => {
     navigate("/");
   };
 
-  //사용자가 입력한 email 중복 확인
-  //db연결 후 에러 작업 설정
+  //TODO:사용자가 입력한 email 중복 확인
+  //TODO:db연결 후 에러 작업 설정
   const onEmailCheck = () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
@@ -53,7 +53,7 @@ export const SignUpPage = () => {
   };
 
   const onIdCheck = () => {
-    //사용자가 입력한 id가 중복 확인
+    //TODO:사용자가 입력한 id가 중복 확인
     if (!userId.trim()) {
       setError({ ...error, id: "아이디를 입력해주세요" });
       return;
@@ -62,7 +62,7 @@ export const SignUpPage = () => {
     setError({ ...error, id: false });
   };
 
-  // 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
+  //TODO: 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
   // 사전 정보가 있다면 main으로 이동
   const SignUp = () => {
     if (!userEmail.trim()) {
@@ -85,7 +85,7 @@ export const SignUpPage = () => {
       setError({ ...error, id: false });
     }
 
-    if (!userName.trim()) {
+    if (!nickname.trim()) {
       setError({ ...error, name: "닉네임을 입력해주세요" });
       return;
     }
@@ -115,8 +115,7 @@ export const SignUpPage = () => {
       return;
     }
 
-    //회원가입 완료 모달창 필요
-
+    //TODO:회원가입 완료 모달창 필요
     navigate("/");
   };
 
@@ -184,9 +183,9 @@ export const SignUpPage = () => {
               className={error.name ? sty[1] : sty[0]}
               type="text"
               placeholder="서비스에서 사용할 닉네임을 입력해주세요"
-              value={userName}
+              value={nickname}
               onChange={(e) => {
-                setUserName(e.target.value);
+                setNickName(e.target.value);
                 setError({ ...error, name: false });
               }}
             />
