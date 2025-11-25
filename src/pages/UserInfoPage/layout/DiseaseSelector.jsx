@@ -1,9 +1,6 @@
-export const DiseaseSelector = ({
-  condition,
-  sty1,
-  updateDisease,
-  handleToggle,
-}) => {
+import { sty1 } from "../../../utils/styles";
+
+export const DiseaseSelector = ({ condition, updateDisease, handleToggle }) => {
   return (
     <label className="text-xs text-secondary_text pl-3">
       건강 고려 사항{" "}

@@ -1,6 +1,7 @@
+import { sty } from "../../../utils/styles";
+
 export const BodyProfile = ({
   userProfile,
-  sty,
   setUserProfile,
   setError,
   error,

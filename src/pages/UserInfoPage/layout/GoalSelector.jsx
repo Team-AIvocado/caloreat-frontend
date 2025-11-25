@@ -1,9 +1,6 @@
-export const GoalSelector = ({
-  modeSelect,
-  sty1,
-  setModeSelect,
-  handleToggle,
-}) => {
+import { sty1 } from "../../../utils/styles";
+
+export const GoalSelector = ({ modeSelect, setModeSelect, handleToggle }) => {
   return (
     <label className="text-xs text-secondary_text pl-3">
       현재 목표{" "}

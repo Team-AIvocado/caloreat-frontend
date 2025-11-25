@@ -1,9 +1,6 @@
-export const AllergySelector = ({
-  condition,
-  sty1,
-  updateAllergy,
-  handleToggle,
-}) => {
+import { sty1 } from "../../../utils/styles";
+
+export const AllergySelector = ({ condition, updateAllergy, handleToggle }) => {
   return (
     <label className="text-xs text-secondary_text pl-3">
       알레르기 정보
