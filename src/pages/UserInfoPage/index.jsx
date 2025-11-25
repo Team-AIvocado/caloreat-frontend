@@ -41,12 +41,12 @@ export const UserInfoPage = () => {
 
   const navigate = useNavigate();
 
-  //man : 0 woman : 1
+  //man : 1 woman : 2
   const [userProfile, setUserProfile] = useState({
-    height: null,
-    weight: null,
-    age: null,
-    gender: null,
+    height: "",
+    weight: "",
+    age: "",
+    gender: "",
   });
 
   const [error, setError] = useState({
@@ -62,7 +62,7 @@ export const UserInfoPage = () => {
 
   const handleToggle = (btn, value) => {
     if (btn == value) {
-      return null;
+      return "";
     } else {
       return value;
     }
@@ -89,7 +89,7 @@ export const UserInfoPage = () => {
   };
 
   const onMain = () => {
-    if (userProfile.gender == null) {
+    if (userProfile.gender == "") {
       setError({ ...error, gender: "성별을 선택해주세요" });
       return;
     } else {
@@ -159,7 +159,7 @@ export const UserInfoPage = () => {
               <span
                 className="underline text-xs cursor-pointer pl-4 text-gray-500"
                 onClick={() => {
-                  setModeSelect(null);
+                  setModeSelect("");
                   setCondition(initialCondition);
                 }}
               >

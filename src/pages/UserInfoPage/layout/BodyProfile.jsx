@@ -13,18 +13,18 @@ export const BodyProfile = ({
 
       <div className="pl-7">
         <button
-          className={userProfile.gender == 0 ? sty[1] : sty[0]}
+          className={userProfile.gender == 1 ? sty[1] : sty[0]}
           onClick={() => {
-            setUserProfile({ ...userProfile, gender: 0 });
+            setUserProfile({ ...userProfile, gender: 1 });
             setError({ ...error, gender: "" });
           }}
         >
           남성
         </button>
         <button
-          className={userProfile.gender == 1 ? sty[1] : sty[0]}
+          className={userProfile.gender == 2 ? sty[1] : sty[0]}
           onClick={() => {
-            setUserProfile({ ...userProfile, gender: 1 });
+            setUserProfile({ ...userProfile, gender: 2 });
             setError({ ...error, gender: "" });
           }}
         >

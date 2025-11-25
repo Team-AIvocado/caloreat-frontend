@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignUpInput } from "./layout/SignUpInput";
+import { checkemail, checkid, signUp } from "../../services/users";
 
 export const SignUpPage = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -40,8 +41,7 @@ export const SignUpPage = () => {
   };
 
   //TODO:사용자가 입력한 email 중복 확인
-  //TODO:db연결 후 에러 작업 설정
-  const onEmailCheck = () => {
+  const onEmailCheck = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
       return;
@@ -49,23 +49,42 @@ export const SignUpPage = () => {
       setError({ ...error, email: "정확한 이메일을 입력해주세요" });
       return;
     }
-    setdbCheck({ ...dbCheck, email: true });
+
     setError({ ...error, email: false });
+
+    try {
+      const resp_email = await checkemail(userEmail.trim());
+      console.log("available email", resp_email);
+      setdbCheck({ ...dbCheck, email: true });
+    } catch (e) {
+      console.log("unavailable email", e);
+      alert("이미 존재하는 이메일입니다.");
+      setUserEmail("");
+      return;
+    }
   };
 
-  const onIdCheck = () => {
+  const onIdCheck = async () => {
     //TODO:사용자가 입력한 id가 중복 확인
     if (!userId.trim()) {
       setError({ ...error, id: "아이디를 입력해주세요" });
       return;
     }
-    setdbCheck({ ...dbCheck, id: true });
     setError({ ...error, id: false });
+
+    try {
+      const resp_id = await checkid(userId.trim());
+      console.log("available id", resp_id);
+      setdbCheck({ ...dbCheck, id: true });
+    } catch (e) {
+      console.log("unavailable id", e);
+      alert("이미 존재하는 아이디입니다.");
+      setUserId("");
+      return;
+    }
   };
 
-  //TODO: 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
-  // 사전 정보가 있다면 main으로 이동
-  const SignUp = () => {
+  const handleSignUp = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
       return;
@@ -116,8 +135,21 @@ export const SignUpPage = () => {
       return;
     }
 
-    //TODO:회원가입 완료 모달창 필요
-    navigate("/");
+    try {
+      const response = await signUp(
+        userEmail.trim(),
+        userId.trim(),
+        nickname.trim(),
+        password.trim()
+      );
+      console.log("success sign up", response.data);
+      //TODO:회원가입 완료 모달창 필요
+      navigate("/main");
+      return response.data;
+    } catch (e) {
+      console.log("failed to signup", e.response.data.detail);
+      return;
+    }
   };
 
   return (
@@ -137,7 +169,7 @@ export const SignUpPage = () => {
           setUserEmail={setUserEmail}
           setError={setError}
           setdbCheck={setdbCheck}
-          dbCheck={onEmailCheck}
+          dbCheck={dbCheck}
           onEmailCheck={onEmailCheck}
           sty2={sty2}
           userId={userId}
@@ -163,7 +195,7 @@ export const SignUpPage = () => {
           </div>
           <button
             className="bg-main_color text-white rounded-lg ml-7 px-8 py-2 text-sm cursor-pointer"
-            onClick={SignUp}
+            onClick={handleSignUp}
           >
             완료
           </button>
