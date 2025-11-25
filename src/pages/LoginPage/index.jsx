@@ -38,8 +38,14 @@ export const LoginPage = () => {
       navigate("/userinfo");
       // navigate("/main");
     } catch (e) {
-      console.error("login failure", e);
-      alert("존재하지 않는 사용자입니다.");
+      console.error("login failure", e.status);
+      if (e.status == 401) {
+        alert("비밀번호가 일치하지 않습니다.");
+      } else if (e.status == 400) {
+        alert("존재하지 않는 사용자입니다.");
+        setUserId("");
+        setPassword("");
+      }
     }
   };
 

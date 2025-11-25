@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
 import { DiseaseSelector } from "./layout/DiseaseSelector";
 import { AllergySelector } from "./layout/AllergySelector";
+import { getUser } from "../../services/users";
 
 export const UserInfoPage = () => {
   //성별 스타일
@@ -55,6 +56,19 @@ export const UserInfoPage = () => {
     gender: "",
     age: "",
   });
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const loginUser = await getUser();
+        console.log("success to fetch user", loginUser);
+      } catch (e) {
+        console.log("failed to fetch user", e);
+      }
+    };
+
+    fetchUser();
+  }, []);
 
   //mode : 0: loss 1 : maintain 2 : gain
   const [modeSelect, setModeSelect] = useState(null);
