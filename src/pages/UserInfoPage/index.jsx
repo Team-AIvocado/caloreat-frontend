@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
 import { DiseaseSelector } from "./layout/DiseaseSelector";
 import { AllergySelector } from "./layout/AllergySelector";
-import { getUser } from "../../services/users";
 
 export const UserInfoPage = () => {
   const numberRegex = /^\d+(\.\d+)?$/;
@@ -45,19 +44,6 @@ export const UserInfoPage = () => {
     gender: "",
     age: "",
   });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const loginUser = await getUser();
-        console.log("success to fetch user", loginUser);
-      } catch (e) {
-        console.log("failed to fetch user", e);
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   //mode : 0: loss 1 : maintain 2 : gain
   const [modeSelect, setModeSelect] = useState(null);
@@ -132,7 +118,7 @@ export const UserInfoPage = () => {
     //TODO:user profile 정보 db에 저장
     //TODO:건강 선택 사항 있다면 db에 저장
 
-    navigate("/main");
+    navigate("/main/dashboard");
   };
 
   return (

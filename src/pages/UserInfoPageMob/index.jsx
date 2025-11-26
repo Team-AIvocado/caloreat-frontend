@@ -1,10 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { UserBasicInfo } from "./layout/UserBasicInfo";
 import { UserBodyInfo } from "./layout/UserBodyInfo";
 import { UserSelectGoal } from "./layout/UserSelectGoal";
 import { UserDiseaseInfo } from "./layout/UserDiseaseInfo";
 import { UserAllergyInfo } from "./layout/UserAllergyInfo";
-import { getUser } from "../../services/users";
 
 export const UserInfoPageMob = () => {
   const [step, setStep] = useState(1);
@@ -43,19 +42,6 @@ export const UserInfoPageMob = () => {
     gender: "",
     age: "",
   });
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const loginUser = await getUser();
-        console.log("success to fetch user", loginUser);
-      } catch (e) {
-        console.log("failed to fetch user", e);
-      }
-    };
-
-    fetchUser();
-  }, []);
 
   //mode : 0: loss 1 : maintain 2 : gain
   const [modeSelect, setModeSelect] = useState(null);

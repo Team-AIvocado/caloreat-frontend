@@ -71,3 +71,14 @@ export const getUser = async () => {
     throw e;
   }
 };
+
+export const logout = async () => {
+  try {
+    const response = await api.post("/users/logout");
+    console.log("logout success", response.data);
+    return response.data;
+  } catch (e) {
+    console.log("logout failure", e.response.data.detail);
+    throw e;
+  }
+};
