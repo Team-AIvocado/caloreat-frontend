@@ -40,7 +40,6 @@ export const BodyProfile = ({
         <input
           type="date"
           className="rounded-lg border w-36 pl-3 py-2 ml-1 mr-4 mb-1.5 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
-          defaultValue={2000 - 10 - 10}
           value={userProfile.birthdate}
           onChange={(e) => {
             setUserProfile({ ...userProfile, birthdate: e.target.value });

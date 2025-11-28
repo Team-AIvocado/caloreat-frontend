@@ -33,7 +33,7 @@ export const UserInfoPage = () => {
   const [userProfile, setUserProfile] = useState({
     height: "",
     weight: "",
-    birthdate: "",
+    birthdate: "2000-10-10",
     gender: "",
   });
 
