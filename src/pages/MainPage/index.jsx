@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import { MainNavBar } from "../../components/Navbar/MainNavbar";
 import { useEffect, useState } from "react";
-import { getUser, login } from "../../services/users";
+import { getUser } from "../../services/users";
 
 export const MainPage = () => {
   const [nickname, setNickname] = useState();

@@ -30,11 +30,10 @@ export const UserInfoPage = () => {
 
   const navigate = useNavigate();
 
-  //man : 1 woman : 2
   const [userProfile, setUserProfile] = useState({
     height: "",
     weight: "",
-    age: "",
+    birthdate: "",
     gender: "",
   });
 
@@ -42,7 +41,7 @@ export const UserInfoPage = () => {
     height: "",
     weight: "",
     gender: "",
-    age: "",
+    birthdate: "",
   });
 
   //mode : 0: loss 1 : maintain 2 : gain
@@ -85,14 +84,14 @@ export const UserInfoPage = () => {
       setError({ ...error, gender: "" });
     }
 
-    if (!userProfile.age) {
-      setError({ ...error, age: "나이를 입력해주세요" });
+    if (!userProfile.birthdate) {
+      setError({ ...error, birthdate: "나이를 입력해주세요" });
       return;
-    } else if (!numberRegex.test(userProfile.age.trim())) {
-      setError({ ...error, age: "숫자만 입력가능합니다." });
+    } else if (!numberRegex.test(userProfile.birthdate.trim())) {
+      setError({ ...error, birthdate: "숫자만 입력가능합니다." });
       return;
     } else {
-      setError({ ...error, age: "" });
+      setError({ ...error, birthdate: "" });
     }
 
     if (!userProfile.height) {

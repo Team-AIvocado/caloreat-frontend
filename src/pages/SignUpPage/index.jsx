@@ -59,7 +59,6 @@ export const SignUpPage = () => {
     } catch (e) {
       console.log("unavailable email", e);
       alert("이미 존재하는 이메일입니다.");
-      setUserEmail("");
       return;
     }
   };
@@ -79,7 +78,6 @@ export const SignUpPage = () => {
     } catch (e) {
       console.log("unavailable id", e);
       alert("이미 존재하는 아이디입니다.");
-      setUserId("");
       return;
     }
   };
@@ -144,7 +142,7 @@ export const SignUpPage = () => {
       );
       console.log("success sign up", response.data);
       //TODO:회원가입 완료 모달창 필요
-      navigate("/main");
+      navigate("/");
       return response.data;
     } catch (e) {
       console.log("failed to signup", e.response.data.detail);

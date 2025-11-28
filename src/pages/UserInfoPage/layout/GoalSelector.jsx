@@ -6,25 +6,25 @@ export const GoalSelector = ({ modeSelect, setModeSelect, handleToggle }) => {
       현재 목표{" "}
       <div className="mt-2 mb-2 pl-5">
         <button
-          className={modeSelect == 0 ? sty1[1] : sty1[0]}
+          className={modeSelect == "loss" ? sty1[1] : sty1[0]}
           onClick={() => {
-            setModeSelect(handleToggle(modeSelect, 0));
+            setModeSelect(handleToggle(modeSelect, "loss"));
           }}
         >
           체중 감량
         </button>
         <button
-          className={modeSelect == 1 ? sty1[1] : sty1[0]}
+          className={modeSelect == "maintain" ? sty1[1] : sty1[0]}
           onClick={() => {
-            setModeSelect(handleToggle(modeSelect, 1));
+            setModeSelect(handleToggle(modeSelect, "maintain"));
           }}
         >
           유지
         </button>
         <button
-          className={modeSelect == 2 ? sty1[1] : sty1[0]}
+          className={modeSelect == "gain" ? sty1[1] : sty1[0]}
           onClick={() => {
-            setModeSelect(handleToggle(modeSelect, 2));
+            setModeSelect(handleToggle(modeSelect, "gain"));
           }}
         >
           체중 증량

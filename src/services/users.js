@@ -34,7 +34,7 @@ export const checkemail = async (email) => {
 
 export const checkid = async (id) => {
   try {
-    const response = await api.get(`/users/checkemail?email=${id}`);
+    const response = await api.get(`/users/checkid?id=${id}`);
     console.log("아이디 중복 체크", response.data);
     return "사용가능한 아이디";
   } catch (e) {
@@ -79,6 +79,17 @@ export const logout = async () => {
     return response.data;
   } catch (e) {
     console.log("logout failure", e.response.data.detail);
+    throw e;
+  }
+};
+
+export const getUserInfo = async () => {
+  try {
+    const response = await api.get("/users/me/profile/");
+    console.log("success to get user info", response.data);
+    return response.data;
+  } catch (e) {
+    console.log("failed to get user info", e);
     throw e;
   }
 };
