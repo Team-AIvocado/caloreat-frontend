@@ -8,6 +8,7 @@ import { SettingPage } from "./pages/SettingPage";
 import { StatisticsPage } from "./pages/StatisticsPage";
 import { LogPage } from "./pages/LogPage";
 import { DashBoardPage } from "./pages/DashBoardPage";
+import { FoodRegisterPage } from "./pages/FoodRegisterPage";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 const App = () => {
@@ -23,6 +24,7 @@ const App = () => {
             <Route path="log" element={<LogPage />} />
             <Route path="statistics" element={<StatisticsPage />} />
             <Route path="setting" element={<SettingPage />} />
+            <Route path="foodreg" element={<FoodRegisterPage />} />
           </Route>
         </Routes>
       </BrowserRouter>

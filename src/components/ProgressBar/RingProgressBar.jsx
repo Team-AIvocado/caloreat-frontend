@@ -7,20 +7,20 @@ function RingProgressBar({ totalkcal, kcal }) {
   const customText = (
     <tspan>
       <tspan
-        dx="5"
+        dx="3"
         font-size="20px"
         style={{ fill: "#1D2E50", fontWeight: "bold" }}
       >
         {kcal}
       </tspan>
-      <tspan dx="-14" dy="12" font-size="9px" style={{ fill: "#6C6C6C" }}>
+      <tspan dx="-16" dy="12" font-size="9px" style={{ fill: "#6C6C6C" }}>
         /{totalkcal} kcal
       </tspan>
     </tspan>
   );
 
   return (
-    <div style={{ width: 300, height: 300 }}>
+    <div style={{ width: 220, height: 220 }}>
       <CircularProgressbar
         value={percentage}
         text={customText}
