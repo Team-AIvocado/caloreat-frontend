@@ -1,49 +1,24 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser, getUserInfo, login, logout } from "../../services/users";
+import { getUser } from "../../services/users"; // Keep getUser if needed for extra checks, or remove if context has it
+import { useAuth } from "../../context/AuthContext";
 import { LoginComp } from "./layout/LoginComp";
 import { OnLogin } from "./layout/OnLogin";
 
 export const LoginPage = () => {
-  const [loginUser, setLoginUser] = useState({ user: "", userinfo: "" });
+  const { login, logout, user, checkAuth } = useAuth();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
 
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getUser();
-        if (user) {
-          setLoginUser({ ...loginUser, user: user });
-        }
-      } catch {
-        setLoginUser({ ...loginUser, user: "" });
-        console.log("failed to get user");
-      }
-    };
-    fetchUser();
-  }, []);
-
   const onSignup = () => {
     navigate("/signup");
   };
 
-  const checkPreInfo = async () => {
-    try {
-      const checkUserInfo = await getUserInfo();
-      if (checkUserInfo) {
-        setLoginUser({ ...loginUser, userinfo: checkUserInfo });
-        console.log(checkPreInfo);
-      }
-    } catch {
-      setLoginUser({ ...loginUser, userinfo: "" });
-      console.log("failed to get user info");
-    }
-  };
 
+  //TODO: 로그인 성공시 main or userinfo로 강제 라우팅 해버리기 (App.jsx에서 해야 할 수도)
   //TODO: 존재하지 않는 id라면 modal창 출력
   const onMain = async () => {
     if (!userId.trim()) {
@@ -58,8 +33,9 @@ export const LoginPage = () => {
     try {
       const response = await login(userId, password);
       console.log("login success", response);
-      checkPreInfo();
-      if (loginUser.userinfo) {
+      // Check PreInfo 주석처리 
+      const userData = await getUser(); 
+      if (userData.userinfo) {
         navigate("/main");
       } else {
         navigate("/userinfo");
@@ -70,6 +46,7 @@ export const LoginPage = () => {
         alert("비밀번호가 일치하지 않습니다.");
       } else if (e.status == 400) {
         alert("존재하지 않는 사용자입니다.");
+        // TODO: 이부분 꼭 초기화 해야하나 의논해보기 (경험상 초기화 안하는 사이트들이 많았던것 같음)
         setUserId("");
         setPassword("");
       }
@@ -82,8 +59,8 @@ export const LoginPage = () => {
         <div className="text-main_color text-3xl ml-11">
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
-        {loginUser.user ? (
-          <LoginComp logout={logout} setLoginUser={setLoginUser} />
+        {user ? (
+          <LoginComp logout={logout} setLoginUser={() => {}} />
         ) : (
           <OnLogin
             error={error}

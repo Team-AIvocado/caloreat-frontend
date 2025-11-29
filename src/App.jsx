@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
+import { ProtectedRoute } from "./components/ProtectedRoute";
 import "./App.css";
 import { LoginPage } from "./pages/LoginPage";
 import { SignUpPage } from "./pages/SignUpPage";
@@ -15,18 +17,23 @@ const App = () => {
   return (
     <div className="min-h-screen bg-main_background">
       <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/signup" element={<SignUpPage />} />
-          <Route path="/userinfo" element={<UserInfoPage />} />
-          <Route path="/main" element={<MainPage />}>
-            <Route path="dashboard" element={<DashBoardPage />} />
-            <Route path="log" element={<LogPage />} />
-            <Route path="statistics" element={<StatisticsPage />} />
-            <Route path="setting" element={<SettingPage />} />
-            <Route path="foodreg" element={<FoodRegisterPage />} />
-          </Route>
-        </Routes>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<LoginPage />} />
+            <Route path="/signup" element={<SignUpPage />} />
+            
+            <Route element={<ProtectedRoute />}>
+              <Route path="/userinfo" element={<UserInfoPage />} />
+              <Route path="/main" element={<MainPage />}>
+                <Route path="dashboard" element={<DashBoardPage />} />
+                <Route path="log" element={<LogPage />} />
+                <Route path="statistics" element={<StatisticsPage />} />
+                <Route path="setting" element={<SettingPage />} />
+                <Route path="foodreg" element={<FoodRegisterPage />} />
+              </Route>
+            </Route>
+          </Routes>
+        </AuthProvider>
       </BrowserRouter>
     </div>
   );
