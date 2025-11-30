@@ -35,8 +35,8 @@ export const BodyProfile = ({
       {error.gender && (
         <div className="text-red-400 text-xs mb-1">{error.gender}</div>
       )}
-      <label className="text-xs text-secondary_text pl-6">
-        나이{" "}
+      <label className="text-xs text-secondary_text ">
+        생년월일{" "}
         <input
           type="date"
           className="rounded-lg border w-36 pl-3 py-2 ml-1 mr-4 mb-1.5 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"

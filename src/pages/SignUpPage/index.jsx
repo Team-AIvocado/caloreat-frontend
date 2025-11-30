@@ -25,12 +25,6 @@ export const SignUpPage = () => {
     "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3",
   ];
 
-  //중복확인 버튼
-  const sty2 = [
-    "bg-main_color text-white rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs cursor-pointer",
-    "bg-main_border text-gray-400 rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs",
-  ];
-
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/;
 
@@ -169,7 +163,6 @@ export const SignUpPage = () => {
           setdbCheck={setdbCheck}
           dbCheck={dbCheck}
           onEmailCheck={onEmailCheck}
-          sty2={sty2}
           userId={userId}
           setUserId={setUserId}
           onIdCheck={onIdCheck}

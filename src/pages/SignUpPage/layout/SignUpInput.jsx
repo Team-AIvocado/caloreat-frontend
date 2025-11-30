@@ -1,13 +1,13 @@
+import { checkBtn, errorInput } from "../../../utils/styles";
+
 export const SignUpInput = ({
   error,
-  sty,
   userEmail,
   setUserEmail,
   setError,
   setdbCheck,
   dbCheck,
   onEmailCheck,
-  sty2,
   userId,
   setUserId,
   onIdCheck,
@@ -24,7 +24,7 @@ export const SignUpInput = ({
         <div className="flex flex-row">
           <div>
             <input
-              className={error.email ? sty[1] : sty[0]}
+              className={error.email ? errorInput[1] : errorInput[0]}
               type="text"
               placeholder="이메일을 입력하세요"
               value={userEmail}
@@ -41,7 +41,7 @@ export const SignUpInput = ({
             )}
           </div>
           <button
-            className={dbCheck.email ? sty2[1] : sty2[0]}
+            className={dbCheck.email ? checkBtn[1] : checkBtn[0]}
             onClick={onEmailCheck}
           >
             중복확인
@@ -50,7 +50,7 @@ export const SignUpInput = ({
         <div className="flex flex-row">
           <div>
             <input
-              className={error.id ? sty[1] : sty[0]}
+              className={error.id ? errorInput[1] : errorInput[0]}
               type="text"
               placeholder="아이디를 입력하세요"
               value={userId}
@@ -67,14 +67,14 @@ export const SignUpInput = ({
             )}
           </div>
           <button
-            className={dbCheck.id ? sty2[1] : sty2[0]}
+            className={dbCheck.id ? checkBtn[1] : checkBtn[0]}
             onClick={onIdCheck}
           >
             중복확인
           </button>
         </div>
         <input
-          className={error.name ? sty[1] : sty[0]}
+          className={error.name ? errorInput[1] : errorInput[0]}
           type="text"
           placeholder="서비스에서 사용할 닉네임을 입력해주세요"
           value={nickname}
@@ -89,7 +89,7 @@ export const SignUpInput = ({
           </div>
         )}
         <input
-          className={error.password ? sty[1] : sty[0]}
+          className={error.password ? errorInput[1] : errorInput[0]}
           type="password"
           placeholder="비밀번호를 입력하세요 (영문 숫자 섞어서 5자 이상)"
           value={password}
@@ -104,7 +104,7 @@ export const SignUpInput = ({
           </div>
         )}
         <input
-          className={error.confirmPassword ? sty[1] : sty[0]}
+          className={error.confirmPassword ? errorInput[1] : errorInput[0]}
           type="password"
           placeholder="비밀번호를 다시 한 번 입력하세요"
           value={confirmPassword}

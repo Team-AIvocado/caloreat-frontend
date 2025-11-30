@@ -3,8 +3,13 @@ import { logout } from "../../services/users";
 
 export const MainNavBar = ({ nickname }) => {
   const navigate = useNavigate();
-  const onLogout = () => {
-    logout();
+  const onLogout = async () => {
+    try {
+      await logout();
+    } catch {
+      console.log("failed to logout");
+    }
+
     //TODO: logout 되었습니다. modal 창
     navigate("/");
   };

@@ -85,11 +85,28 @@ export const logout = async () => {
 
 export const getUserInfo = async () => {
   try {
-    const response = await api.get("/users/me/profile/");
+    const response = await api.get("/users/me/profile/form");
     console.log("success to get user info", response.data);
     return response.data;
   } catch (e) {
     console.log("failed to get user info", e);
     throw e;
+  }
+};
+
+export const createUserInfo = async (UserProfile, goal_type, conditions) => {
+  const data = {
+    gender: UserProfile.gender,
+    birthdate: UserProfile.birthdate,
+    height: UserProfile.height,
+    weight: UserProfile.weight,
+    goal_type: goal_type,
+    conditions: conditions,
+  };
+  try {
+    const response = await api.post("/users/me/profile/form", data);
+    console.log("create comoplete", response.data);
+  } catch (e) {
+    console.log("failed to create userinfo", e);
   }
 };

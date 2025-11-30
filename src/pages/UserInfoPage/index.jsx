@@ -2,30 +2,17 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
-import { DiseaseSelector } from "./layout/DiseaseSelector";
-import { AllergySelector } from "./layout/AllergySelector";
+import { ConditionSelector } from "./layout/ConditionSelector";
+import { createUserInfo } from "../../services/users";
 
 export const UserInfoPage = () => {
   const numberRegex = /^\d+(\.\d+)?$/;
 
   const initialCondition = {
-    disease: {
-      diabetes: false,
-      high_blood_pressure: false,
-      low_blood_pressure: false,
-      hyperlipidemia: false,
-    },
-    allergy: {
-      milk: false,
-      eggs: false,
-      peanuts: false,
-      tree_nuts: false, //견과류 (아몬드, 호두, 피칸,..)
-      soy: false, //콩
-      wheat: false,
-      fish: false,
-      shellfish: false,
-      sesame: false, //참깨
-    },
+    diabetes: false,
+    high_blood_pressure: false,
+    low_blood_pressure: false,
+    hyperlipidemia: false,
   };
 
   const navigate = useNavigate();
@@ -33,7 +20,7 @@ export const UserInfoPage = () => {
   const [userProfile, setUserProfile] = useState({
     height: "",
     weight: "",
-    birthdate: "2000-10-10",
+    birthdate: "",
     gender: "",
   });
 
@@ -44,8 +31,7 @@ export const UserInfoPage = () => {
     birthdate: "",
   });
 
-  //mode : 0: loss 1 : maintain 2 : gain
-  const [modeSelect, setModeSelect] = useState(null);
+  const [modeSelect, setModeSelect] = useState("");
   const [condition, setCondition] = useState(initialCondition);
 
   const handleToggle = (btn, value) => {
@@ -56,23 +42,10 @@ export const UserInfoPage = () => {
     }
   };
 
-  const updateDisease = (key, value) => {
+  const updateCondition = (key, value) => {
     setCondition((prev) => ({
       ...prev,
-      disease: {
-        ...prev.disease,
-        [key]: value,
-      },
-    }));
-  };
-
-  const updateAllergy = (key, value) => {
-    setCondition((prev) => ({
-      ...prev,
-      allergy: {
-        ...prev.allergy,
-        [key]: value,
-      },
+      [key]: value,
     }));
   };
 
@@ -84,11 +57,21 @@ export const UserInfoPage = () => {
       setError({ ...error, gender: "" });
     }
 
+    const now = new Date();
+    const inputDate = userProfile.birthdate.split("-");
+
     if (!userProfile.birthdate) {
-      setError({ ...error, birthdate: "나이를 입력해주세요" });
+      setError({ ...error, birthdate: "생년월일을 입력해주세요" });
       return;
-    } else if (!numberRegex.test(userProfile.birthdate.trim())) {
-      setError({ ...error, birthdate: "숫자만 입력가능합니다." });
+    } else if (
+      inputDate[0] > now.getFullYear() ||
+      (inputDate[0] == now.getFullYear() &&
+        inputDate[1] > now.getMonth() + 1) ||
+      (inputDate[0] == now.getFullYear() &&
+        inputDate[1] == now.getMonth() + 1 &&
+        inputDate[2] > now.getDate())
+    ) {
+      setError({ ...error, birthdate: "생년월일을 올바르게 입력해주세요" });
       return;
     } else {
       setError({ ...error, birthdate: "" });
@@ -114,9 +97,15 @@ export const UserInfoPage = () => {
       setError({ ...error, weight: "" });
     }
 
-    //TODO:user profile 정보 db에 저장
-    //TODO:건강 선택 사항 있다면 db에 저장
+    const trueConditions = Object.keys(initialCondition).filter(
+      (cond) => initialCondition[cond] === true
+    );
 
+    try {
+      createUserInfo(userProfile, modeSelect, trueConditions);
+    } catch {
+      console.log("failed to create user info");
+    }
     navigate("/main/dashboard");
   };
 
@@ -160,15 +149,9 @@ export const UserInfoPage = () => {
                 handleToggle={handleToggle}
               />
 
-              <DiseaseSelector
+              <ConditionSelector
                 condition={condition}
-                updateDisease={updateDisease}
-                handleToggle={handleToggle}
-              />
-
-              <AllergySelector
-                condition={condition}
-                updateAllergy={updateAllergy}
+                updateCondition={updateCondition}
                 handleToggle={handleToggle}
               />
             </div>

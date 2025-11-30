@@ -17,7 +17,7 @@ export const LoginPage = () => {
       try {
         const user = await getUser();
         if (user) {
-          setLoginUser({ ...loginUser, user: user });
+          setLoginUser({ ...loginUser, user: user.username });
         }
       } catch {
         setLoginUser({ ...loginUser, user: "" });
@@ -34,13 +34,10 @@ export const LoginPage = () => {
   const checkPreInfo = async () => {
     try {
       const checkUserInfo = await getUserInfo();
-      if (checkUserInfo) {
-        setLoginUser({ ...loginUser, userinfo: checkUserInfo });
-        console.log(checkPreInfo);
-      }
+      return checkUserInfo ? checkUserInfo.user_id : null;
     } catch {
-      setLoginUser({ ...loginUser, userinfo: "" });
       console.log("failed to get user info");
+      return null;
     }
   };
 
@@ -58,9 +55,12 @@ export const LoginPage = () => {
     try {
       const response = await login(userId, password);
       console.log("login success", response);
-      checkPreInfo();
-      if (loginUser.userinfo) {
-        navigate("/main");
+      const userInfoId = await checkPreInfo();
+
+      console.log("UserInfo ID:", userInfoId);
+
+      if (userInfoId) {
+        navigate("/main/dashboard");
       } else {
         navigate("/userinfo");
       }
