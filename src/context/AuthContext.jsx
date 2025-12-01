@@ -1,5 +1,9 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { getUser, login as loginService, logout as logoutService } from "../services/users";
+import {
+  getUser,
+  login as loginService,
+  logout as logoutService,
+} from "../services/users";
 
 const AuthContext = createContext(null);
 
@@ -39,16 +43,9 @@ export const AuthProvider = ({ children }) => {
    * @returns {Promise<Object>} 로그인 응답 데이터
    */
   const login = async (account, password) => {
-    try {
-      const data = await loginService(account, password);
-      // get User로 이중 확인 
-      // TODO: 추후 getUser 없앨 수 있는지 확인
-      const userData = await getUser();
-      setUser(userData);
-      return data;
-    } catch (error) {
-      throw error;
-    }
+    const data = await loginService(account, password);
+    setUser(data);
+    return data;
   };
 
   /**
@@ -65,7 +62,9 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout, loading, checkAuth }}>
+    <AuthContext.Provider
+      value={{ user, login, logout, loading, checkAuth, setUser }}
+    >
       {children}
     </AuthContext.Provider>
   );

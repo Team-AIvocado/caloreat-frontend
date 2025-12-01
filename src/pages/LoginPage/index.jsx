@@ -1,32 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUser } from "../../services/users"; // Keep getUser if needed for extra checks, or remove if context has it
+import { getUserInfo } from "../../services/users"; // Keep getUser if needed for extra checks, or remove if context has it
 import { useAuth } from "../../context/AuthContext";
 import { LoginComp } from "./layout/LoginComp";
 import { OnLogin } from "./layout/OnLogin";
 
 export const LoginPage = () => {
-  const { login, logout, user, checkAuth } = useAuth();
+  const { login, logout, user } = useAuth();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        const user = await getUser();
-        if (user) {
-          setLoginUser({ ...loginUser, user: user.username });
-        }
-      } catch {
-        setLoginUser({ ...loginUser, user: "" });
-        console.log("failed to get user");
-      }
-    };
-    fetchUser();
-  }, []);
 
   const onSignup = () => {
     navigate("/signup");
@@ -59,8 +44,6 @@ export const LoginPage = () => {
       console.log("login success", response);
       const userInfoId = await checkPreInfo();
 
-      console.log("UserInfo ID:", userInfoId);
-
       if (userInfoId) {
         navigate("/main/dashboard");
       } else {
@@ -72,9 +55,6 @@ export const LoginPage = () => {
         alert("비밀번호가 일치하지 않습니다.");
       } else if (e.status == 400) {
         alert("존재하지 않는 사용자입니다.");
-        // TODO: 이부분 꼭 초기화 해야하나 의논해보기 (경험상 초기화 안하는 사이트들이 많았던것 같음)
-        setUserId("");
-        setPassword("");
       }
     }
   };
@@ -86,7 +66,7 @@ export const LoginPage = () => {
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
         {user ? (
-          <LoginComp logout={logout} setLoginUser={() => {}} />
+          <LoginComp logout={logout} />
         ) : (
           <OnLogin
             error={error}

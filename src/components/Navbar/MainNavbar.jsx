@@ -1,17 +1,19 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../services/users";
+import { useAuth } from "../../context/AuthContext";
 
 export const MainNavBar = ({ nickname }) => {
   const navigate = useNavigate();
+  const { setUser } = useAuth();
   const onLogout = async () => {
     try {
       await logout();
+      //TODO: logout 되었습니다. modal 창
+      setUser(null);
+      navigate("/");
     } catch {
       console.log("failed to logout");
     }
-
-    //TODO: logout 되었습니다. modal 창
-    navigate("/");
   };
 
   return (

@@ -1,4 +1,4 @@
-export const LoginComp = ({ logout, setLoginUser }) => {
+export const LoginComp = ({ logout }) => {
   return (
     <div className="flex flex-row ml-6">
       <div className="pr-16 pb-7 font-bold text-main_color">로그인 완료</div>
@@ -7,7 +7,6 @@ export const LoginComp = ({ logout, setLoginUser }) => {
         onClick={async () => {
           try {
             await logout();
-            setLoginUser({ user: "", userinfo: "" });
           } catch (e) {
             console.log("failed to logout", e);
           }
