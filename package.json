@@ -16,6 +16,7 @@
     "react-circular-progressbar": "^2.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "6.23.1",
+    "react-webcam": "^7.2.0",
     "tailwindcss": "^4.1.17"
   },
   "devDependencies": {
