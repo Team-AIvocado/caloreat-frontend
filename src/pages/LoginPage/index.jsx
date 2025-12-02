@@ -4,9 +4,11 @@ import { getUserInfo } from "../../services/users"; // Keep getUser if needed fo
 import { useAuth } from "../../context/AuthContext";
 import { LoginComp } from "./layout/LoginComp";
 import { OnLogin } from "./layout/OnLogin";
+import { useAlert } from "../../context/AlertContext";
 
 export const LoginPage = () => {
   const { login, logout, user } = useAuth();
+  const { showAlert, closeAlert } = useAlert();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
@@ -52,7 +54,18 @@ export const LoginPage = () => {
     } catch (e) {
       console.error("login failure", e.status);
       if (e.status == 401) {
-        alert("비밀번호가 일치하지 않습니다.");
+        showAlert({
+          msg: "비밀번호가 일치하지 않습니다.",
+          footer: (
+            <button
+              className="bg-sub_background rounded-xl text-sm px-6 py-1 border border-secondary_text text-primary_text"
+              onClick={closeAlert}
+            >
+              확인
+            </button>
+          ),
+        });
+        // alert("비밀번호가 일치하지 않습니다.");
       } else if (e.status == 400) {
         alert("존재하지 않는 사용자입니다.");
       }

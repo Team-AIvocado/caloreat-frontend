@@ -11,6 +11,7 @@ import { StatisticsPage } from "./pages/StatisticsPage";
 import { LogPage } from "./pages/LogPage";
 import { DashBoardPage } from "./pages/DashBoardPage";
 import { FoodRegisterPage } from "./pages/FoodRegisterPage";
+import { AlertProvider } from "./context/AlertContext";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**
@@ -18,9 +19,11 @@ import { FoodRegisterPage } from "./pages/FoodRegisterPage";
  */
 const ProviderLayout = () => {
   return (
-    <AuthProvider>
-      <Outlet />
-    </AuthProvider>
+    <AlertProvider>
+      <AuthProvider>
+        <Outlet />
+      </AuthProvider>
+    </AlertProvider>
   );
 };
 
@@ -37,7 +40,7 @@ const RootLayout = () => {
 };
 
 // 리팩토링 했고, 이게 최신 표준이라네요.
-// Tanstack query를 사용할게 아니면 이거를 쓰는게 성능 향상에 좋대요. 
+// Tanstack query를 사용할게 아니면 이거를 쓰는게 성능 향상에 좋대요.
 /**
  * 라우터 설정 createBrowserRouter로 생성
  */
