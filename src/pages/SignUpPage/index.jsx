@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { SignUpInput } from "./layout/SignUpInput";
 import { checkemail, checkid, signUp } from "../../services/users";
+import { alertBtn } from "../../utils/styles";
+import { useAlert } from "../../context/AlertContext";
 
 export const SignUpPage = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -10,6 +12,7 @@ export const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [dbCheck, setdbCheck] = useState({ email: false, id: false });
+  const { showAlert, closeAlert } = useAlert();
 
   const [error, setError] = useState({
     email: false,
@@ -18,12 +21,6 @@ export const SignUpPage = () => {
     password: false,
     confirmPassword: false,
   });
-
-  //입력칸에 대한 스타일 (error 스타일 적용)
-  const sty = [
-    "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
-    "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3",
-  ];
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/;
@@ -34,7 +31,11 @@ export const SignUpPage = () => {
     navigate("/");
   };
 
-  //TODO:사용자가 입력한 email 중복 확인
+  const handleConfirmAndNavigate = () => {
+    closeAlert();
+    navigate("/");
+  };
+
   const onEmailCheck = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
@@ -52,13 +53,19 @@ export const SignUpPage = () => {
       setdbCheck({ ...dbCheck, email: true });
     } catch (e) {
       console.log("unavailable email", e);
-      alert("이미 존재하는 이메일입니다.");
+      showAlert({
+        msg: "이미 존재하는 이메일입니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
       return;
     }
   };
 
   const onIdCheck = async () => {
-    //TODO:사용자가 입력한 id가 중복 확인
     if (!userId.trim()) {
       setError({ ...error, id: "아이디를 입력해주세요" });
       return;
@@ -71,7 +78,14 @@ export const SignUpPage = () => {
       setdbCheck({ ...dbCheck, id: true });
     } catch (e) {
       console.log("unavailable id", e);
-      alert("이미 존재하는 아이디입니다.");
+      showAlert({
+        msg: "이미 존재하는 아이디입니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
       return;
     }
   };
@@ -135,8 +149,15 @@ export const SignUpPage = () => {
         password.trim()
       );
       console.log("success sign up", response.data);
-      //TODO:회원가입 완료 모달창 필요
-      navigate("/");
+      showAlert({
+        msg: "회원가입 완료!",
+        footer: (
+          <button className={alertBtn} onClick={handleConfirmAndNavigate}>
+            확인
+          </button>
+        ),
+      });
+
       return response.data;
     } catch (e) {
       console.log("failed to signup", e.response.data.detail);
@@ -156,7 +177,6 @@ export const SignUpPage = () => {
         </div>
         <SignUpInput
           error={error}
-          sty={sty}
           userEmail={userEmail}
           setUserEmail={setUserEmail}
           setError={setError}

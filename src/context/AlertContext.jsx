@@ -11,6 +11,9 @@ export function AlertProvider({ children }) {
   };
 
   const closeAlert = () => {
+    if (alert && alert.onClose) {
+      alert.onClose();
+    }
     setAlert(null);
   };
 

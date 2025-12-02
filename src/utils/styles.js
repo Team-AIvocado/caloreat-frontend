@@ -19,3 +19,7 @@ export const checkBtn = [
   "bg-main_color text-white rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs cursor-pointer",
   "bg-main_border text-gray-400 rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs",
 ];
+
+//alert button
+export const alertBtn =
+  "bg-sub_background rounded-xl text-sm px-6 py-1 border border-secondary_text text-primary_text";

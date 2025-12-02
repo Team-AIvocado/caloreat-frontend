@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useEffect } from "react";
 import {
   getUser,
+  getUserInfo,
   login as loginService,
   logout as logoutService,
 } from "../services/users";
@@ -61,9 +62,19 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const checkPreInfo = async () => {
+    try {
+      const checkUserInfo = await getUserInfo();
+      return checkUserInfo ? checkUserInfo.user_id : null;
+    } catch {
+      console.log("failed to get user info");
+      return null;
+    }
+  };
+
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, loading, checkAuth, setUser }}
+      value={{ user, login, logout, loading, checkAuth, setUser, checkPreInfo }}
     >
       {children}
     </AuthContext.Provider>

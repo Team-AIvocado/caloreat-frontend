@@ -1,13 +1,13 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { getUserInfo } from "../../services/users"; // Keep getUser if needed for extra checks, or remove if context has it
 import { useAuth } from "../../context/AuthContext";
 import { LoginComp } from "./layout/LoginComp";
 import { OnLogin } from "./layout/OnLogin";
 import { useAlert } from "../../context/AlertContext";
+import { alertBtn } from "../../utils/styles";
 
 export const LoginPage = () => {
-  const { login, logout, user } = useAuth();
+  const { login, logout, user, checkPreInfo } = useAuth();
   const { showAlert, closeAlert } = useAlert();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -19,18 +19,7 @@ export const LoginPage = () => {
     navigate("/signup");
   };
 
-  const checkPreInfo = async () => {
-    try {
-      const checkUserInfo = await getUserInfo();
-      return checkUserInfo ? checkUserInfo.user_id : null;
-    } catch {
-      console.log("failed to get user info");
-      return null;
-    }
-  };
-
   //TODO: 로그인 성공시 main or userinfo로 강제 라우팅 해버리기 (App.jsx에서 해야 할 수도)
-  //TODO: 존재하지 않는 id라면 modal창 출력
   const onMain = async () => {
     if (!userId.trim()) {
       setError({ ...error, id: true });
@@ -44,7 +33,7 @@ export const LoginPage = () => {
     try {
       const response = await login(userId, password);
       console.log("login success", response);
-      const userInfoId = await checkPreInfo();
+      const userInfoId = checkPreInfo();
 
       if (userInfoId) {
         navigate("/main/dashboard");
@@ -57,17 +46,20 @@ export const LoginPage = () => {
         showAlert({
           msg: "비밀번호가 일치하지 않습니다.",
           footer: (
-            <button
-              className="bg-sub_background rounded-xl text-sm px-6 py-1 border border-secondary_text text-primary_text"
-              onClick={closeAlert}
-            >
+            <button className={alertBtn} onClick={closeAlert}>
               확인
             </button>
           ),
         });
-        // alert("비밀번호가 일치하지 않습니다.");
       } else if (e.status == 400) {
-        alert("존재하지 않는 사용자입니다.");
+        showAlert({
+          msg: "존재하지 않는 사용자입니다.",
+          footer: (
+            <button className={alertBtn} onClick={closeAlert}>
+              확인
+            </button>
+          ),
+        });
       }
     }
   };
@@ -79,7 +71,7 @@ export const LoginPage = () => {
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
         {user ? (
-          <LoginComp logout={logout} />
+          <LoginComp logout={logout} nickname={user.nickname} />
         ) : (
           <OnLogin
             error={error}

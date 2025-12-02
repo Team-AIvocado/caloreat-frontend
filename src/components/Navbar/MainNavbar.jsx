@@ -1,16 +1,31 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { logout } from "../../services/users";
 import { useAuth } from "../../context/AuthContext";
+import { useAlert } from "../../context/AlertContext";
+import { alertBtn } from "../../utils/styles";
 
 export const MainNavBar = ({ nickname }) => {
   const navigate = useNavigate();
   const { setUser } = useAuth();
+  const { showAlert, closeAlert } = useAlert();
+
+  const handleConfirmAndNavigate = () => {
+    closeAlert();
+    setUser(null);
+    navigate("/");
+  };
+
   const onLogout = async () => {
     try {
       await logout();
-      //TODO: logout 되었습니다. modal 창
-      setUser(null);
-      navigate("/");
+      showAlert({
+        msg: "로그아웃 완료!",
+        footer: (
+          <button className={alertBtn} onClick={handleConfirmAndNavigate}>
+            확인
+          </button>
+        ),
+      });
     } catch {
       console.log("failed to logout");
     }
