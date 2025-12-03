@@ -76,7 +76,7 @@ export const SignUpInput = ({
         <input
           className={error.name ? errorInput[1] : errorInput[0]}
           type="text"
-          placeholder="서비스에서 사용할 닉네임을 입력해주세요"
+          placeholder="서비스에서 사용할 닉네임을 입력해주세요 (5자 이하)"
           value={nickname}
           onChange={(e) => {
             setNickName(e.target.value);

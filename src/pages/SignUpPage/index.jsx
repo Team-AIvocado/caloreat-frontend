@@ -114,6 +114,9 @@ export const SignUpPage = () => {
     if (!nickname.trim()) {
       setError({ ...error, name: "닉네임을 입력해주세요" });
       return;
+    } else if (nickname.length > 5) {
+      setError({ ...error, name: "닉네임은 5자 이하로 입력해주세요" });
+      return;
     }
 
     if (!password.trim()) {
