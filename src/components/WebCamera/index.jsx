@@ -1,6 +1,8 @@
 import React from "react";
 import Webcam from "react-webcam";
 import camera from "../../assets/camera.png";
+import { useAlert } from "../../context/AlertContext";
+import { alertBtn } from "../../utils/styles";
 
 const videoConstraints = {
   width: 500,
@@ -10,11 +12,21 @@ const videoConstraints = {
 
 export const WebCamera = ({ setImgSrc, setCameraMode }) => {
   const webcamRef = React.useRef(null);
+  const { showAlert, closeAlert } = useAlert();
+
   const capture = () => {
     if (webcamRef.current) {
       const imageSrc = webcamRef.current.getScreenshot();
       setImgSrc(imageSrc);
-      alert("사진 촬영 완료!");
+      showAlert({
+        msg: "사진 촬영 완료!!",
+        hasNavbar: true,
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
       setCameraMode(false);
     }
   };

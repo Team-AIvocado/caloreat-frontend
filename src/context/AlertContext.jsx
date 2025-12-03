@@ -6,8 +6,8 @@ const AlertContext = createContext(null);
 export function AlertProvider({ children }) {
   const [alert, setAlert] = useState(null);
 
-  const showAlert = ({ msg, footer }) => {
-    setAlert({ msg, footer });
+  const showAlert = ({ msg, footer, hasNavbar }) => {
+    setAlert({ msg, footer, hasNavbar });
   };
 
   const closeAlert = () => {
@@ -21,7 +21,12 @@ export function AlertProvider({ children }) {
     <AlertContext.Provider value={{ showAlert, closeAlert }}>
       {children}
       {alert && (
-        <AlertModal open={alert} msg={alert.msg} footer={alert.footer} />
+        <AlertModal
+          open={alert}
+          msg={alert.msg}
+          footer={alert.footer}
+          hasNavbar={alert.hasNavbar}
+        />
       )}
     </AlertContext.Provider>
   );

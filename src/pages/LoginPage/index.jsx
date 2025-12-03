@@ -8,7 +8,7 @@ import { alertBtn } from "../../utils/styles";
 
 export const LoginPage = () => {
   const { login, logout, user, userInfo } = useAuth();
-  const { showAlert, closeAlert } = useAlert();
+  const { showAlert, closeAlert, loading } = useAlert();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
@@ -69,23 +69,28 @@ export const LoginPage = () => {
         <div className="text-main_color text-3xl ml-11">
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
-        {user ? (
-          <LoginComp
-            logout={logout}
-            nickname={user.nickname}
-            userInfo={userInfo}
-          />
-        ) : (
-          <OnLogin
-            error={error}
-            userId={userId}
-            setUserId={setUserId}
-            setError={setError}
-            password={password}
-            setPassword={setPassword}
-            onMain={onMain}
-            onSignup={onSignup}
-          />
+
+        {loading || (
+          <>
+            {user ? (
+              <LoginComp
+                logout={logout}
+                nickname={user.nickname}
+                userInfo={userInfo}
+              />
+            ) : (
+              <OnLogin
+                error={error}
+                userId={userId}
+                setUserId={setUserId}
+                setError={setError}
+                password={password}
+                setPassword={setPassword}
+                onMain={onMain}
+                onSignup={onSignup}
+              />
+            )}
+          </>
         )}
       </div>
     </>
