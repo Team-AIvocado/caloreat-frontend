@@ -1,6 +1,6 @@
-export const LoginComp = ({ logout, nickname }) => {
+export const LoginComp = ({ logout, nickname, userInfo }) => {
   return (
-    <div className="flex items-center">
+    <div className="flex flex-col items-center">
       <div className="border flex flex-row border-sub_color px-10 py-5 rounded-lg  bg-white/60 ml-8">
         <div className="text-primary_text text-bold text-sm whitespace-pre-line">
           <span className="font-bold text-main_color text-lg">
@@ -26,6 +26,7 @@ export const LoginComp = ({ logout, nickname }) => {
           로그아웃
         </button>
       </div>
+      {userInfo ? <button>홈으로</button> : <button>서비스 시작하기!</button>}
     </div>
   );
 };

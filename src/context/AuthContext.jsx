@@ -14,6 +14,7 @@ const AuthContext = createContext(null);
  */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userInfo, serUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   /**
@@ -34,6 +35,7 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
+    checkPreInfo();
   }, []);
 
   /**
@@ -46,7 +48,15 @@ export const AuthProvider = ({ children }) => {
   const login = async (account, password) => {
     const data = await loginService(account, password);
     setUser(data);
-    return data;
+    let checkUserInfo = "";
+    try {
+      checkUserInfo = await getUserInfo();
+      serUserInfo(checkUserInfo);
+    } catch {
+      console.log("failed to get user info");
+      serUserInfo(null);
+    }
+    return { userData: data, userInfoData: checkUserInfo };
   };
 
   /**
@@ -65,16 +75,25 @@ export const AuthProvider = ({ children }) => {
   const checkPreInfo = async () => {
     try {
       const checkUserInfo = await getUserInfo();
-      return checkUserInfo ? checkUserInfo.user_id : null;
+      serUserInfo(checkUserInfo);
     } catch {
-      console.log("failed to get user info");
-      return null;
+      console.log("failed to get user info on initial load");
+      serUserInfo(null);
     }
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, login, logout, loading, checkAuth, setUser, checkPreInfo }}
+      value={{
+        user,
+        login,
+        logout,
+        loading,
+        checkAuth,
+        setUser,
+        checkPreInfo,
+        userInfo,
+      }}
     >
       {children}
     </AuthContext.Provider>

@@ -7,7 +7,7 @@ import { useAlert } from "../../context/AlertContext";
 import { alertBtn } from "../../utils/styles";
 
 export const LoginPage = () => {
-  const { login, logout, user, checkPreInfo } = useAuth();
+  const { login, logout, user, userInfo } = useAuth();
   const { showAlert, closeAlert } = useAlert();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
@@ -33,9 +33,8 @@ export const LoginPage = () => {
     try {
       const response = await login(userId, password);
       console.log("login success", response);
-      const userInfoId = checkPreInfo();
 
-      if (userInfoId) {
+      if (response.userInfoData) {
         navigate("/main/dashboard");
       } else {
         navigate("/userinfo");
@@ -71,7 +70,11 @@ export const LoginPage = () => {
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
         {user ? (
-          <LoginComp logout={logout} nickname={user.nickname} />
+          <LoginComp
+            logout={logout}
+            nickname={user.nickname}
+            userInfo={userInfo}
+          />
         ) : (
           <OnLogin
             error={error}
