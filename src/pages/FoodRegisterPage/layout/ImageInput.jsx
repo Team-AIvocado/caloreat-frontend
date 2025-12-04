@@ -25,9 +25,9 @@ export const ImageInput = ({
     });
   };
 
-  const addImage = (e) => {
+  const addImage = async (e) => {
     if (e.target.files[0]) {
-      encodeFileToBase64(e.target.files[0]);
+      await encodeFileToBase64(e.target.files[0]);
     }
     closeAlert();
   };
@@ -93,6 +93,7 @@ export const ImageInput = ({
             <img
               className="w-[500px] h-[500px] object-cover object-center"
               src={imgSrc}
+              alt="Selected food"
             />
           ) : (
             <>
