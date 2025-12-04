@@ -26,9 +26,9 @@ export const ImageInput = ({
     });
   };
 
-  const addImage = (e) => {
+  const addImage = async (e) => {
     if (e.target.files[0]) {
-      encodeFileToBase64(e.target.files[0]);
+      await encodeFileToBase64(e.target.files[0]);
     }
     closeAlert();
   };

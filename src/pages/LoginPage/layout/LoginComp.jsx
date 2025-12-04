@@ -23,7 +23,7 @@ export const LoginComp = ({ logout, nickname, userInfo }) => {
             try {
               await logout();
             } catch (e) {
-              console.log("failed to logout", e);
+              console.error("failed to logout", e);
             }
           }}
         >
