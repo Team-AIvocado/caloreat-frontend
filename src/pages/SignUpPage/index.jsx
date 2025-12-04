@@ -1,5 +1,9 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { SignUpInput } from "./layout/SignUpInput";
+import { checkemail, checkid, signUp } from "../../services/users";
+import { alertBtn } from "../../utils/styles";
+import { useAlert } from "../../context/AlertContext";
 
 export const SignUpPage = () => {
   const [userEmail, setUserEmail] = useState("");
@@ -8,6 +12,7 @@ export const SignUpPage = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [dbCheck, setdbCheck] = useState({ email: false, id: false });
+  const { showAlert, closeAlert } = useAlert();
 
   const [error, setError] = useState({
     email: false,
@@ -16,18 +21,6 @@ export const SignUpPage = () => {
     password: false,
     confirmPassword: false,
   });
-
-  //입력칸에 대한 스타일 (error 스타일 적용)
-  const sty = [
-    "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
-    "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3",
-  ];
-
-  //중복확인 버튼
-  const sty2 = [
-    "bg-main_color text-white rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs cursor-pointer",
-    "bg-main_border text-gray-400 rounded-lg ml-3 h-7 mt-6 px-3 py-2 text-xs",
-  ];
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/;
@@ -38,9 +31,12 @@ export const SignUpPage = () => {
     navigate("/");
   };
 
-  //TODO:사용자가 입력한 email 중복 확인
-  //TODO:db연결 후 에러 작업 설정
-  const onEmailCheck = () => {
+  const handleConfirmAndNavigate = () => {
+    closeAlert();
+    navigate("/");
+  };
+
+  const onEmailCheck = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
       return;
@@ -48,23 +44,53 @@ export const SignUpPage = () => {
       setError({ ...error, email: "정확한 이메일을 입력해주세요" });
       return;
     }
-    setdbCheck({ ...dbCheck, email: true });
+
     setError({ ...error, email: false });
+
+    try {
+      const resp_email = await checkemail(userEmail.trim());
+      console.log("available email", resp_email);
+      setdbCheck({ ...dbCheck, email: true });
+    } catch (e) {
+      console.log("unavailable email", e);
+      showAlert({
+        msg: "이미 존재하는 이메일입니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
+      return;
+    }
   };
 
-  const onIdCheck = () => {
-    //TODO:사용자가 입력한 id가 중복 확인
+  const onIdCheck = async () => {
     if (!userId.trim()) {
       setError({ ...error, id: "아이디를 입력해주세요" });
       return;
     }
-    setdbCheck({ ...dbCheck, id: true });
     setError({ ...error, id: false });
+
+    try {
+      const resp_id = await checkid(userId.trim());
+      console.log("available id", resp_id);
+      setdbCheck({ ...dbCheck, id: true });
+    } catch (e) {
+      console.log("unavailable id", e);
+      showAlert({
+        msg: "이미 존재하는 아이디입니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
+      return;
+    }
   };
 
-  //TODO: 로그인한 사용자 정보 테이블에 사용자 아이디가 없다면 사전정보 입력 페이지로 이동
-  // 사전 정보가 있다면 main으로 이동
-  const SignUp = () => {
+  const handleSignUp = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
       return;
@@ -87,6 +113,9 @@ export const SignUpPage = () => {
 
     if (!nickname.trim()) {
       setError({ ...error, name: "닉네임을 입력해주세요" });
+      return;
+    } else if (nickname.length > 5) {
+      setError({ ...error, name: "닉네임은 5자 이하로 입력해주세요" });
       return;
     }
 
@@ -115,118 +144,59 @@ export const SignUpPage = () => {
       return;
     }
 
-    //TODO:회원가입 완료 모달창 필요
-    navigate("/");
+    try {
+      const response = await signUp(
+        userEmail.trim(),
+        userId.trim(),
+        nickname.trim(),
+        password.trim()
+      );
+      console.log("success sign up", response.data);
+      showAlert({
+        msg: "회원가입 완료!",
+        footer: (
+          <button className={alertBtn} onClick={handleConfirmAndNavigate}>
+            확인
+          </button>
+        ),
+      });
+
+      return response.data;
+    } catch (e) {
+      console.log("failed to signup", e.response.data.detail);
+      return;
+    }
   };
 
   return (
     <>
       <div className="flex h-screen flex-col justify-center items-center">
         <div className="text-main_color text-3xl">
-          <div className="pb-10 font-bold">caloreat</div>
-        </div>
-        <div className="flex flex-row">
-          <div className="flex flex-col">
-            <div className="flex flex-row">
-              <div>
-                <input
-                  className={error.email ? sty[1] : sty[0]}
-                  type="text"
-                  placeholder="이메일을 입력하세요"
-                  value={userEmail}
-                  onChange={(e) => {
-                    setUserEmail(e.target.value);
-                    setError({ ...error, email: false });
-                    setdbCheck({ ...dbCheck, email: false });
-                  }}
-                />
-                {error.email && (
-                  <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
-                    {error.email}
-                  </div>
-                )}
-              </div>
-              <button
-                className={dbCheck.email ? sty2[1] : sty2[0]}
-                onClick={onEmailCheck}
-              >
-                중복확인
-              </button>
-            </div>
-            <div className="flex flex-row">
-              <div>
-                <input
-                  className={error.id ? sty[1] : sty[0]}
-                  type="text"
-                  placeholder="아이디를 입력하세요"
-                  value={userId}
-                  onChange={(e) => {
-                    setUserId(e.target.value);
-                    setError({ ...error, id: false });
-                    setdbCheck({ ...dbCheck, id: false });
-                  }}
-                />
-                {error.id && (
-                  <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
-                    {error.id}
-                  </div>
-                )}
-              </div>
-              <button
-                className={dbCheck.id ? sty2[1] : sty2[0]}
-                onClick={onIdCheck}
-              >
-                중복확인
-              </button>
-            </div>
-            <input
-              className={error.name ? sty[1] : sty[0]}
-              type="text"
-              placeholder="서비스에서 사용할 닉네임을 입력해주세요"
-              value={nickname}
-              onChange={(e) => {
-                setNickName(e.target.value);
-                setError({ ...error, name: false });
-              }}
-            />
-            {error.name && (
-              <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
-                {error.name}
-              </div>
-            )}
-            <input
-              className={error.password ? sty[1] : sty[0]}
-              type="password"
-              placeholder="비밀번호를 입력하세요 (영문 숫자 섞어서 5자 이상)"
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setError({ ...error, password: false });
-              }}
-            />
-            {error.password && (
-              <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
-                {error.password}
-              </div>
-            )}
-            <input
-              className={error.confirmPassword ? sty[1] : sty[0]}
-              type="password"
-              placeholder="비밀번호를 다시 한 번 입력하세요"
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                setError({ ...error, confirmPassword: false });
-              }}
-            />
-            {error.confirmPassword && (
-              <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
-                {error.confirmPassword}
-              </div>
-            )}
+          <div className="pb-10 font-bold">
+            <span className="cursor-pointer" onClick={() => navigate("/")}>
+              caloreat
+            </span>
           </div>
-          <div className="flex flex-col"></div>
         </div>
+        <SignUpInput
+          error={error}
+          userEmail={userEmail}
+          setUserEmail={setUserEmail}
+          setError={setError}
+          setdbCheck={setdbCheck}
+          dbCheck={dbCheck}
+          onEmailCheck={onEmailCheck}
+          userId={userId}
+          setUserId={setUserId}
+          onIdCheck={onIdCheck}
+          nickname={nickname}
+          setNickName={setNickName}
+          password={password}
+          setPassword={setPassword}
+          confirmPassword={confirmPassword}
+          setConfirmPassword={setConfirmPassword}
+        />
+
         <div className="flex flex-row ml-24">
           <div className="text-xs mt-2 ml-20 ">
             <span>이미 회원이라면?</span>{" "}
@@ -239,7 +209,7 @@ export const SignUpPage = () => {
           </div>
           <button
             className="bg-main_color text-white rounded-lg ml-7 px-8 py-2 text-sm cursor-pointer"
-            onClick={SignUp}
+            onClick={handleSignUp}
           >
             완료
           </button>

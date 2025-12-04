@@ -1,0 +1,23 @@
+나중에 참고할 코드
+
+const [step, setStep] = useState(0);
+const [direction, setDirection] = useState(1); // 1 = next, -1 = prev
+
+const next = () => {
+  setDirection(1);
+  setStep((prev) => prev + 1);
+};
+
+const prev = () => {
+  setDirection(-1);
+  setStep((prev) => prev - 1);
+};
+
+<motion.div
+  key={step}
+  initial={{ x: 100 * direction, opacity: 0 }}
+  animate={{ x: 0, opacity: 1 }}
+  transition={{ duration: 0.25 }}
+>
+  {CurrentStepComponent}
+</motion.div>

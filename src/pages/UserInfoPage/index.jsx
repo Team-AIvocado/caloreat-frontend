@@ -2,108 +2,79 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
-import { DiseaseSelector } from "./layout/DiseaseSelector";
-import { AllergySelector } from "./layout/AllergySelector";
+import { ConditionSelector } from "./layout/ConditionSelector";
+import { createUserInfo } from "../../services/users";
 
 export const UserInfoPage = () => {
-  //성별 스타일
-  const sty = [
-    "bg-white text-secondary_text text-xs px-10 py-2 rounded-lg mr-3 mb-3 border border-border_color",
-    "bg-white text-secondary_text text-xs px-10 py-2 rounded-lg mr-3 mb-3 border border-main_color",
-  ];
-
-  const sty1 = [
-    "bg-white text-secondary_text text-xs px-4 py-1 rounded-lg mr-2 border border-border_color",
-    "bg-white text-secondary_text text-xs px-4 py-1 rounded-lg mr-2 border border-main_color",
-  ];
-
   const numberRegex = /^\d+(\.\d+)?$/;
 
   const initialCondition = {
-    disease: {
-      diabetes: false,
-      high_blood_pressure: false,
-      low_blood_pressure: false,
-      hyperlipidemia: false,
-    },
-    allergy: {
-      milk: false,
-      eggs: false,
-      peanuts: false,
-      tree_nuts: false, //견과류 (아몬드, 호두, 피칸,..)
-      soy: false, //콩
-      wheat: false,
-      fish: false,
-      shellfish: false,
-      sesame: false, //참깨
-    },
+    diabetes: false,
+    high_blood_pressure: false,
+    low_blood_pressure: false,
+    hyperlipidemia: false,
   };
 
   const navigate = useNavigate();
 
-  //man : 0 woman : 1
   const [userProfile, setUserProfile] = useState({
-    height: null,
-    weight: null,
-    age: null,
-    gender: null,
+    height: "",
+    weight: "",
+    birthdate: "",
+    gender: "",
   });
 
   const [error, setError] = useState({
     height: "",
     weight: "",
     gender: "",
-    age: "",
+    birthdate: "",
   });
 
-  //mode : 0: loss 1 : maintain 2 : gain
-  const [modeSelect, setModeSelect] = useState(null);
+  const [modeSelect, setModeSelect] = useState("");
   const [condition, setCondition] = useState(initialCondition);
 
   const handleToggle = (btn, value) => {
     if (btn == value) {
-      return null;
+      return "";
     } else {
       return value;
     }
   };
 
-  const updateDisease = (key, value) => {
+  const updateCondition = (key, value) => {
     setCondition((prev) => ({
       ...prev,
-      disease: {
-        ...prev.disease,
-        [key]: value,
-      },
-    }));
-  };
-
-  const updateAllergy = (key, value) => {
-    setCondition((prev) => ({
-      ...prev,
-      allergy: {
-        ...prev.allergy,
-        [key]: value,
-      },
+      [key]: value,
     }));
   };
 
   const onMain = () => {
-    if (userProfile.gender == null) {
+    if (userProfile.gender == "") {
       setError({ ...error, gender: "성별을 선택해주세요" });
       return;
     } else {
       setError({ ...error, gender: "" });
     }
 
-    if (!userProfile.age) {
-      setError({ ...error, age: "나이를 입력해주세요" });
+    const now = new Date();
+    const inputDate = userProfile.birthdate.split("-");
+
+    if (!userProfile.birthdate) {
+      setError({ ...error, birthdate: "생년월일을 입력해주세요" });
       return;
-    } else if (!numberRegex.test(userProfile.age.trim())) {
-      setError({ ...error, age: "숫자만 입력가능합니다." });
+    } else if (
+      inputDate[0] > now.getFullYear() ||
+      (inputDate[0] == now.getFullYear() &&
+        inputDate[1] > now.getMonth() + 1) ||
+      (inputDate[0] == now.getFullYear() &&
+        inputDate[1] == now.getMonth() + 1 &&
+        inputDate[2] > now.getDate())
+    ) {
+      setError({ ...error, birthdate: "생년월일을 올바르게 입력해주세요" });
       return;
     } else {
-      setError({ ...error, age: "" });
+      setError({ ...error, birthdate: "" });
     }
 
     if (!userProfile.height) {
@@ -126,10 +97,16 @@ export const UserInfoPage = () => {
       setError({ ...error, weight: "" });
     }
 
-    //TODO:user profile 정보 db에 저장
-    //TODO:건강 선택 사항 있다면 db에 저장
+    const trueConditions = Object.keys(initialCondition).filter(
+      (cond) => initialCondition[cond] === true
+    );
 
-    navigate("/main");
+    try {
+      createUserInfo(userProfile, modeSelect, trueConditions);
+    } catch {
+      console.log("failed to create user info");
+    }
+    navigate("/main/dashboard");
   };
 
   return (
@@ -147,7 +124,6 @@ export const UserInfoPage = () => {
         <div className="flex flex-col justify-center items-center">
           <BodyProfile
             userProfile={userProfile}
-            sty={sty}
             setUserProfile={setUserProfile}
             setError={setError}
             error={error}
@@ -159,7 +135,7 @@ export const UserInfoPage = () => {
               <span
                 className="underline text-xs cursor-pointer pl-4 text-gray-500"
                 onClick={() => {
-                  setModeSelect(null);
+                  setModeSelect("");
                   setCondition(initialCondition);
                 }}
               >
@@ -169,28 +145,19 @@ export const UserInfoPage = () => {
             <div>
               <GoalSelector
                 modeSelect={modeSelect}
-                sty1={sty1}
                 setModeSelect={setModeSelect}
                 handleToggle={handleToggle}
               />
 
-              <DiseaseSelector
+              <ConditionSelector
                 condition={condition}
-                sty1={sty1}
-                updateDisease={updateDisease}
-                handleToggle={handleToggle}
-              />
-
-              <AllergySelector
-                condition={condition}
-                sty1={sty1}
-                updateAllergy={updateAllergy}
+                updateCondition={updateCondition}
                 handleToggle={handleToggle}
               />
             </div>
           </div>
           <button
-            className="bg-main_color text-white rounded-lg ml-7 px-8 py-2 mt-3 text-sm cursor-pointer"
+            className="bg-main_color text-white rounded-lg px-8 py-2 mt-3 text-sm cursor-pointer"
             onClick={onMain}
           >
             시작하기
