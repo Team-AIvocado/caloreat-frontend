@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { WebCamera } from "../../components/WebCamera";
 import { useAlert } from "../../context/AlertContext";
 import { alertBtn, backBtn } from "../../utils/styles";
@@ -8,7 +8,33 @@ export const FoodRegisterPage = () => {
   const [cameraMode, setCameraMode] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
 
-  const onImage = () => {};
+  const fileRef = useRef();
+
+  //image file preview 가능하도록 encoding
+  const encodeFileToBase64 = (fileBlob) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(fileBlob);
+
+    return new Promise((resolve) => {
+      reader.onload = () => {
+        setImgSrc(reader.result);
+        resolve();
+      };
+    });
+  };
+
+  const addImage = (e) => {
+    if (e.target.files[0]) {
+      encodeFileToBase64(e.target.files[0]);
+    }
+    closeAlert();
+  };
+
+  //input file image upload btn 대신 누르기
+  const onImage = (e) => {
+    e.preventDefault();
+    fileRef.current.click();
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -25,6 +51,13 @@ export const FoodRegisterPage = () => {
               footer: (
                 <div className="flex flex-col space-y-4">
                   <div className="flex justify-center space-x-4">
+                    <input
+                      className="hidden"
+                      ref={fileRef}
+                      type="file"
+                      accept="image/*"
+                      onChange={addImage}
+                    />
                     <button className={alertBtn} onClick={onImage}>
                       파일에서 선택
                     </button>

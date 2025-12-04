@@ -10,6 +10,12 @@ export const OnLogin = ({
   onMain,
   onSignup,
 }) => {
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      onMain();
+    }
+  };
+
   return (
     <>
       <div className="flex flex-row ml-6">
@@ -33,6 +39,7 @@ export const OnLogin = ({
               setPassword(e.target.value);
               setError({ ...error, pw: false });
             }}
+            onKeyDown={handleKeyPress}
           />
         </div>
         <div>

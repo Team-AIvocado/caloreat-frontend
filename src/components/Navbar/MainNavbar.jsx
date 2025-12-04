@@ -20,6 +20,7 @@ export const MainNavBar = ({ nickname }) => {
       await logout();
       showAlert({
         msg: "로그아웃 완료!",
+        hasNavbar: true,
         footer: (
           <button className={alertBtn} onClick={handleConfirmAndNavigate}>
             확인

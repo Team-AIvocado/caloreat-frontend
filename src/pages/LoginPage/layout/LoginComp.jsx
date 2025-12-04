@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+import { alertBtn } from "../../../utils/styles";
+
 export const LoginComp = ({ logout, nickname, userInfo }) => {
+  const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center">
       <div className="border flex flex-row border-sub_color px-10 py-5 rounded-lg  bg-white/60 ml-8">
@@ -26,7 +30,21 @@ export const LoginComp = ({ logout, nickname, userInfo }) => {
           로그아웃
         </button>
       </div>
-      {userInfo ? <button>홈으로</button> : <button>서비스 시작하기!</button>}
+      {userInfo ? (
+        <button
+          className={`${alertBtn} mt-4 cursor-pointer`}
+          onClick={() => navigate("/main/dashboard")}
+        >
+          홈으로
+        </button>
+      ) : (
+        <button
+          className={`${alertBtn} mt-4 cursor-pointer`}
+          onClick={() => navigate("/userinfo")}
+        >
+          서비스 시작하기!
+        </button>
+      )}
     </div>
   );
 };
