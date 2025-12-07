@@ -14,7 +14,7 @@ const AuthContext = createContext(null);
  */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userInfo, serUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   /**
@@ -25,6 +25,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await getUser();
       setUser(userData);
+      if (userData) {
+        await checkPreInfo();
+      }
     } catch (error) {
       console.error("인증 확인 실패:", error);
       setUser(null);
@@ -35,7 +38,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-    checkPreInfo();
   }, []);
 
   /**
@@ -51,10 +53,10 @@ export const AuthProvider = ({ children }) => {
     let checkUserInfo = "";
     try {
       checkUserInfo = await getUserInfo();
-      serUserInfo(checkUserInfo);
+      setUserInfo(checkUserInfo);
     } catch {
       console.log("failed to get user info");
-      serUserInfo(null);
+      setUserInfo(null);
     }
     return { userData: data, userInfoData: checkUserInfo };
   };
@@ -75,10 +77,10 @@ export const AuthProvider = ({ children }) => {
   const checkPreInfo = async () => {
     try {
       const checkUserInfo = await getUserInfo();
-      serUserInfo(checkUserInfo);
+      setUserInfo(checkUserInfo);
     } catch {
       console.log("failed to get user info on initial load");
-      serUserInfo(null);
+      setUserInfo(null);
     }
   };
 
