@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { alertBtn, backBtn } from "../../../utils/styles";
 import { WebCamera } from "../../../components/WebCamera/index";
+import { foodDetect } from "../../../services/meal";
 
 export const ImageInput = ({
   showAlert,
@@ -10,6 +11,7 @@ export const ImageInput = ({
   cameraMode,
   imgSrc,
   setAnalysisMode,
+  setFoodInfe,
 }) => {
   const fileRef = useRef();
 
@@ -37,6 +39,18 @@ export const ImageInput = ({
   const onImage = (e) => {
     e.preventDefault();
     fileRef.current.click();
+  };
+
+  const onAnalysis = async () => {
+    try {
+      const res = await foodDetect();
+      if (res) {
+        setFoodInfe(res);
+        setAnalysisMode(true);
+      }
+    } catch {
+      setAnalysisMode(false);
+    }
   };
 
   return (
@@ -105,7 +119,7 @@ export const ImageInput = ({
         <div className="flex justify-center">
           <button
             className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer "
-            onClick={() => setAnalysisMode(true)}
+            onClick={onAnalysis}
           >
             사진 분석하기
           </button>

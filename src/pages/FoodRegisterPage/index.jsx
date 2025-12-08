@@ -8,6 +8,7 @@ export const FoodRegisterPage = () => {
   const [cameraMode, setCameraMode] = useState(false);
   const [imgSrc, setImgSrc] = useState("");
   const [analysisMode, setAnalysisMode] = useState(false);
+  const [foodInfe, setFoodInfe] = useState("");
 
   return (
     <div className="flex flex-col justify-center items-center">
@@ -16,7 +17,11 @@ export const FoodRegisterPage = () => {
       </div>
       <div className="flex flex-col justify-center">
         {analysisMode ? (
-          <ImageAnalysis imgSrc={imgSrc} setAnalysisMode={setAnalysisMode} />
+          <ImageAnalysis
+            imgSrc={imgSrc}
+            setAnalysisMode={setAnalysisMode}
+            foodInfe={foodInfe}
+          />
         ) : (
           <ImageInput
             showAlert={showAlert}
@@ -26,6 +31,7 @@ export const FoodRegisterPage = () => {
             cameraMode={cameraMode}
             imgSrc={imgSrc}
             setAnalysisMode={setAnalysisMode}
+            setFoodInfe={setFoodInfe}
           />
         )}
       </div>
