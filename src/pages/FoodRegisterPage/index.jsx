@@ -16,7 +16,7 @@ export const FoodRegisterPage = () => {
       </div>
       <div className="flex flex-col justify-center">
         {analysisMode ? (
-          <ImageAnalysis />
+          <ImageAnalysis imgSrc={imgSrc} setAnalysisMode={setAnalysisMode} />
         ) : (
           <ImageInput
             showAlert={showAlert}
