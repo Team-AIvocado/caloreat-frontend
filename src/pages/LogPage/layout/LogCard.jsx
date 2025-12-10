@@ -1,92 +1,93 @@
 import { Link } from "react-router-dom";
 
-export default function LogCard({ food, mealId }) {
-  const { name, kcal, amount, image_url, confidence, created_at } = food;
+export default function LogCard({ food, mealId, index }) {
+  const { name, kcal, amount, image_url, created_at } = food;
 
-  const formatTime = (isoString) => {
-    if (!isoString) return "";
-    const date = new Date(isoString);
-    return `${String(date.getHours()).padStart(2, "0")}:${String(
-      date.getMinutes()
-    ).padStart(2, "0")}`;
+  const formatTime = (t) => {
+    if (!t) return "";
+    const d = new Date(t);
+    return `${d.getHours().toString().padStart(2, "0")}:${d
+      .getMinutes()
+      .toString()
+      .padStart(2, "0")}`;
   };
+
   return (
     <Link
-      to={`/main/log/${mealId}`}
+      to={`/main/log/${mealId}/${index}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div
         style={{
+          width: "500px",
+          padding: "16px",
+          borderRadius: "14px",
+          background: "var(--color-sub_background)",
+          border: "1px solid var(--color-border_color)",
+          boxShadow: "0 3px 8px rgba(0,0,0,0.06)",
           display: "flex",
-          flexDirection: "column",
           alignItems: "center",
+          gap: "16px",
+          cursor: "pointer",
         }}
       >
+        {/* 이미지 영역 */}
+        <div
+          style={{
+            width: "95px",
+            height: "95px",
+            borderRadius: "10px",
+            overflow: "hidden",
+            flexShrink: 0,
+          }}
+        >
+          <img
+            src={image_url}
+            alt={name}
+            style={{
+              width: "100%",
+              height: "100%",
+              objectFit: "cover",
+            }}
+          />
+        </div>
+
+        {/* 정보 영역 */}
         <div
           style={{
             display: "flex",
-            gap: "12px",
-            padding: "12px",
-            background: "#FFFFFF",
-            width: "70%",
-            border: "1px solid #e0e0e0",
-            padding: "12px",
-            borderRadius: "10px",
-            marginBottom: "12px",
-            alignItems: "center",
+            flexDirection: "column",
+            gap: "6px",
+            flex: 1,
           }}
         >
-          <div
+          <span
             style={{
-              width: "70px",
-              height: "70px",
-              borderRadius: "8px",
-              overflow: "hidden",
-              background: "#f3f3f3",
+              fontWeight: 600,
+              fontSize: "17px",
+              color: "var(--color-primary_text)",
             }}
           >
-            <img
-              src={image_url || "/placeholder-food.png"}
-              alt={name}
-              style={{
-                width: "100%",
-                height: "100%",
-                objectFit: "cover",
-              }}
-            />
-          </div>
-          <div style={{ flex: 1 }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                marginBottom: "4px",
-              }}
-            >
-              <strong style={{ fontSize: "16px" }}>{name}</strong>
+            {name}
+          </span>
 
-              {/* #TODO: 정확도 필요할 시 추가  */}
-              {/* {confidence !== undefined && (
-            <span style={{ fontSize: "13px", color: "#888" }}>
-              {Math.round(confidence * 100)}%
-            </span>
-          )} */}
-            </div>
-            <div style={{ fontSize: "14px", color: "#555" }}>
-              {kcal} kcal · {amount || "-"} 인분
-            </div>
-            {created_at && (
-              <div
-                style={{
-                  fontSize: "12px",
-                  color: "#999",
-                  marginTop: "4px",
-                }}
-              >
-                섭취 시간 | {formatTime(created_at)}
-              </div>
-            )}
-          </div>
+          <span
+            style={{
+              color: "var(--color-secondary_text)",
+              fontSize: "14px",
+            }}
+          >
+            {kcal} kcal · {amount} 인분
+          </span>
+
+          <span
+            style={{
+              color: "var(--color-secondary_text)",
+              fontSize: "12px",
+            }}
+          >
+            섭취 시간 | {formatTime(created_at)}
+          </span>
         </div>
       </div>
     </Link>

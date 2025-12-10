@@ -3,13 +3,36 @@
 @import "tailwindcss";
 
 @theme {
+  /* 메인 배경 */
   --color-main_background: #f4f6fa;
+  /* 메인 브랜드 컬러, CTA */
   --color-main_color: #3a7dff;
-  --color-sub_color: #bec9ff;
+  --color-sub_color: #d9e9ff;
+  /* border_color (Divider/Border) */
   --color-border_color: #dcdcdc;
+  /* text_secondary (Text Secondary) */
   --color-secondary_text: #6c6c6c;
+  /* 헤더, 타이틀, 그래프 핵심선 */
   --color-primary_text: #1d2e50;
   --color-sub_background: #e9f1fc;
+  /* 성공 상태 표시(달성/양호) 좋아요 */
+  --color-complete_color: #a6f2e8;
+  /* 경고, 영양 불균형 영역 표시 (부드러운 경고) */
+  --color-warning_color: #ffe7d3;
+  /* 유도형 알림(오늘 물 섭취량 부족) */
+  --color-alert_color: #ffb085;
+  /* 심각 경고: 즉시 알림 필요 (혈당 위험 수준의 음식) */
+  --color-error_color: #ff4d4d;
+  /* 영양소 부족한 부분의 배경색 */
+  --color-lack_color: #fff4d0;
+  /* 탄수화물 */
+  --color-icon_color1: #bec9ff;
+  /* 단백질 */
+  --color-icon_color2: #cfe7ff;
+  /* 지방 */
+  --color-icon_color3: #ffe2c1;
+  /* 영양소 */
+  --color-icon_color4: #d9e3f3;
 }
 
 body {

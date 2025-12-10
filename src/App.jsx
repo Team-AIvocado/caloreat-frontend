@@ -64,7 +64,10 @@ const router = createBrowserRouter([
                 children: [
                   { path: "dashboard", element: <DashBoardPage /> },
                   { path: "log", element: <LogPage /> },
-                  { path: "log/:mealId", element: <LogDetailPage /> },
+                  {
+                    path: "log/:mealId/:foodIndex",
+                    element: <LogDetailPage />,
+                  },
                   { path: "statistics", element: <StatisticsPage /> },
                   { path: "setting", element: <SettingPage /> },
                   { path: "foodreg", element: <FoodRegisterPage /> },
