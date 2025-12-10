@@ -1,17 +1,30 @@
 import { useState } from "react";
 import { useAlert } from "../../../context/AlertContext";
 import { ModifyInput } from "./modifyInput";
-import { useNavigate } from "react-router-dom";
+import { fetchFood } from "../../../services/meal";
 
-export const ImageAnalysis = ({ imgSrc, setAnalysisMode, foodInfe }) => {
+export const ImageAnalysis = ({
+  imgSrc,
+  setAnalysisMode,
+  foodInfe,
+  setResultMode,
+  setFoodDetail,
+}) => {
   const [foodText, setFoodText] = useState(foodInfe.food_name);
   const [foodCandi, setFoodCandi] = useState(foodInfe.candidates);
   const [selected, setSelected] = useState(0);
   const { showAlert, closeAlert } = useAlert();
-  const navigate = useNavigate();
 
-  const onResult = () => {
-    navigate("/main/result");
+  const onResult = async () => {
+    try {
+      const res = await fetchFood(foodText);
+      if (res) {
+        setResultMode(true);
+        setFoodDetail(res);
+      }
+    } catch {
+      console.log("failed to fetch food res");
+    }
   };
 
   const handleCandidateSelect = (index) => {
@@ -43,6 +56,7 @@ export const ImageAnalysis = ({ imgSrc, setAnalysisMode, foodInfe }) => {
   //selected 되지 않은 후보군(2개) 버튼생성을 위한 배열
   const candidateButtons = foodCandi.filter((_, index) => index !== selected);
 
+  //TODO: 음식 추가 버튼 및 기능
   return (
     <>
       <div className="text-left underline pl-4 pb-2">음식 인식 완료!</div>
@@ -52,6 +66,7 @@ export const ImageAnalysis = ({ imgSrc, setAnalysisMode, foodInfe }) => {
           <img
             className="w-2/4 aspect-square rounded-lg border-2 border-border_color object-cover object-center"
             src={imgSrc}
+            draggable="false"
           />
           <div className="flex flex-col w-full pt-8 pl-4">
             <div className="h-1/4 text-2xl text-primary_text pl-6">

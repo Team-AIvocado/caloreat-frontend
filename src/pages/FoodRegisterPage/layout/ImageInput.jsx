@@ -43,13 +43,14 @@ export const ImageInput = ({
 
   const onAnalysis = async () => {
     try {
-      const res = await foodDetect();
+      const res = await foodDetect(imgSrc);
       if (res) {
         setFoodInfe(res);
         setAnalysisMode(true);
       }
     } catch {
       setAnalysisMode(false);
+      console.log("failed to fetch food res");
     }
   };
 
@@ -101,6 +102,7 @@ export const ImageInput = ({
         {imgSrc ? (
           <img
             className="w-[500px] h-[500px] object-cover object-center"
+            draggable="false"
             src={imgSrc}
           />
         ) : (

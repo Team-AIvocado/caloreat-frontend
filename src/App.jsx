@@ -12,7 +12,6 @@ import { LogPage } from "./pages/LogPage";
 import { DashBoardPage } from "./pages/DashBoardPage";
 import { FoodRegisterPage } from "./pages/FoodRegisterPage";
 import { AlertProvider } from "./context/AlertContext";
-import { FoodResultPage } from "./pages/FoodResultPage";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**
@@ -67,7 +66,6 @@ const router = createBrowserRouter([
                   { path: "statistics", element: <StatisticsPage /> },
                   { path: "setting", element: <SettingPage /> },
                   { path: "foodreg", element: <FoodRegisterPage /> },
-                  { path: "result", element: <FoodResultPage /> },
                 ],
               },
             ],

@@ -1,14 +1,32 @@
 import { useNavigate } from "react-router-dom";
 import RingProgressBar from "../../components/ProgressBar/RingProgressBar";
+import { useEffect, useState } from "react";
+import { getTotalKcal } from "../../services/meal";
 
 export const DashBoardPage = () => {
   //TODO: 사용자의 오늘의 음식 기록 가져오기
 
+  const [todayData, setTodayData] = useState("");
   const navigate = useNavigate();
 
   const onFoodReg = () => {
     navigate("/main/foodreg");
   };
+
+  useEffect(() => {
+    const fetchDayTotal = async () => {
+      try {
+        const res = await getTotalKcal();
+        if (res) {
+          setTodayData(res);
+          console.log(res);
+        }
+      } catch {
+        console.log("failed to get todays kcal");
+      }
+    };
+    fetchDayTotal();
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center">
