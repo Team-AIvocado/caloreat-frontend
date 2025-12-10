@@ -13,6 +13,8 @@ import { DashBoardPage } from "./pages/DashBoardPage";
 import { FoodRegisterPage } from "./pages/FoodRegisterPage";
 import { AlertProvider } from "./context/AlertContext";
 import { LogDetailPage } from "./pages/LogDetailPage";
+import { MealProvider } from "./context/MealContext";
+import { LogEditPage } from "./pages/LogEditPage";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**
@@ -20,11 +22,13 @@ import { LogDetailPage } from "./pages/LogDetailPage";
  */
 const ProviderLayout = () => {
   return (
-    <AlertProvider>
-      <AuthProvider>
-        <Outlet />
-      </AuthProvider>
-    </AlertProvider>
+    <MealProvider>
+      <AlertProvider>
+        <AuthProvider>
+          <Outlet />
+        </AuthProvider>
+      </AlertProvider>
+    </MealProvider>
   );
 };
 
@@ -67,6 +71,10 @@ const router = createBrowserRouter([
                   {
                     path: "log/:mealId/:foodIndex",
                     element: <LogDetailPage />,
+                  },
+                  {
+                    path: "log/:mealId/:foodIndex/edit",
+                    element: <LogEditPage />,
                   },
                   { path: "statistics", element: <StatisticsPage /> },
                   { path: "setting", element: <SettingPage /> },

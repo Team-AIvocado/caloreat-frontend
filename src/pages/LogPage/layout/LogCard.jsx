@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
+import { useMeals } from "../../../context/MealContext";
 
 export default function LogCard({ food, mealId, index }) {
+  const { selectedDate } = useMeals();
   const { name, kcal, amount, image_url, created_at } = food;
 
   const formatTime = (t) => {
@@ -14,7 +16,7 @@ export default function LogCard({ food, mealId, index }) {
 
   return (
     <Link
-      to={`/main/log/${mealId}/${index}`}
+      to={`/main/log/${mealId}/${index}?date=${selectedDate}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div

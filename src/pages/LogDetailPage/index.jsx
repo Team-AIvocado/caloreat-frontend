@@ -1,48 +1,31 @@
-import { useNavigate, useParams } from "react-router-dom";
-import { mockLogs } from "../LogPage/mocks/mockData";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import { useMeals } from "../../context/MealContext";
+import { useEffect } from "react";
 
 export const LogDetailPage = () => {
+  const { logs, selectedDate, fetchLogs, deleteFood } = useMeals();
   const { mealId, foodIndex } = useParams();
+  const [searchParams] = useSearchParams();
+
+  const dateFromUrl = searchParams.get("date");
+
+  useEffect(() => {
+    // Logs가 없으면 날짜 기반으로 다시 fetch
+    if (logs.length === 0) {
+      const d = dateFromUrl || selectedDate;
+      if (d) fetchLogs(d);
+    }
+  }, []);
   const navigate = useNavigate();
 
-  // #TODO: 개발 단계에서는 목업 데이터로 상세 페이지를 구성함
-  const meal = mockLogs.find((m) => m.meal_id === Number(mealId));
+  const meal = logs.find((m) => m.meal_id === Number(mealId));
   const food = meal?.foods[Number(foodIndex)];
 
-  /**
-   * 실제 서비스 연결 시 데이터 흐름
-   * ----------------------------------------------
-   * A) LogPage에서 날짜 기준 식단 목록을 API로 가져옴:
-   *    GET /api/v1/meals/logs?date=YYYY-MM-DD
-   *    → logs 상태에 모든 meal 배열 저장
-   *
-   * B) LogDetailPage에서는 mockLogs 대신 "전역 상태 logs" 사용:
-   *
-   *    import { useMeals } from "../../context/MealContext";
-   *    const { logs } = useMeals();
-   *
-   *    const meal = logs.find(m => m.meal_id === Number(mealId));
-   *    const food = meal?.foods[Number(foodIndex)];
-   *
-   * C) 별도 API 호출은 필요 없음
-   *    (백엔드 명세에 food 상세 조회 API가 존재하지 않기 때문)
-   *
-   * D) 만약 나중에 백엔드가 meal 단위 상세조회 API를 제공하면:
-   *
-   *    useEffect(() => {
-   *      fetch(`/api/v1/meals/log/${mealId}`)
-   *        .then(res => res.json())
-   *        .then(data => {
-   *          setFood(data.foods[foodIndex]);
-   *        });
-   *    }, []);
-   *
-   * ----------------------------------------------
-   * 요약:
-   *  - 현재: mockLogs 사용
-   *  - 서비스: LogPage → logs 저장 → LogDetailPage에서 logs 참조
-   *  - 필요하면 A/B/C/D 중 상황에 맞게 전환하면 됨
-   */
+  const handleDelete = () => {
+    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+    deleteFood(Number(mealId), Number(foodIndex));
+    navigate(-1);
+  };
 
   if (!food) {
     return (
@@ -128,6 +111,7 @@ export const LogDetailPage = () => {
         }}
       >
         <button
+          onClick={() => navigate(-1)}
           style={{
             flex: 1,
             padding: "14px",
@@ -144,6 +128,7 @@ export const LogDetailPage = () => {
         </button>
 
         <button
+          onClick={handleDelete}
           style={{
             flex: 1,
             padding: "14px",

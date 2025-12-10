@@ -2,53 +2,20 @@ import { useEffect, useState } from "react";
 import DateNavigator from "./layout/DateNavigator";
 import { getToday } from "../../utils/date";
 import LogCard from "./layout/LogCard";
-import { mockLogs } from "./mocks/mockData";
 import { useSearchParams } from "react-router-dom";
+import { useMeals } from "../../context/MealContext";
 
 export const LogPage = () => {
+  const { logs, loading, error, selectedDate, setSelectedDate, fetchLogs } =
+    useMeals();
   const [searchParams, setSearchParams] = useSearchParams();
   const initialDate = searchParams.get("date") || getToday();
   const [date, setDate] = useState(initialDate);
-  const [logs, setLogs] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetchLogs(date);
     setSearchParams({ date });
   }, [date]);
-
-  const fetchLogs = async (selectedDate) => {
-    setLoading(true);
-    // 목업 데이터
-    // # TODO: 개발 완료되면 false로 바꾸거나 줄 삭제
-    const MOCK_MODE = true;
-
-    if (MOCK_MODE) {
-      if (selectedDate === "2025-12-09") {
-        setTimeout(() => {
-          setLogs(mockLogs);
-          setLoading(false);
-        }, 300);
-        return;
-      }
-      setLogs([]);
-      setLoading(false);
-      return;
-    }
-
-    // 실제 API 적용시
-    try {
-      const result = await fetch(`/api/v1/meals/logs?date=${selectedDate}`);
-      const data = await result.json();
-      setLogs(data);
-    } catch (err) {
-      console.error("로그 불러오기 실패:", err);
-      setError(true);
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <div
