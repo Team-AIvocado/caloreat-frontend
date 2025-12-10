@@ -8,6 +8,7 @@ export const LogPage = () => {
   const [date, setDate] = useState(getToday());
   const [logs, setLogs] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     fetchLogs(date);
@@ -20,10 +21,15 @@ export const LogPage = () => {
     const MOCK_MODE = true;
 
     if (MOCK_MODE) {
-      setTimeout(() => {
-        setLogs(mockLogs);
-        setLoading(false);
-      }, 300);
+      if (selectedDate === "2025-12-09") {
+        setTimeout(() => {
+          setLogs(mockLogs);
+          setLoading(false);
+        }, 300);
+        return;
+      }
+      setLogs([]);
+      setLoading(false);
       return;
     }
 
@@ -34,6 +40,7 @@ export const LogPage = () => {
       setLogs(data);
     } catch (err) {
       console.error("로그 불러오기 실패:", err);
+      setError(true);
     } finally {
       setLoading(false);
     }
@@ -43,9 +50,33 @@ export const LogPage = () => {
     <div style={{ padding: "20px" }}>
       <h2>음식 로그</h2>
       <DateNavigator date={date} setDate={setDate} />
+      {error && (
+        <div
+          style={{
+            textAlign: "center",
+            color: "red",
+            marginTop: "20px",
+            fontSize: "14px",
+          }}
+        >
+          데이터를 불러오는 데 문제가 발생했습니다.
+        </div>
+      )}
 
-      {loading && <p>불러오는 중...</p>}
-      {!loading && logs.length === 0 && <p>기록이 없습니다.</p>}
+      {loading && <div className="loader" />}
+      {!loading && logs.length === 0 && !error && (
+        <div
+          style={{
+            marginTop: "40px",
+            textAlign: "center",
+            color: "#999",
+            fontSize: "14px",
+          }}
+        >
+          <p>아직 기록된 식단이 없습니다.</p>
+          <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
+        </div>
+      )}
 
       <div>
         {logs.map((meal) =>

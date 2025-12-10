@@ -12,6 +12,7 @@ import { LogPage } from "./pages/LogPage";
 import { DashBoardPage } from "./pages/DashBoardPage";
 import { FoodRegisterPage } from "./pages/FoodRegisterPage";
 import { AlertProvider } from "./context/AlertContext";
+import { LogDetailPage } from "./pages/LogDetailPage";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**
@@ -63,6 +64,7 @@ const router = createBrowserRouter([
                 children: [
                   { path: "dashboard", element: <DashBoardPage /> },
                   { path: "log", element: <LogPage /> },
+                  { path: "log/:mealId", element: <LogDetailPage /> },
                   { path: "statistics", element: <StatisticsPage /> },
                   { path: "setting", element: <SettingPage /> },
                   { path: "foodreg", element: <FoodRegisterPage /> },
