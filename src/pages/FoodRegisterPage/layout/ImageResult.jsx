@@ -26,6 +26,14 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
     setIntake(newValue);
   };
 
+  const intakeMarks = [
+    { value: 0, label: "0" },
+    { value: 0.5, label: "0.5" },
+    { value: 1, label: "1" },
+    { value: 1.5, label: "1.5" },
+    { value: 2, label: "2" },
+  ];
+
   return (
     <div className="w-full flex flex-col items-center px-4 pb-10">
       <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
@@ -40,7 +48,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
             draggable="false"
             alt={foodname}
           />
-          <div className="flex flex-col justify-center items-center md:items-start w-full pt-2">
+          <div className="flex flex-col justify-between w-full pt-2">
             <div className="mb-4 md:mb-0">
               <h2 className="text-2xl md:text-3xl font-bold text-primary_text mb-2">
                 {foodname}
@@ -50,11 +58,11 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
               </div>
             </div>
 
-            <div className="w-full pr-4 mb-2">
+            <div className="w-full pr-4 mb-9">
               <div className="text-primary_text text-lg mt-5 pl-2 font-semibold">
                 섭취량
               </div>
-              <div className="text-sm text-secondary_text ml-4 mb-4">
+              <div className="text-sm text-secondary_text ml-4 mb-2">
                 : {intake}인분
               </div>
 
@@ -63,7 +71,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
                 min={0}
                 max={2}
                 step={0.5}
-                marks
+                marks={intakeMarks}
                 onChange={handleSliderChange}
                 sx={{
                   color: "#3a7dff",
