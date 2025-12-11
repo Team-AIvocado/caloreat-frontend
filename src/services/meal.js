@@ -31,7 +31,7 @@ export const fetchFood = async (foods) => {
   return {
     results: [
       {
-        foodname: "된장찌개",
+        foodname: foods,
         calories: 230,
         carbs: 30,
         protein: 12,

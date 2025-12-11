@@ -15,6 +15,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [chartData, setChartData] = useState([]);
+  const [showWarning, setShowWarning] = useState(false);
 
   const result = foodDetail.results[0] || {};
 
@@ -44,6 +45,13 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
       { name: "지방", value: currentFat, fill: "#ffe2c1" },
       { name: "영양소", value: totalMicronutrients, fill: "#d9e3f3" },
     ]);
+
+    //TODO: 영양분들의 적정량을 지정해서 부족 과다 룰을 규정해야할듯
+    if ((nutritions.sugar || 0) * intake > 30) {
+      setShowWarning(true);
+    } else {
+      setShowWarning(false);
+    }
   }, [intake, carbs, protein, fat, micronutrients, nutritions]);
 
   const onSave = () => {
@@ -69,7 +77,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
       </div>
 
       <div className="w-full max-w-[600px] bg-white rounded-xl border-3 border-sub_border p-6 md:p-6">
-        <div className="flex flex-col md:flex-row gap-6 mb-8 items-center md:items-start">
+        <div className="flex flex-col md:flex-row gap-6 mb-10 items-center md:items-start">
           <img
             className="w-40 h-40 md:w-48 md:h-48 rounded-xl border border-border_color object-cover "
             src={imgSrc}
@@ -115,7 +123,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
           </div>
         </div>
 
-        <div className="w-full h-48 mb-4 ">
+        <div className="w-full h-40 ">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               key={intake}
@@ -127,7 +135,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
                 left: 20,
                 bottom: 5,
               }}
-              barSize={15}
+              barSize={12}
             >
               <XAxis type="number" hide padding={{ right: 20 }} />
               <YAxis
@@ -150,13 +158,23 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
                   dataKey="value"
                   position="right"
                   formatter={(value) => `${value}g`}
-                  style={{ fill: "#1d2e50", fontSize: "12px" }}
+                  style={{ fill: "#6c6c6c", fontSize: "12px" }}
                 />
               </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
       </div>
+
+      {showWarning && (
+        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-xl flex items-center gap-3">
+          <div className="text-xl">⚠️</div>
+          <div className="text-primary_text text-sm">
+            <span className="font-bold">주의:</span> 당류 섭취량이 높습니다.
+            조절이 필요할 수 있습니다.
+          </div>
+        </div>
+      )}
 
       <button
         className=" bg-main_color w-1/3 max-w-[300px] text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer"
