@@ -1,7 +1,10 @@
+import { Slider } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export const ImageResult = ({ imgSrc, foodDetail }) => {
   const navigate = useNavigate();
+  const [intake, setIntake] = useState(1);
 
   const result = foodDetail.results[0] || {};
 
@@ -19,6 +22,10 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
     navigate("/main/dashboard");
   };
 
+  const handleSliderChange = (event, newValue) => {
+    setIntake(newValue);
+  };
+
   return (
     <div className="w-full flex flex-col items-center px-4 pb-10">
       <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
@@ -34,11 +41,37 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
             alt={foodname}
           />
           <div className="flex flex-col justify-center items-center md:items-start w-full pt-2">
-            <h2 className="text-2xl md:text-3xl font-bold text-primary_text mb-2">
-              {foodname}
-            </h2>
-            <div className="text-xl text-main_color font-bold">
-              {calories}{" "}
+            <div className="mb-4 md:mb-0">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary_text mb-2">
+                {foodname}
+              </h2>
+              <div className="text-secondary_text text-sm">
+                1인분 ({calories}kcal) 기준
+              </div>
+            </div>
+
+            <div className="w-full pr-4 mb-2">
+              <div className="text-primary_text text-lg mt-5 pl-2 font-semibold">
+                섭취량
+              </div>
+              <div className="text-sm text-secondary_text ml-4 mb-4">
+                : {intake}인분
+              </div>
+
+              <Slider
+                value={intake}
+                min={0}
+                max={2}
+                step={0.5}
+                marks
+                onChange={handleSliderChange}
+                sx={{
+                  color: "#3a7dff",
+                }}
+              />
+            </div>
+            <div className="text-xl text-main_color font-bold text-right">
+              {Math.round(calories * intake)}{" "}
               <span className="text-secondary_text text-base font-normal">
                 kcal
               </span>
@@ -48,7 +81,7 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
       </div>
 
       <button
-        className="w-full max-w-[600px] bg-main_color text-white rounded-xl py-4 mt-6 text-base font-bold hover:bg-blue-600 transition-colors shadow-md cursor-pointer"
+        className=" bg-main_color w-1/3 max-w-[300px] text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer"
         onClick={onSave}
       >
         기록 저장하기
