@@ -16,11 +16,12 @@ export const MealProvider = ({ children }) => {
       const MOCK_MODE = true;
 
       if (MOCK_MODE) {
-        const { mockLogs } = await import(
-          "../pages/LogPage/mocks/mockData.jsx"
-        );
+        const { mockLogs } = await import("../pages/LogPage/mocks/mockData.js");
 
-        if (date === "2025-12-09") {
+        const targetDate = new Date("2025-12-09");
+        const isSameDate = date.toDateString() === targetDate.toDateString();
+
+        if (isSameDate) {
           setLogs(mockLogs);
         } else {
           setLogs([]);

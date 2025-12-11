@@ -1,20 +1,29 @@
 import { useEffect, useState } from "react";
 import DateNavigator from "./layout/DateNavigator";
-import { getToday } from "../../utils/date";
-import LogCard from "./layout/LogCard";
 import { useSearchParams } from "react-router-dom";
 import { useMeals } from "../../context/MealContext";
+import LogCard from "./layout/LogCard";
 
 export const LogPage = () => {
-  const { logs, loading, error, selectedDate, setSelectedDate, fetchLogs } =
-    useMeals();
+  const { logs, loading, error, fetchLogs } = useMeals();
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const initialDate = searchParams.get("date") || getToday();
+
+  // URL에서 날짜 읽기 → 문자열
+  const urlDateParam = searchParams.get("date");
+
+  // 문자열을 Date 객체로 변환
+  const initialDate = urlDateParam ? new Date(urlDateParam) : new Date();
+
+  // 내부 date는 항상 Date 객체로 유지해야 CalendarModal이 정상 동작함
   const [date, setDate] = useState(initialDate);
 
   useEffect(() => {
     fetchLogs(date);
-    setSearchParams({ date });
+
+    // URL에는 문자열로 넣어야 하므로 포맷 변환
+    const formatted = date.toISOString().slice(0, 10);
+    setSearchParams({ date: formatted });
   }, [date]);
 
   return (
@@ -39,6 +48,7 @@ export const LogPage = () => {
         음식 로그
       </h2>
 
+      {/* 날짜 네비게이터 (CalendarModal 포함) */}
       <div
         style={{
           display: "flex",
@@ -48,6 +58,7 @@ export const LogPage = () => {
       >
         <DateNavigator date={date} setDate={setDate} />
       </div>
+
       {error && (
         <div
           style={{
@@ -63,6 +74,7 @@ export const LogPage = () => {
       )}
 
       {loading && <div className="loader" />}
+
       {!loading && logs.length === 0 && !error && (
         <div
           style={{
@@ -81,6 +93,7 @@ export const LogPage = () => {
         </div>
       )}
 
+      {/* 로그 카드 */}
       <div
         style={{
           marginTop: "10px",
