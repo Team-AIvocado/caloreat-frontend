@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAlert } from "../../../context/AlertContext";
-import { ModifyInput } from "./modifyInput";
+import { ModifyInput } from "./ModifyInput";
 import { fetchFood } from "../../../services/meal";
 
 export const ImageAnalysis = ({
