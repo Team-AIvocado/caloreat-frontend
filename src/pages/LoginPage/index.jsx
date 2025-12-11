@@ -7,11 +7,12 @@ import { useAlert } from "../../context/AlertContext";
 import { alertBtn } from "../../utils/styles";
 
 export const LoginPage = () => {
-  const { login, logout, user, userInfo } = useAuth();
-  const { showAlert, closeAlert, loading } = useAlert();
+  const { login, logout, user, userInfo, loading } = useAuth();
+  const { showAlert, closeAlert } = useAlert();
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ id: false, pw: false });
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,6 +30,8 @@ export const LoginPage = () => {
       setError({ ...error, pw: true });
       return;
     } else setError({ ...error, pw: false });
+
+    setIsLoggingIn(true);
 
     try {
       const response = await login(userId, password);
@@ -60,6 +63,8 @@ export const LoginPage = () => {
           ),
         });
       }
+    } finally {
+      setIsLoggingIn(false);
     }
   };
 
@@ -70,7 +75,9 @@ export const LoginPage = () => {
           <div className="pr-16 pb-7 font-bold">caloreat</div>
         </div>
 
-        {loading || (
+        {loading || isLoggingIn ? (
+          <div className="text-gray-400">로딩중입니다...</div>
+        ) : (
           <>
             {user ? (
               <LoginComp

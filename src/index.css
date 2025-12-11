@@ -10,6 +10,10 @@
   --color-secondary_text: #6c6c6c;
   --color-primary_text: #1d2e50;
   --color-sub_background: #e9f1fc;
+  --color-sub_border: #e3eefd;
+  --color-third_text: #a8b2c7;
+  --color-light-alert-border: #ffebab;
+  --color-light-alert: #fffdf6;
 }
 
 body {
