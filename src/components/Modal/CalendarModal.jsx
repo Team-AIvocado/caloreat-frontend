@@ -4,7 +4,20 @@ import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
 import "../../styles/datepicker.css";
 
-const MONTHS = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+const MONTHS = [
+  "1월",
+  "2월",
+  "3월",
+  "4월",
+  "5월",
+  "6월",
+  "7월",
+  "8월",
+  "9월",
+  "10월",
+  "11월",
+  "12월",
+];
 
 export const CalendarModal = ({ open, value, onClose, onSelect }) => {
   const [viewDate, setViewDate] = useState(value || new Date());
@@ -23,17 +36,13 @@ export const CalendarModal = ({ open, value, onClose, onSelect }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      className="pl-52 fixed inset-0 bg-black/40 flex items-center justify-center z-50"
       onClick={onClose}
     >
       <div
-        className="bg-white/90 p-6 rounded-2xl shadow-xl w-80 border border-border_color"
+        className="bg-white/90 rounded-2xl shadow-xl w-96 border border-border_color overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="text-center text-primary_text font-semibold text-lg mb-3">
-          날짜 선택
-        </div>
-
         <div className="w-full flex justify-center">
           <DatePicker
             inline
@@ -50,8 +59,14 @@ export const CalendarModal = ({ open, value, onClose, onSelect }) => {
               if (day === 6) return "custom-sat";
               return "";
             }}
-            renderCustomHeader={({ date, changeYear, changeMonth, decreaseMonth, increaseMonth }) => (
-              <div className="rounded-t-xl pb-2 bg-sub_background">
+            renderCustomHeader={({
+              date,
+              changeYear,
+              changeMonth,
+              decreaseMonth,
+              increaseMonth,
+            }) => (
+              <div className="rounded-t-xl pb-2 bg-sub_background ">
                 <div className="flex justify-center gap-2.5 pt-2.5 pb-1.5">
                   <select
                     value={date.getFullYear()}
@@ -103,15 +118,6 @@ export const CalendarModal = ({ open, value, onClose, onSelect }) => {
               </div>
             )}
           />
-        </div>
-
-        <div className="flex justify-center mt-5">
-          <button
-            className="px-5 py-2 rounded-xl bg-sub_background text-primary_text font-medium"
-            onClick={onClose}
-          >
-            닫기
-          </button>
         </div>
       </div>
     </div>
