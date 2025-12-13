@@ -21,7 +21,7 @@ function RingProgressBar({ totalkcal, kcal }) {
       >
         {kcal}
       </tspan>
-      <tspan dx="-16" dy="12" font-size="9px" style={{ fill: "#6C6C6C" }}>
+      <tspan dx="-16" dy="12" fontSize="9px" style={{ fill: "#6C6C6C" }}>
         /{totalkcal} kcal
       </tspan>
     </tspan>

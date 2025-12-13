@@ -12,6 +12,11 @@ import { LogPage } from "./pages/LogPage";
 import { DashBoardPage } from "./pages/DashBoardPage";
 import { FoodRegisterPage } from "./pages/FoodRegisterPage";
 import { AlertProvider } from "./context/AlertContext";
+import { LogDetailPage } from "./pages/LogDetailPage";
+import { MealProvider } from "./context/MealContext";
+import { LogEditPage } from "./pages/LogEditPage";
+import "react-datepicker/dist/react-datepicker.css";
+import "./styles/datepicker.css";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**
@@ -19,11 +24,13 @@ import { AlertProvider } from "./context/AlertContext";
  */
 const ProviderLayout = () => {
   return (
-    <AlertProvider>
-      <AuthProvider>
-        <Outlet />
-      </AuthProvider>
-    </AlertProvider>
+    <MealProvider>
+      <AlertProvider>
+        <AuthProvider>
+          <Outlet />
+        </AuthProvider>
+      </AlertProvider>
+    </MealProvider>
   );
 };
 
@@ -63,6 +70,14 @@ const router = createBrowserRouter([
                 children: [
                   { path: "dashboard", element: <DashBoardPage /> },
                   { path: "log", element: <LogPage /> },
+                  {
+                    path: "log/:mealId/:foodIndex",
+                    element: <LogDetailPage />,
+                  },
+                  {
+                    path: "log/:mealId/:foodIndex/edit",
+                    element: <LogEditPage />,
+                  },
                   { path: "statistics", element: <StatisticsPage /> },
                   { path: "setting", element: <SettingPage /> },
                   { path: "foodreg", element: <FoodRegisterPage /> },
