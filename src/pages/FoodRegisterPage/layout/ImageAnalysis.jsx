@@ -141,7 +141,7 @@ export const ImageAnalysis = ({
           className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer "
           onClick={onResult}
         >
-          분석결과 보기
+          영양소 분석하기
         </button>
       </div>
     </>

@@ -1,57 +1,72 @@
 import { useNavigate } from "react-router-dom";
 import RingProgressBar from "../../components/ProgressBar/RingProgressBar";
-import { useEffect, useState } from "react";
-import { getTotalKcal } from "../../services/meal";
+import { useEffect } from "react";
+import { useMeals } from "../../context/MealContext";
 
 export const DashBoardPage = () => {
-  //TODO: 사용자의 오늘의 음식 기록 가져오기
-
-  const [todayData, setTodayData] = useState("");
   const navigate = useNavigate();
+  const { logs, fetchLogs } = useMeals();
+
+  useEffect(() => {
+    fetchLogs(new Date());
+  }, []); // Fetch today's logs on mount
+
+  // Calculate total calories
+  const totalKcal = logs.reduce((total, meal) => {
+    return (
+      total +
+      meal.foods.reduce((mealTotal, food) => mealTotal + (food.kcal || 0), 0)
+    );
+  }, 0);
 
   const onFoodReg = () => {
     navigate("/main/foodreg");
   };
 
-  useEffect(() => {
-    const fetchDayTotal = async () => {
-      try {
-        const res = await getTotalKcal();
-        if (res) {
-          setTodayData(res);
-          console.log(res);
-        }
-      } catch {
-        console.log("failed to get todays kcal");
-      }
-    };
-    fetchDayTotal();
-  }, []);
+  const mealTypeLabels = {
+    breakfast: "아침",
+    lunch: "점심",
+    dinner: "저녁",
+    snack: "간식",
+  };
 
   return (
     <div className="flex flex-col justify-center items-center">
       <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
         오늘의 누적 칼로리
       </div>
-      <RingProgressBar totalkcal={2400} kcal={360} />
-      <div className="border w-1/3 border-sub_color px-8 py-3 pb-3 mt-6 rounded-lg  bg-white/60 ">
-        {/* TODO: 불러온 하루 음식 로그 list 형식으로 출력 */}
-        {/* 일단 하드코딩 */}
-        <div className="text-secondary_text w-full flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="text-lg text-primary_text pr-6 font-bold">아침</div>
-            <div>샌드위치</div>
-          </div>
-          <div className="text-primary_text font-light">360kcal</div>
+      <RingProgressBar totalkcal={2400} kcal={Math.round(totalKcal)} />
+
+      {logs.length > 0 ? (
+        <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
+          {logs.map((meal) => {
+            const mealKcal = meal.foods.reduce(
+              (acc, cur) => acc + (cur.kcal || 0),
+              0
+            );
+            return (
+              <div
+                key={meal.meal_id}
+                className="text-secondary_text w-full flex justify-between items-center"
+              >
+                <div className="flex items-center gap-4">
+                  <div className="text-lg text-primary_text font-bold min-w-[40px]">
+                    {mealTypeLabels[meal.meal_type] || meal.meal_type}
+                  </div>
+                  <div className="text-sm">
+                    {meal.foods.map((f) => f.name).join(", ")}
+                  </div>
+                </div>
+                <div className="text-primary_text font-light whitespace-nowrap">
+                  {Math.round(mealKcal)} kcal
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="text-secondary_text w-full flex justify-between items-center">
-          <div className="flex items-center">
-            <div className="text-lg text-primary_text pr-6 font-bold">간식</div>
-            <div>커피</div>
-          </div>
-          <div className="text-primary_text font-light">0kcal</div>
-        </div>
-      </div>
+      ) : (
+        <div className="mt-8 text-secondary_text">오늘의 기록이 없습니다.</div>
+      )}
 
       <button
         className="bg-main_color text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer"
