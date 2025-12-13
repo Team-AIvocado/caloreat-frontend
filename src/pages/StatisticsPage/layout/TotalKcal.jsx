@@ -48,7 +48,7 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
             >
               <XAxis dataKey="name" scale="band" />
               <YAxis />
-              <Legend />
+              <Legend wrapperStyle={{ fontSize: "14px" }} align="right" />
               <Line
                 dataKey="calories"
                 barSize={17}

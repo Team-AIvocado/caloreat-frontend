@@ -13,8 +13,9 @@ const generateMockStats = (type, date, goal) => {
     for (let i = 0; i < 7; i++) {
       const d = new Date(date);
       d.setDate(d.getDate() - (6 - i)); // Last 7 days including today
+      const dayName = `${d.getMonth() + 1}/${d.getDate()}`;
       chartData.push({
-        name: ["일", "월", "화", "수", "목", "금", "토"][d.getDay()],
+        name: dayName,
         calories: 1500 + Math.floor(Math.random() * 1000),
         goal: goal,
       });

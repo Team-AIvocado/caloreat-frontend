@@ -104,85 +104,89 @@ export const StatisticsPage = () => {
     } else {
       return currentDate.toLocaleDateString("ko-KR", {
         year: "numeric",
-        month: "long",
+        month: "short",
       });
     }
   };
 
   return (
-    <div className="flex flex-col items-center w-full px-4 pb-20 pt-6 bg-main_background min-h-screen">
-      <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
-        {["daily", "weekly", "monthly"].map((tab) => (
+    <>
+      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
+        통계
+      </div>
+      <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">
+        <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
+          {["daily", "weekly", "monthly"].map((tab) => (
+            <button
+              key={tab}
+              className={`flex-1 py-2 text-sm rounded-lg ${
+                activeTab === tab
+                  ? "bg-main_color text-white"
+                  : "text-secondary_text hover:bg-sub_background"
+              }`}
+              onClick={() => {
+                setActiveTab(tab);
+                setCurrentDate(new Date());
+              }}
+            >
+              {tab === "daily" ? "일" : tab === "weekly" ? "주" : "월"}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between w-full max-w-[600px] mb-6 px-4">
           <button
-            key={tab}
-            className={`flex-1 py-2 text-sm rounded-lg transition-colors ${
-              activeTab === tab
-                ? "bg-main_color text-white"
-                : "text-secondary_text hover:bg-sub_background"
-            }`}
-            onClick={() => {
-              setActiveTab(tab);
-              setCurrentDate(new Date());
-            }}
+            onClick={() => handleDateChange(-1)}
+            className="p-2 text-secondary_text hover:text-primary_text font-bold text-xl"
           >
-            {tab === "daily" ? "일간" : tab === "weekly" ? "주간" : "월간"}
+            &lt;
           </button>
-        ))}
-      </div>
-
-      <div className="flex items-center justify-between w-full max-w-[600px] mb-6 px-4">
-        <button
-          onClick={() => handleDateChange(-1)}
-          className="p-2 text-secondary_text hover:text-primary_text font-bold text-xl"
-        >
-          &lt;
-        </button>
-        <div className="text-lg font-bold text-primary_text flex items-center gap-2 relative">
-          {formatDateDisplay()}
-          {activeTab === "daily" && (
-            <>
-              <input
-                type="date"
-                className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
-                onChange={(e) => {
-                  if (e.target.value) {
-                    const selected = new Date(e.target.value);
-                    if (selected <= new Date()) {
-                      setCurrentDate(selected);
+          <div className="text-lg font-bold text-primary_text flex items-center gap-2 relative">
+            {formatDateDisplay()}
+            {activeTab === "daily" && (
+              <>
+                <input
+                  type="date"
+                  className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                  onChange={(e) => {
+                    if (e.target.value) {
+                      const selected = new Date(e.target.value);
+                      if (selected <= new Date()) {
+                        setCurrentDate(selected);
+                      }
                     }
-                  }
-                }}
-                max={new Date().toISOString().split("T")[0]}
-              />
-            </>
-          )}
+                  }}
+                  max={new Date().toISOString().split("T")[0]}
+                />
+              </>
+            )}
+          </div>
+          <button
+            onClick={() => handleDateChange(1)}
+            className={`p-2 font-bold text-xl ${
+              isFuture()
+                ? "text-gray-300 cursor-not-allowed"
+                : "text-secondary_text hover:text-primary_text"
+            }`}
+            disabled={isFuture()}
+          >
+            &gt;
+          </button>
         </div>
-        <button
-          onClick={() => handleDateChange(1)}
-          className={`p-2 font-bold text-xl ${
-            isFuture()
-              ? "text-gray-300 cursor-not-allowed"
-              : "text-secondary_text hover:text-primary_text"
-          }`}
-          disabled={isFuture()}
-        >
-          &gt;
-        </button>
-      </div>
 
-      {/* Content */}
-      {loading || !statsData ? (
-        <div className="text-secondary_text mt-10">Loading...</div>
-      ) : (
-        <div className="w-full max-w-[600px] flex flex-col gap-4">
-          <TotalKcal
-            totalCalories={statsData.totalCalories}
-            goalCalories={goalCalories}
-            type={activeTab}
-            chartData={statsData.chartData}
-          />
-        </div>
-      )}
-    </div>
+        {loading || !statsData ? (
+          <div className="text-secondary_text mt-10">Loading...</div>
+        ) : (
+          <div className="w-full max-w-[600px] flex flex-col gap-4">
+            <TotalKcal
+              totalCalories={statsData.totalCalories}
+              goalCalories={goalCalories}
+              type={activeTab}
+              chartData={statsData.chartData}
+            />
+          </div>
+        )}
+      </div>{" "}
+    </>
   );
 };
