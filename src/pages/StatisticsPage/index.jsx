@@ -6,6 +6,7 @@ import {
   fetchMonthlyStats,
   fetchWeeklyStats,
 } from "../../services/stats";
+import { CPFChart } from "./layout/CPFChart";
 
 export const StatisticsPage = () => {
   const { calculateBMR } = useAuth();
@@ -184,6 +185,7 @@ export const StatisticsPage = () => {
               type={activeTab}
               chartData={statsData.chartData}
             />
+            <CPFChart stats={statsData} type={activeTab} />
           </div>
         )}
       </div>{" "}
