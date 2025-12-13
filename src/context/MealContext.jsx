@@ -13,7 +13,7 @@ export const MealProvider = ({ children }) => {
     setSelectedDate(date);
 
     try {
-      const MOCK_MODE = true;
+      const MOCK_MODE = false; // import.meta.env.VITE_MOCK_MODE === 'true';
 
       if (MOCK_MODE) {
         const { mockLogs } = await import("../pages/LogPage/mocks/mockData.js");
