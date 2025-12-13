@@ -84,6 +84,26 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  const calculateBMR = () => {
+    if (!userInfo) return 2400;
+
+    if (userInfo.gender === "male") {
+      return Math.round(
+        66.47 +
+          13.75 * userInfo.weight +
+          5 * userInfo.height -
+          6.76 * userInfo.age
+      );
+    } else {
+      return Math.round(
+        655.1 +
+          9.56 * userInfo.weight +
+          1.85 * userInfo.height -
+          4.68 * userInfo.age
+      );
+    }
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -95,6 +115,7 @@ export const AuthProvider = ({ children }) => {
         setUser,
         checkPreInfo,
         userInfo,
+        calculateBMR,
       }}
     >
       {children}
