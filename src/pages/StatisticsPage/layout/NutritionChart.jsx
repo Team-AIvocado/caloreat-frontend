@@ -3,7 +3,6 @@ import {
   Bar,
   XAxis,
   YAxis,
-  Tooltip,
   ResponsiveContainer,
   Cell,
 } from "recharts";
@@ -124,7 +123,12 @@ export const NutritionChart = ({ stats, goalCalories }) => {
 
       <div className="w-full h-[260px] flex justify-center">
         <div className="w-[95%] h-full pt-5">
-          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minWidth={0}
+            minHeight={0}
+          >
             <BarChart
               layout="vertical"
               data={chartData}
