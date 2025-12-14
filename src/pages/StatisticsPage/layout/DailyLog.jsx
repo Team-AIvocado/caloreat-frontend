@@ -8,7 +8,7 @@ export const DailyLog = ({ logs }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl p-5 border border-sub_border w-full mt-4">
+    <div className="bg-white rounded-xl p-5 border-3 border-sub_border w-full mt-4">
       <div className="flex text-primary_text text-xl pl-5 pt-4 mb-7">
         오늘의 식단
       </div>
