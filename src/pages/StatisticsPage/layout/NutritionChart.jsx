@@ -7,33 +7,10 @@ import {
   Cell,
 } from "recharts";
 
-export const NutritionChart = ({ stats, goalCalories }) => {
+export const NutritionChart = ({ stats, goals, calculateStatus }) => {
   if (!stats || !stats.nutrients) return null;
 
   const { sugar, fiber, sodium, cholesterol, saturated_fat } = stats.nutrients;
-
-  // Calculate Goals
-  const goals = {
-    sugar: (goalCalories * 0.1) / 4, // 10% of calories, 4kcal/g
-    fiber: (goalCalories / 1000) * 14, // 14g per 1000kcal
-    sodium: 2000, // 2000mg (standard limit)
-    cholesterol: 300, // 300mg (standard limit)
-    saturated_fat: (goalCalories * 0.1) / 9, // 10% of calories, 9kcal/g
-  };
-
-  const calculateStatus = (value, goal, isLimit = false) => {
-    const ratio = value / goal;
-    if (isLimit) {
-      if (ratio < 0.5) return "부족";
-      if (ratio <= 1.0) return "충분";
-      return "과다";
-    } else {
-      //islimit : 절대적인 섭취량
-      if (ratio < 0.8) return "부족";
-      if (ratio <= 1.2) return "충분";
-      return "과다";
-    }
-  };
 
   const getBarColor = (status) => {
     switch (status) {
@@ -102,7 +79,7 @@ export const NutritionChart = ({ stats, goalCalories }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl p-7 border border-sub_border w-full mt-4 ">
+    <div className="bg-white rounded-xl p-7 border-3 border-sub_border w-full mt-4 ">
       <div className="flex text-primary_text text-xl pl-5 pt-4">
         <div className="text-primary_text ">필수 영양분</div>
         <div className="flex pl-10 items-end gap-2 text-xs">

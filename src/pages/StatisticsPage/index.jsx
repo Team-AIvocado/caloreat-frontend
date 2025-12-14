@@ -10,6 +10,7 @@ import { CPFChart } from "./layout/CPFChart";
 import { NutritionChart } from "./layout/NutritionChart";
 import { DailyLog } from "./layout/DailyLog";
 import { Summary } from "./layout/Summary";
+import { ConditionAlert } from "./layout/ConditionAlert";
 
 export const StatisticsPage = () => {
   const { calculateBMR } = useAuth();
@@ -19,6 +20,30 @@ export const StatisticsPage = () => {
   const [loading, setLoading] = useState(false);
 
   const goalCalories = calculateBMR();
+
+  // Calculate Goals
+  const goals = {
+    sugar: (goalCalories * 0.1) / 4, // 10% of calories, 4kcal/g
+    fiber: (goalCalories / 1000) * 14, // 14g per 1000kcal
+    sodium: 2000, // 2000mg (standard limit)
+    cholesterol: 300, // 300mg (standard limit)
+    saturated_fat: (goalCalories * 0.1) / 9, // 10% of calories, 9kcal/g
+  };
+
+  const calculateStatus = (value, goal, isLimit = false) => {
+    if (!goal) return "충분";
+    const ratio = value / goal;
+    if (isLimit) {
+      if (ratio < 0.5) return "부족";
+      if (ratio <= 1.0) return "충분";
+      return "과다";
+    } else {
+      //islimit : 절대적인 섭취량
+      if (ratio < 0.8) return "부족";
+      if (ratio <= 1.2) return "충분";
+      return "과다";
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -189,12 +214,24 @@ export const StatisticsPage = () => {
               chartData={statsData.chartData}
             />
             <CPFChart stats={statsData} type={activeTab} />
-            <NutritionChart stats={statsData} goalCalories={goalCalories} />
+            <NutritionChart
+              stats={statsData}
+              goals={goals}
+              calculateStatus={calculateStatus}
+            />
             {activeTab === "daily" ? (
               <DailyLog logs={statsData.dailyLogs} />
             ) : (
               <Summary stats={statsData} goalCalories={goalCalories} />
             )}
+
+            <ConditionAlert
+              totalCalories={statsData.totalCalories}
+              goalCalories={goalCalories}
+              nutritions={statsData.nutrients}
+              goals={goals}
+              calculateStatus={calculateStatus}
+            />
           </div>
         )}
       </div>{" "}
