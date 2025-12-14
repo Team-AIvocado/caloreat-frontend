@@ -33,10 +33,16 @@
   --color-icon_color3: #ffe2c1;
   /* 영양소 */
   --color-icon_color4: #d9e3f3;
+
   --color-sub_border: #e3eefd;
   --color-third_text: #a8b2c7;
   --color-light-alert-border: #ffebab;
   --color-light-alert: #fffdf6;
+  --color-lack: #ffe2c1;
+  --color-enough: #edfcfa;
+  --color-enough-border: #b1f3eb;
+  --color-over: #ff6b6b;
+  --color-sufficient: #45c4b0;
 }
 
 body {
