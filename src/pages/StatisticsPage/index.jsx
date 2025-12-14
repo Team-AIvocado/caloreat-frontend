@@ -8,6 +8,7 @@ import {
 } from "../../services/stats";
 import { CPFChart } from "./layout/CPFChart";
 import { NutritionChart } from "./layout/NutritionChart";
+import { DailyLog } from "./layout/DailyLog";
 
 export const StatisticsPage = () => {
   const { calculateBMR } = useAuth();
@@ -188,6 +189,11 @@ export const StatisticsPage = () => {
             />
             <CPFChart stats={statsData} type={activeTab} />
             <NutritionChart stats={statsData} goalCalories={goalCalories} />
+            {activeTab === "daily" ? (
+              <DailyLog logs={statsData.dailyLogs} />
+            ) : (
+              <DailyLog logs={""} />
+            )}
           </div>
         )}
       </div>{" "}

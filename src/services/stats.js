@@ -15,6 +15,45 @@ const generateMockStats = (type, date, goal) => {
   const saturated_fat = 15 + Math.floor(Math.random() * 10);
 
   let chartData = [];
+
+  let dailyLogs = [];
+
+  if (type === "daily") {
+    const foods = [
+      "김치찌개",
+      "쌀밥",
+      "계란말이",
+      "사과",
+      "닭가슴살 샐러드",
+      "고구마",
+    ];
+
+    const logCount = 3 + Math.floor(Math.random() * 3);
+    for (let i = 0; i < logCount; i++) {
+      // Generate random time between 08:00 and 20:00
+      const hour = 8 + Math.floor(Math.random() * 12);
+      const minute = Math.floor(Math.random() * 60);
+      const timeString = `${hour.toString().padStart(2, "0")}:${minute
+        .toString()
+        .padStart(2, "0")}`;
+
+      let mealType = "간식";
+      if (hour >= 6 && hour < 11) mealType = "아침";
+      else if (hour >= 11 && hour < 15) mealType = "점심";
+      else if (hour >= 17 && hour < 21) mealType = "저녁";
+
+      dailyLogs.push({
+        id: i,
+        mealType: mealType,
+        timestamp: timeString,
+        name: foods[Math.floor(Math.random() * foods.length)],
+        calories: 200 + Math.floor(Math.random() * 500),
+      });
+    }
+    // Sort by timestamp
+    dailyLogs.sort((a, b) => a.timestamp.localeCompare(b.timestamp));
+  }
+
   if (type === "weekly") {
     // Generate 7 days of data
     for (let i = 0; i < 7; i++) {
@@ -53,6 +92,7 @@ const generateMockStats = (type, date, goal) => {
       saturated_fat: saturated_fat,
     },
     chartData: chartData,
+    dailyLogs: dailyLogs,
   };
 };
 
