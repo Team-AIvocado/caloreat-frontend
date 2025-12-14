@@ -9,6 +9,7 @@ import {
 import { CPFChart } from "./layout/CPFChart";
 import { NutritionChart } from "./layout/NutritionChart";
 import { DailyLog } from "./layout/DailyLog";
+import { Summary } from "./layout/Summary";
 
 export const StatisticsPage = () => {
   const { calculateBMR } = useAuth();
@@ -192,7 +193,7 @@ export const StatisticsPage = () => {
             {activeTab === "daily" ? (
               <DailyLog logs={statsData.dailyLogs} />
             ) : (
-              <DailyLog logs={""} />
+              <Summary stats={statsData} goalCalories={goalCalories} />
             )}
           </div>
         )}
