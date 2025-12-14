@@ -1,14 +1,4 @@
-import {
-  Bar,
-  BarChart,
-  Cell,
-  Pie,
-  PieChart,
-  ResponsiveContainer,
-  Tooltip,
-  XAxis,
-  YAxis,
-} from "recharts";
+import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 const COLORS = {
   carbs: "#bec9ff",
@@ -49,74 +39,59 @@ export const CPFChart = ({ stats, type }) => {
         {type === "daily" ? "총 섭취량" : "평균 섭취량"}
       </div>
 
-      {type === "daily" ? (
-        <div className="flex flex-col items-center">
-          <div className="w-44 h-44 relative mb-6">
-            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
-              <PieChart>
-                <Pie
-                  data={data}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={65}
-                  outerRadius={78}
-                  dataKey="value"
-                  stroke="none"
-                >
-                  {data.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={entry.fill} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
-              <span className="text-xs text-secondary_text">Total</span>
-              <span className="text-sm font-bold text-primary_text">
-                {total}g
-              </span>
-            </div>
-          </div>
-
-          <div className="flex flex-col w-1/3 items-start">
-            {renderLegendItem(
-              "탄수화물",
-              carbs.amount,
-              COLORS.carbs,
-              Math.round((carbs.amount / total) * 100) || 0
-            )}
-            {renderLegendItem(
-              "단백질",
-              protein.amount,
-              COLORS.protein,
-              Math.round((protein.amount / total) * 100) || 0
-            )}
-            {renderLegendItem(
-              "지방",
-              fat.amount,
-              COLORS.fat,
-              Math.round((fat.amount / total) * 100) || 0
-            )}
-          </div>
-        </div>
-      ) : (
-        <div className="w-full h-64 flex justify-center items-center">
-          <ResponsiveContainer width="60%" height="100%" minWidth={0}>
-            <BarChart
-              data={data}
-              margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
-            >
-              <XAxis dataKey="name" />
-              <YAxis unit="%" />
-              <Tooltip />
-              <Bar dataKey="value" barSize={30}>
+      <div className="flex flex-col items-center">
+        <div className="w-44 h-44 relative mb-6">
+          <ResponsiveContainer
+            width="100%"
+            height="100%"
+            minWidth={0}
+            minHeight={0}
+          >
+            <PieChart>
+              <Pie
+                data={data}
+                cx="50%"
+                cy="50%"
+                innerRadius={65}
+                outerRadius={78}
+                dataKey="value"
+                stroke="none"
+              >
                 {data.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.fill} />
                 ))}
-              </Bar>
-            </BarChart>
+              </Pie>
+            </PieChart>
           </ResponsiveContainer>
+          <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
+            <span className="text-xs text-secondary_text">Total</span>
+            <span className="text-sm font-bold text-primary_text">
+              {total}g
+            </span>
+          </div>
         </div>
-      )}
+
+        <div className="flex flex-col w-1/3 items-start">
+          {renderLegendItem(
+            "탄수화물",
+            carbs.amount,
+            COLORS.carbs,
+            Math.round((carbs.amount / total) * 100) || 0
+          )}
+          {renderLegendItem(
+            "단백질",
+            protein.amount,
+            COLORS.protein,
+            Math.round((protein.amount / total) * 100) || 0
+          )}
+          {renderLegendItem(
+            "지방",
+            fat.amount,
+            COLORS.fat,
+            Math.round((fat.amount / total) * 100) || 0
+          )}
+        </div>
+      </div>
     </div>
   );
 };
