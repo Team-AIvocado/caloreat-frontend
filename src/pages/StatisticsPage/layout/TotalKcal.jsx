@@ -36,7 +36,7 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
         </div>
       ) : (
         <div className="w-full h-64">
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <ComposedChart
               data={chartData}
               margin={{
