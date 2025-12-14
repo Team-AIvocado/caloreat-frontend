@@ -7,6 +7,7 @@ import {
   fetchWeeklyStats,
 } from "../../services/stats";
 import { CPFChart } from "./layout/CPFChart";
+import { NutritionChart } from "./layout/NutritionChart";
 
 export const StatisticsPage = () => {
   const { calculateBMR } = useAuth();
@@ -186,6 +187,7 @@ export const StatisticsPage = () => {
               chartData={statsData.chartData}
             />
             <CPFChart stats={statsData} type={activeTab} />
+            <NutritionChart stats={statsData} goalCalories={goalCalories} />
           </div>
         )}
       </div>{" "}

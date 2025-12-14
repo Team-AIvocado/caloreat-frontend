@@ -7,6 +7,13 @@ const generateMockStats = (type, date, goal) => {
   const protein = 100 + Math.floor(Math.random() * 30);
   const fat = 60 + Math.floor(Math.random() * 20);
 
+  // New nutrients
+  const sugar = 30 + Math.floor(Math.random() * 20);
+  const fiber = 15 + Math.floor(Math.random() * 10);
+  const sodium = 1500 + Math.floor(Math.random() * 1000);
+  const cholesterol = 150 + Math.floor(Math.random() * 100);
+  const saturated_fat = 15 + Math.floor(Math.random() * 10);
+
   let chartData = [];
   if (type === "weekly") {
     // Generate 7 days of data
@@ -39,6 +46,11 @@ const generateMockStats = (type, date, goal) => {
       carbs: { amount: carbs, percentage: 50 },
       protein: { amount: protein, percentage: 30 },
       fat: { amount: fat, percentage: 20 },
+      sugar: sugar,
+      fiber: fiber,
+      sodium: sodium,
+      cholesterol: cholesterol,
+      saturated_fat: saturated_fat,
     },
     chartData: chartData,
   };
