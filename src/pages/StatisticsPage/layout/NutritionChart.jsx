@@ -104,9 +104,9 @@ export const NutritionChart = ({ stats, goalCalories }) => {
 
   return (
     <div className="bg-white rounded-xl p-7 border border-sub_border w-full mt-4 ">
-      <div className="text-primary_text text-xl pl-5 pt-4">
+      <div className="flex text-primary_text text-xl pl-5 pt-4">
         <div className="text-primary_text ">필수 영양분</div>
-        <div className="flex justify-self-end gap-2 text-xs">
+        <div className="flex pl-10 items-end gap-2 text-xs">
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full bg-[#ffe2c1]"></div>
             <span className="text-secondary_text">부족</span>
@@ -122,9 +122,9 @@ export const NutritionChart = ({ stats, goalCalories }) => {
         </div>
       </div>
 
-      <div className="w-full h-[300px] flex justify-center">
-        <div className="w-[95%] h-full">
-          <ResponsiveContainer width="100%" height="100%">
+      <div className="w-full h-[260px] flex justify-center">
+        <div className="w-[95%] h-full pt-5">
+          <ResponsiveContainer width="100%" height="100%" minWidth={0}>
             <BarChart
               layout="vertical"
               data={chartData}

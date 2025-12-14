@@ -52,7 +52,7 @@ export const CPFChart = ({ stats, type }) => {
       {type === "daily" ? (
         <div className="flex flex-col items-center">
           <div className="w-44 h-44 relative mb-6">
-            <ResponsiveContainer width="100%" height="100%">
+            <ResponsiveContainer width="100%" height="100%" minWidth={0}>
               <PieChart>
                 <Pie
                   data={data}
@@ -100,7 +100,7 @@ export const CPFChart = ({ stats, type }) => {
         </div>
       ) : (
         <div className="w-full h-64 flex justify-center items-center">
-          <ResponsiveContainer width="60%" height="100%">
+          <ResponsiveContainer width="60%" height="100%" minWidth={0}>
             <BarChart
               data={data}
               margin={{ top: 20, right: 20, bottom: 20, left: 0 }}
