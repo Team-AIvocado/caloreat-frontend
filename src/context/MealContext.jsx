@@ -13,7 +13,7 @@ export const MealProvider = ({ children }) => {
     setSelectedDate(date);
 
     try {
-      const MOCK_MODE = true;
+      const MOCK_MODE = false; // import.meta.env.VITE_MOCK_MODE === 'true';
 
       if (MOCK_MODE) {
         const { mockLogs } = await import("../pages/LogPage/mocks/mockData.js");
@@ -31,9 +31,36 @@ export const MealProvider = ({ children }) => {
         return;
       }
 
-      const response = await fetch(`/api/v1/meals/logs?date=${date}`);
+      // Use local time for date string
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+      const formattedDate = `${year}-${month}-${day}`;
+
+      const response = await fetch(`/api/v1/meals/logs?date=${formattedDate}`);
+
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+
       const data = await response.json();
-      setLogs(data);
+
+      const mappedData = Array.isArray(data)
+        ? data.map((log) => ({
+            meal_id: log.id,
+            eaten_at: log.eaten_at,
+            meal_type: log.meal_type,
+            foods: log.meal_items.map((item) => ({
+              name: item.foodname,
+              kcal: item.nutritions?.calories || 0,
+              amount: item.quantity,
+              created_at: item.created_at || log.created_at,
+              image_url: log.image_urls?.[0] || "", // Use first image for now
+            })),
+          }))
+        : [];
+
+      setLogs(mappedData);
     } catch (err) {
       console.error("로그 불러오기 실패:", err);
       setError(err);

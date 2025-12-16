@@ -16,7 +16,11 @@ export const FoodRegisterPage = () => {
   return (
     <div className="flex flex-col justify-center items-center">
       {resultMode ? (
-        <ImageResult imgSrc={imgSrc} foodDetail={foodDetail} />
+        <ImageResult
+          imgSrc={imgSrc}
+          foodDetail={foodDetail}
+          imageId={foodInfe?.image_id}
+        />
       ) : (
         <>
           <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">

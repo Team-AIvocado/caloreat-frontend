@@ -1,6 +1,7 @@
 import { Slider } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { createMealLog } from "../../../services/meal";
 import {
   Bar,
   BarChart,
@@ -11,14 +12,20 @@ import {
   YAxis,
 } from "recharts";
 
-export const ImageResult = ({ imgSrc, foodDetail }) => {
+export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
-  const [chartData, setChartData] = useState([]);
-  const [showWarning, setShowWarning] = useState(false);
+
+  // Lazy init for mealType based on current time
+  const [mealType, setMealType] = useState(() => {
+    const hour = new Date().getHours();
+    if (hour >= 5 && hour < 11) return "breakfast";
+    if (hour >= 11 && hour < 17) return "lunch";
+    if (hour >= 17 && hour < 22) return "dinner";
+    return "snack";
+  });
 
   const result = foodDetail.results[0] || {};
-
   const {
     foodname,
     calories,
@@ -29,33 +36,43 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
     micronutrients = {},
   } = result;
 
-  useEffect(() => {
-    const currentCarbs = Math.round(carbs * intake);
-    const currentProtein = Math.round(protein * intake);
-    const currentFat = Math.round(fat * intake);
+  // Derived state (No useEffect needed)
+  const currentCarbs = Math.round(carbs * intake);
+  const currentProtein = Math.round(protein * intake);
+  const currentFat = Math.round(fat * intake);
+  const totalMicronutrients = Math.round(
+    Object.values(micronutrients).reduce((total, cur) => total + cur, 0) *
+      intake
+  );
 
-    const totalMicronutrients = Math.round(
-      Object.values(micronutrients).reduce((total, cur) => total + cur, 0) *
-        intake
-    );
+  const chartData = [
+    { name: "탄수화물", value: currentCarbs, fill: "#bec9ff" },
+    { name: "단백질", value: currentProtein, fill: "#cfe7ff" },
+    { name: "지방", value: currentFat, fill: "#ffe2c1" },
+    { name: "영양소", value: totalMicronutrients, fill: "#d9e3f3" },
+  ];
 
-    setChartData([
-      { name: "탄수화물", value: currentCarbs, fill: "#bec9ff" },
-      { name: "단백질", value: currentProtein, fill: "#cfe7ff" },
-      { name: "지방", value: currentFat, fill: "#ffe2c1" },
-      { name: "영양소", value: totalMicronutrients, fill: "#d9e3f3" },
-    ]);
+  const showWarning = (nutritions.sugar || 0) * intake > 30;
 
-    //TODO: 영양분들의 적정량을 지정해서 부족 과다 룰을 규정해야할듯
-    if ((nutritions.sugar || 0) * intake > 30) {
-      setShowWarning(true);
-    } else {
-      setShowWarning(false);
+  const onSave = async () => {
+    try {
+      await createMealLog({
+        meal_type: mealType,
+        eaten_at: new Date(),
+        meal_items: [
+          {
+            foodname: foodname,
+            quantity: intake,
+            nutritions: { ...nutritions, micronutrients },
+          },
+        ],
+        tmp_image_ids: imageId ? [imageId] : [],
+      });
+      navigate("/main/dashboard");
+    } catch (e) {
+      console.error(e);
+      alert("식단 저장에 실패했습니다.");
     }
-  }, [intake, carbs, protein, fat, micronutrients, nutritions]);
-
-  const onSave = () => {
-    navigate("/main/dashboard");
   };
 
   const handleSliderChange = (event, newValue) => {
@@ -176,8 +193,30 @@ export const ImageResult = ({ imgSrc, foodDetail }) => {
         </div>
       )}
 
+      {/* Meal Type Selector */}
+      <div className="flex gap-2 mt-8 mb-4">
+        {[
+          { label: "아침", value: "breakfast" },
+          { label: "점심", value: "lunch" },
+          { label: "저녁", value: "dinner" },
+          { label: "간식", value: "snack" },
+        ].map((type) => (
+          <button
+            key={type.value}
+            onClick={() => setMealType(type.value)}
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
+              mealType === type.value
+                ? "bg-main_color text-white"
+                : "bg-white text-secondary_text border border-border_color"
+            }`}
+          >
+            {type.label}
+          </button>
+        ))}
+      </div>
+
       <button
-        className=" bg-main_color w-1/3 max-w-[300px] text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer"
+        className=" bg-main_color w-1/3 max-w-[300px] text-white rounded-lg px-8 py-2 mt-2 text-sm cursor-pointer"
         onClick={onSave}
       >
         기록 저장하기

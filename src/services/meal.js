@@ -1,52 +1,96 @@
 import { api } from "../api/axios";
 
-export const foodDetect = async (imgSrc) => {
-  // try {
-  //   const response = await api.post("/meals/upload", imgSrc);
-  //   return response.data;
-  // } catch (e) {
-  //   console.log("failed to food detect ", e);
-  // }
-
-  return {
-    image_id: "uuid",
-    food_name: "된장찌개",
-    candidates: [
-      { label: "된장찌개", confidence: 0.93 },
-      { label: "김치찌개", confidence: 0.72 },
-      { label: "청국장", confidence: 0.65 },
-    ],
-  };
+// Base64 to Blob converter
+const dataURItoBlob = (dataURI) => {
+  const byteString = atob(dataURI.split(",")[1]);
+  const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+  const ab = new ArrayBuffer(byteString.length);
+  const ia = new Uint8Array(ab);
+  for (let i = 0; i < byteString.length; i++) {
+    ia[i] = byteString.charCodeAt(i);
+  }
+  return new Blob([ab], { type: mimeString });
 };
+
+export const foodDetect = async (imgSrc) => {
+  const formData = new FormData();
+
+  if (typeof imgSrc === "string" && imgSrc.startsWith("data:")) {
+    const blob = dataURItoBlob(imgSrc);
+    formData.append("file", blob, "image.jpg");
+  } else {
+    formData.append("file", imgSrc);
+  }
+
+  try {
+    const response = await api.post("/meals/upload", formData, {
+      headers: {
+        "Content-Type": undefined,
+      },
+    });
+    return response.data;
+  } catch (e) {
+    console.log("failed to food detect ", e);
+    throw e;
+  }
+};
+// return {
+//   image_id: "uuid",
+//   food_name: "된장찌개",
+//   candidates: [
+//     { label: "된장찌개", confidence: 0.93 },
+//     { label: "김치찌개", confidence: 0.72 },
+//     { label: "청국장", confidence: 0.65 },
+//   ],
+// };
 
 export const fetchFood = async (foods) => {
   const data = { foodnames: [foods] };
-  // try {
-  //   const response = await api.post("/meals/analyze", data);
-  //   return response.data;
-  // } catch (e) {
-  //   console.log("failed to fetch food details ", e);
-  // }
+  try {
+    const response = await api.post("/meals/analyze", data);
 
-  return {
-    results: [
-      {
-        foodname: foods,
-        calories: 230,
-        carbs: 30,
-        protein: 12,
-        fat: 240,
-        nutritions: {
-          sugar: 40,
-          fiber: 15,
-          sodium: 12,
-          cholesterol: 4,
-          saturated_fat: 9,
-        },
-        micronutrients: { vitamin_c: 20, calcium: 50 },
-      },
-    ],
-  };
+    // Backend returns nested structure, flatten it for frontend
+    if (response.data && response.data.results) {
+      const transformedResults = response.data.results.map((item) => {
+        const nuts = item.nutritions || {};
+        return {
+          ...item,
+          calories: nuts.calories,
+          carbs: nuts.carbs_g,
+          protein: nuts.protein_g,
+          fat: nuts.fat_g,
+          micronutrients: nuts.micronutrients,
+          // Keep original nutritions for other fields like sugar
+          nutritions: nuts,
+        };
+      });
+      return { results: transformedResults };
+    }
+
+    return response.data;
+  } catch (e) {
+    console.log("failed to fetch food details ", e);
+  }
+
+  // return {
+  //   results: [
+  //     {
+  //       foodname: foods,
+  //       calories: 230,
+  //       carbs: 30,
+  //       protein: 12,
+  //       fat: 240,
+  //       nutritions: {
+  //         sugar: 40,
+  //         fiber: 15,
+  //         sodium: 12,
+  //         cholesterol: 4,
+  //         saturated_fat: 9,
+  //       },
+  //       micronutrients: { vitamin_c: 20, calcium: 50 },
+  //     },
+  //   ],
+  // };
 };
 
 export const getTotalKcal = async () => {
@@ -55,5 +99,15 @@ export const getTotalKcal = async () => {
     return response.data;
   } catch (e) {
     console.log("failed to get day total kcal", e);
+  }
+};
+
+export const createMealLog = async (mealData) => {
+  try {
+    const response = await api.post("/meals/log", mealData);
+    return response.data;
+  } catch (e) {
+    console.log("failed to create meal log", e);
+    throw e;
   }
 };

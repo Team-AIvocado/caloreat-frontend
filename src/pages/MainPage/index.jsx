@@ -3,11 +3,11 @@ import { MainNavBar } from "../../components/Navbar/MainNavbar";
 import { useAuth } from "../../context/AuthContext";
 
 export const MainPage = () => {
-  const { user } = useAuth();
+  const { user, userInfo } = useAuth();
 
   return (
     <div>
-      <MainNavBar nickname={user?.nickname} />
+      <MainNavBar nickname={userInfo?.nickname || user?.nickname || ""} />
       <div className="ml-52 pb-0">
         <Outlet />
       </div>
