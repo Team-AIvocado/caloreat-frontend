@@ -1,9 +1,19 @@
 import { Link } from "react-router-dom";
 import { useMeals } from "../../../context/MealContext";
 
-export default function LogCard({ food, mealId, index }) {
+export default function LogCard({ item, meal, index }) {
   const { selectedDate } = useMeals();
-  const { name, kcal, amount, image_url, created_at } = food;
+
+  // 백엔드 필드명에 맞게 추출
+  const { foodname, quantity, nutritions } = item;
+  const calories = nutritions?.calories ?? 0;
+  const imageUrl = meal.image_urls?.[0] ?? "";
+
+  // selectedDate를 문자열로 변환
+  const dateString =
+    selectedDate instanceof Date
+      ? selectedDate.toISOString().slice(0, 10)
+      : selectedDate;
 
   const formatTime = (t) => {
     if (!t) return "";
@@ -16,7 +26,7 @@ export default function LogCard({ food, mealId, index }) {
 
   return (
     <Link
-      to={`/main/log/${mealId}/${index}?date=${selectedDate}`}
+      to={`/main/log/${meal.id}/${index}?date=${dateString}`}
       style={{ textDecoration: "none", color: "inherit" }}
     >
       <div
@@ -44,8 +54,8 @@ export default function LogCard({ food, mealId, index }) {
           }}
         >
           <img
-            src={image_url}
-            alt={name}
+            src={imageUrl}
+            alt={foodname}
             style={{
               width: "100%",
               height: "100%",
@@ -70,7 +80,7 @@ export default function LogCard({ food, mealId, index }) {
               color: "var(--color-primary_text)",
             }}
           >
-            {name}
+            {foodname}
           </span>
 
           <span
@@ -79,7 +89,7 @@ export default function LogCard({ food, mealId, index }) {
               fontSize: "14px",
             }}
           >
-            {kcal} kcal · {amount} 인분
+            {calories} kcal · {quantity} 인분
           </span>
 
           <span
@@ -88,7 +98,7 @@ export default function LogCard({ food, mealId, index }) {
               fontSize: "12px",
             }}
           >
-            섭취 시간 | {formatTime(created_at)}
+            섭취 시간 | {formatTime(meal.eaten_at)}
           </span>
         </div>
       </div>

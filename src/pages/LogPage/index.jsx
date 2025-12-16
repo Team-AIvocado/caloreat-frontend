@@ -107,11 +107,11 @@ export const LogPage = () => {
         }}
       >
         {logs.map((meal) =>
-          meal.foods.map((food, idx) => (
+          meal.meal_items.map((item, idx) => (
             <LogCard
-              key={`${meal.meal_id}-${idx}`}
-              food={food}
-              mealId={meal.meal_id}
+              key={`${meal.id}-${idx}`}
+              item={item}
+              meal={meal}
               index={idx}
             />
           ))
