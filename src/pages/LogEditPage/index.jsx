@@ -36,6 +36,7 @@ export const LogEditPage = () => {
       });
       navigate(`/main/log/${mealId}/${foodIndex}?date=${dateFromUrl}`);
     } catch (err) {
+      console.error(err);
       alert("수정에 실패했습니다.");
     } finally {
       setIsSaving(false);
@@ -98,7 +99,9 @@ export const LogEditPage = () => {
         }}
       >
         <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}>
+          <span
+            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
+          >
             음식명
           </span>
           <input
@@ -114,13 +117,18 @@ export const LogEditPage = () => {
         </label>
 
         <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}>
+          <span
+            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
+          >
             칼로리 (kcal)
           </span>
           <input
             type="number"
             value={form.calories}
-            onChange={(e) => setForm({ ...form, calories: Number(e.target.value) })}
+            onChange={(e) =>
+              setForm({ ...form, calories: Number(e.target.value) })
+            }
+            readOnly
             style={{
               padding: "12px",
               borderRadius: "8px",
@@ -131,13 +139,25 @@ export const LogEditPage = () => {
         </label>
 
         <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}>
+          <span
+            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
+          >
             섭취량 (인분)
           </span>
           <input
             type="number"
             value={form.quantity}
-            onChange={(e) => setForm({ ...form, quantity: Number(e.target.value) })}
+            step="0.5"
+            onChange={(e) => {
+              if (e.target.value <= 0) return;
+              setForm((prev) => ({
+                ...prev,
+                calories: Number(
+                  Math.round((prev.calories * e.target.value) / prev.quantity)
+                ),
+                quantity: Number(e.target.value),
+              }));
+            }}
             style={{
               padding: "12px",
               borderRadius: "8px",
