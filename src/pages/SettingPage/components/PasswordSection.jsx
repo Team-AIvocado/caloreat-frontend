@@ -37,11 +37,15 @@ const PasswordSection = () => {
             await updatePassword(passwords.current, passwords.new);
             alert("비밀번호가 성공적으로 변경되었습니다.");
             // 입력창 초기화
-            setPasswords({ current: "", new: "", confirm: ""});
+            setPasswords({ current: "", new: "", confirm: "" });
         } catch (error) {
             console.error("비밀번호 변경을 실패했습니다.", error);
             // 에러 메세지 표시
-            const msg = error.response?.data?.detail || "비밀번호 변경에 실패했습니다.";
+            let msg = error.response?.data?.detail || "비밀번호 변경에 실패했습니다.";
+            // 기본 비밀번호 에러 메세지 표시
+            if (msg === "old pw incorrect") {
+                msg = "현재 비밀번호가 일치하지 않습니다.";
+            }
 
             alert(msg);
         } finally {
@@ -52,7 +56,7 @@ const PasswordSection = () => {
     return (
         <div className="bg-white p-6 rounded-lg shadow-sm">
             <h2 className="text-xl font-bold mb-4">비밀번호 변경</h2>
-            
+
             <div className="space-y-4">
                 {/* 현재 비밀번호 */}
                 <div>

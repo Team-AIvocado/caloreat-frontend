@@ -91,7 +91,8 @@ const DiseaseSection = () => {
                             type="checkbox"
                             checked={selectedConditions.includes(item.id)}
                             onChange={() => {}}
-                            className="h-5 w-5 text-blue-600 rounded focus:ring-blue-500"
+                            // accent-color를 이용하여 확실하게 체크박스 색 고정
+                            className="h-5 w-5 accent-blue-600 rounded focus:ring-blue-500"
                         />
 
                         {/* 질환 이름 + 설명 */}
