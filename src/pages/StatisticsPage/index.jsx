@@ -144,13 +144,13 @@ export const StatisticsPage = () => {
         통계
       </div>
       <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background dark:bg-gray-900 min-h-screen">
-        <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
+        <div className="flex w-full max-w-150 bg-white dark:bg-gray-800 rounded-xl p-1 mb-6 border border-sub_border dark:border-gray-700">
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}
               className={`flex-1 py-2 text-sm rounded-lg ${activeTab === tab
                 ? "bg-main_color text-white"
-                : "text-secondary_text hover:bg-sub_background"
+                : "text-secondary_text dark:text-gray-400 hover:bg-sub_background dark:hover:bg-gray-700"
                 }`}
               onClick={() => {
                 setActiveTab(tab);
@@ -162,14 +162,14 @@ export const StatisticsPage = () => {
           ))}
         </div>
 
-        <div className="flex items-center justify-between w-full max-w-[600px] mb-6 px-4">
+        <div className="flex items-center justify-between w-full max-w-150 mb-6 px-4">
           <button
             onClick={() => handleDateChange(-1)}
-            className="p-2 text-secondary_text hover:text-primary_text font-bold text-xl"
+            className="p-2 text-secondary_text dark:text-gray-400 hover:text-primary_text dark:hover:text-white font-bold text-xl"
           >
             &lt;
           </button>
-          <div className="text-lg font-bold text-primary_text flex items-center gap-2 relative">
+          <div className="text-lg font-bold text-primary_text dark:text-white flex items-center gap-2 relative">
             {formatDateDisplay()}
             {activeTab === "daily" && (
               <>
@@ -192,8 +192,8 @@ export const StatisticsPage = () => {
           <button
             onClick={() => handleDateChange(1)}
             className={`p-2 font-bold text-xl ${isFuture()
-              ? "text-gray-300 cursor-not-allowed"
-              : "text-secondary_text hover:text-primary_text"
+              ? "text-gray-300 dark:text-gray-600 cursor-not-allowed"
+              : "text-secondary_text dark:text-gray-400 hover:text-primary_text dark:hover:text-white"
               }`}
             disabled={isFuture()}
           >
@@ -202,9 +202,9 @@ export const StatisticsPage = () => {
         </div>
 
         {loading || !statsData ? (
-          <div className="text-secondary_text mt-10">Loading...</div>
+          <div className="text-secondary_text dark:text-gray-400 mt-10">Loading...</div>
         ) : (
-          <div className="w-full max-w-[600px] flex flex-col gap-4">
+          <div className="w-full max-w-150 flex flex-col gap-4">
             <TotalKcal
               totalCalories={statsData.totalCalories}
               goalCalories={goalCalories}

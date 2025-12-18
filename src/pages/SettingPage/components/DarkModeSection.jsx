@@ -77,7 +77,7 @@ const DarkModeSection = () => {
                         </span>
                     </div>
                 </div>
-                {/* Right: Toggle Switch */}
+                {/* 토글 스위치 */}
                 <div className="relative inline-flex items-center cursor-pointer">
                     <input
                         type="checkbox"
