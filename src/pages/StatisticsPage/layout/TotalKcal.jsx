@@ -13,7 +13,7 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
   const goalName = `목표 ${goalCalories}kcal`;
 
   return (
-    <div className="bg-white rounded-xl p-3 border-3 border-sub_border w-full mb-4 flex flex-col">
+    <div className="bg-sub_background rounded-xl p-3 border-3 border-sub_border w-full mb-4 flex flex-col">
       <div className="w-full flex justify-between items-center mb-4">
         <div className="text-primary_text text-xl pl-5 pt-4">
           {type === "daily" ? "총 칼로리" : "평균 칼로리"}
@@ -22,7 +22,7 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
 
       {type === "daily" ? (
         <div className="flex flex-col justify-center py-4">
-          <div className="text-5xl font-bold text-primary_text text-center">
+          <div className="text-5xl font-extrabold text-primary_text text-center">
             {totalCalories} kcal
           </div>
           <div className="text-sm text-primary_text mt-5 text-right pr-4">
@@ -57,11 +57,12 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
               <Line
                 dataKey="calories"
                 barSize={17}
-                fill="#413ea0"
+                fill="var(--color-main_color)"
+                stroke="var(--color-main_color)"
                 name="섭취 칼로리"
                 type="monotone"
               />
-              <Bar dataKey="goal" barSize={17} fill="#A3A3A3" name={goalName} />
+              <Bar dataKey="goal" barSize={17} fill="var(--color-secondary_text)" name={goalName} />
             </ComposedChart>
           </ResponsiveContainer>
         </div>

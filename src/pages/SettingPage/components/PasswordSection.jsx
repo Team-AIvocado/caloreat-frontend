@@ -54,43 +54,43 @@ const PasswordSection = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
-            <h2 className="text-xl font-bold mb-4">비밀번호 변경</h2>
+        <div className="bg-sub_background p-6 rounded-lg shadow-sm">
+            <h2 className="text-xl font-bold mb-4 text-primary_text">비밀번호 변경</h2>
 
             <div className="space-y-4">
                 {/* 현재 비밀번호 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">현재 비밀번호</label>
+                    <label className="block text-sm font-medium text-primary_text mb-1">현재 비밀번호</label>
                     <input
                         type="password"
                         name="current"
                         value={passwords.current}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         placeholder="현재 비밀번호를 입력하세요"
                     />
                 </div>
                 {/* 새 비밀번호 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">새 비밀번호</label>
+                    <label className="block text-sm font-medium text-primary_text mb-1">새 비밀번호</label>
                     <input
                         type="password"
                         name="new"
                         value={passwords.new}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         placeholder="새 비밀번호 (4자 이상)"
                     />
                 </div>
                 {/* 새 비밀번호 확인 */}
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">새 비밀번호 확인</label>
+                    <label className="block text-sm font-medium text-primary_text mb-1">새 비밀번호 확인</label>
                     <input
                         type="password"
                         name="confirm"
                         value={passwords.confirm}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
                         placeholder="새 비밀번호를 다시 입력하세요"
                     />
                 </div>

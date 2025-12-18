@@ -8,12 +8,12 @@ const NicknameSection = () => {
   const [isLoading, setIsLoading] = useState(false);
   const handleUpdate = async () => {
     if (!nickname.trim()) return;
-    
+
     setIsLoading(true);
     try {
       // nickname 서비스 함수 호출
       await updateNickname(nickname);
-      
+
       setUser({ ...user, nickname: nickname });
       alert("닉네임이 변경되었습니다.");
     } catch (error) {
@@ -24,9 +24,9 @@ const NicknameSection = () => {
     }
   };
   return (
-    <div className="bg-white p-6 rounded-lg shadow-sm">
+    <div className="bg-sub_background p-6 rounded-lg shadow-sm">
       <h2 className="text-xl font-bold mb-4">닉네임 설정</h2>
-      
+
       <div className="flex gap-2">
         <input
           type="text"
@@ -35,7 +35,7 @@ const NicknameSection = () => {
           className="border p-2 rounded flex-1"
           disabled={isLoading}
         />
-        <button 
+        <button
           onClick={handleUpdate}
           disabled={isLoading}
           className="bg-blue-500 text-white px-4 py-2 rounded disabled:bg-gray-300 whitespace-nowrap min-w-fit"

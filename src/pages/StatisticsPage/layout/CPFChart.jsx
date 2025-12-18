@@ -1,9 +1,9 @@
 import { Cell, Pie, PieChart, ResponsiveContainer } from "recharts";
 
 const COLORS = {
-  carbs: "#bec9ff",
-  protein: "#cfe7ff",
-  fat: "#ffe2c1",
+  carbs: "var(--color-icon_color1)",
+  protein: "var(--color-icon_color2)",
+  fat: "var(--color-icon_color3)",
 };
 
 export const CPFChart = ({ stats, type }) => {
@@ -34,7 +34,7 @@ export const CPFChart = ({ stats, type }) => {
   );
 
   return (
-    <div className="bg-white rounded-xl p-5 border-3 border-sub_border w-full">
+    <div className="bg-sub_background rounded-xl p-5 border-3 border-sub_border w-full">
       <div className="text-primary_text text-xl pl-5 pt-4">
         {type === "daily" ? "총 섭취량" : "평균 섭취량"}
       </div>

@@ -14,10 +14,10 @@ const DiseaseSection = () => {
     // 백엔드에서 받은 userinfo.conditions를 그대로 로컬상태에 적용
     useEffect(() => {
         if (userInfo?.conditions) {
-            setSelectedConditions(userInfo.conditions); 
+            setSelectedConditions(userInfo.conditions);
         }
-    }, [userInfo]);  
-    
+    }, [userInfo]);
+
     // 체크박스 토글 처리
     // 이미 선택된 id면 제거, 없으면 추가
     const handleToggle = (conditionId) => {
@@ -25,7 +25,7 @@ const DiseaseSection = () => {
             if (prev.includes(conditionId)) {
                 return prev.filter((id) => id !== conditionId); // 제거
             } else {
-                return [...prev, conditionId]; 
+                return [...prev, conditionId];
             }
         });
     };
@@ -62,12 +62,12 @@ const DiseaseSection = () => {
     ];
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className="bg-sub_background p-6 rounded-lg shadow-sm">
             {/* 제목 */}
-            <h2 className="text-xl font-bold mb-4">질환 및 건강 정보</h2>
+            <h2 className="text-xl font-bold mb-4 text-primary_text">질환 및 건강 정보</h2>
 
             {/* 설명 */}
-            <p className="text-gray-500 mb-4 text-sm">
+            <p className="text-secondary_text mb-4 text-sm">
                 해당하는 항목을 모두 선택해주세요.
             </p>
 
@@ -78,10 +78,9 @@ const DiseaseSection = () => {
                         key={item.id}
                         className={`
                             flex items-center p-3 border rounded-lg cursor-pointer transition-all
-                            ${
-                                selectedConditions.includes(item.id)
-                                    ? "border-blue-500 bg-blue-50" // 선택됨
-                                    : "border-gray-200 hover:border-blue-200" // 선택되지 않음
+                            ${selectedConditions.includes(item.id)
+                                ? "border-blue-500 bg-blue-50" // 선택됨
+                                : "border-gray-200 hover:border-blue-200" // 선택되지 않음
                             }
                         `}
                         onClick={() => handleToggle(item.id)}
@@ -90,15 +89,14 @@ const DiseaseSection = () => {
                         <input
                             type="checkbox"
                             checked={selectedConditions.includes(item.id)}
-                            onChange={() => {}}
-                            // accent-color를 이용하여 확실하게 체크박스 색 고정
-                            className="h-5 w-5 accent-blue-600 rounded focus:ring-blue-500"
+                            onChange={() => { }}
+                            className="h-5 w-5 accent-main_color text-main_color rounded focus:ring-main_color"
                         />
 
                         {/* 질환 이름 + 설명 */}
                         <div className="ml-3">
-                            <span className="font-medium text-gray-900 block">{item.label}</span>
-                            <span className="text-sm text-gray-500">{item.desc}</span>
+                            <span className="font-medium text-primary_text block">{item.label}</span>
+                            <span className="text-sm text-secondary_text">{item.desc}</span>
                         </div>
                     </div>
                 ))}

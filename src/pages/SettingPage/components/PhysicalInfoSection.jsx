@@ -6,7 +6,7 @@ const PhysicalInfoSection = () => {
     // 전역 상태에서 사용자 기본프로필과 갱신 함수 가져오기
     const { userInfo, checkPreInfo } = useAuth();
     // 키, 몸무게를 관리할 로컬 상태값
-    const [ formData, setFormData ] = useState({
+    const [formData, setFormData] = useState({
         height: "",
         weight: "",
     });
@@ -44,7 +44,7 @@ const PhysicalInfoSection = () => {
             await checkPreInfo();
 
             alert("신체 정보가 수정되었습니다.");
-        } catch(error) {
+        } catch (error) {
             console.error("업데이트 실패", error);
             alert("수정에 실패하였습니다.");
         } finally {
@@ -60,7 +60,7 @@ const PhysicalInfoSection = () => {
     };
 
     return (
-        <div className="bg-white p-6 rounded-lg shadow-sm">
+        <div className="bg-sub_background p-6 rounded-lg shadow-sm">
             {/* 섹션 제목 */}
             <h2 className="text-xl font-bold mb-4">신체 정보 설정</h2>
 

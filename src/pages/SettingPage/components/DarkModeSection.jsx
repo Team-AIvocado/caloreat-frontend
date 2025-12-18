@@ -43,7 +43,7 @@ const DarkModeSection = () => {
       dark:bg-gray-800 : 다크모드일 때 배경을 어두운 회색으로
       transition-colors / duration-200 : 라이트/다크 전환 시 부드러운 색 전환*/
     return (
-        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm transition-colors duration-200">
+        <div className="bg-sub_background p-4 rounded-lg shadow-sm transition-colors duration-200">
             {/* 상단 한 줄에 아이콘 + 텍스트 + 토글 스위치를 배치하고
             onClick={toggleDarkMode}을 걸어서 영역을 눌러도 토글되게 단순화  */}
             <div className="flex items-center justify-between cursor-pointer" onClick={toggleDarkMode}>
@@ -51,12 +51,12 @@ const DarkModeSection = () => {
                 <div className="flex items-center gap-3">
                     <div className={`p-2 rounded-full ${isDarkMode ? 'bg-indigo-100 text-indigo-500' : 'bg-orange-100 text-orange-500'}`}>
                         {isDarkMode ? (
-                          // 다크모드일 때 보여줄 달 아이콘
+                            // 다크모드일 때 보여줄 달 아이콘
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z" />
                             </svg>
                         ) : (
-                          // 라이트모드일 때 보여줄 해 아이콘
+                            // 라이트모드일 때 보여줄 해 아이콘
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                 <circle cx="12" cy="12" r="4" />
                                 <path d="M12 2v2" />
