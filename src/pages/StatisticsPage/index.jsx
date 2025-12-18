@@ -140,17 +140,17 @@ export const StatisticsPage = () => {
 
   return (
     <>
-      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
+      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text dark:text-gray-200">
         통계
       </div>
-      <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">
+      <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background dark:bg-gray-900 min-h-screen">
         <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}
               className={`flex-1 py-2 text-sm rounded-lg ${activeTab === tab
-                  ? "bg-main_color text-white"
-                  : "text-secondary_text hover:bg-sub_background"
+                ? "bg-main_color text-white"
+                : "text-secondary_text hover:bg-sub_background"
                 }`}
               onClick={() => {
                 setActiveTab(tab);
@@ -192,8 +192,8 @@ export const StatisticsPage = () => {
           <button
             onClick={() => handleDateChange(1)}
             className={`p-2 font-bold text-xl ${isFuture()
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-secondary_text hover:text-primary_text"
+              ? "text-gray-300 cursor-not-allowed"
+              : "text-secondary_text hover:text-primary_text"
               }`}
             disabled={isFuture()}
           >

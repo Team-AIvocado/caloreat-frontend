@@ -27,48 +27,19 @@ export const LogPage = () => {
   }, [date]);
 
   return (
-    <div
-      style={{
-        padding: "32px",
-        maxWidth: "900px",
-        margin: "0 auto",
-        background: "var(--color-main_background)",
-        minHeight: "100vh",
-      }}
-    >
-      <h2
-        style={{
-          color: "var(--color-primary_text)",
-          marginBottom: "20px",
-          fontSize: "24px",
-          fontWeight: 600,
-          textAlign: "center",
-        }}
-      >
+    // 다크/라이트 모드 전환시 잘 작동하게 코드 수정
+    <div className="min-h-screen bg-main_background dark:bg-gray-900 p-8 max-w-225 mx-auto">
+      <h2 className="mb-5 text-2xl font-semibold text-center text-primary_text dark:text-gray-100">
         음식 로그
       </h2>
 
       {/* 날짜 네비게이터 (CalendarModal 포함) */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: "24px",
-        }}
-      >
+      <div className="flex justify-center mb-6">
         <DateNavigator date={date} setDate={setDate} />
       </div>
 
       {error && (
-        <div
-          style={{
-            textAlign: "center",
-            color: "var(--color-error_color)",
-            marginTop: "20px",
-            fontSize: "14px",
-            fontWeight: 500,
-          }}
-        >
+        <div className="text-center text-error_color mt-5 text-sm font-medium">
           데이터를 불러오는 데 문제가 발생했습니다.
         </div>
       )}
@@ -76,33 +47,14 @@ export const LogPage = () => {
       {loading && <div className="loader" />}
 
       {!loading && logs.length === 0 && !error && (
-        <div
-          style={{
-            marginTop: "50px",
-            textAlign: "center",
-            color: "var(--color-secondary_text)",
-            fontSize: "15px",
-            background: "var(--color-sub_background)",
-            padding: "20px",
-            borderRadius: "12px",
-            border: "1px solid var(--color-border_color)",
-          }}
-        >
+        <div className="mt-12 text-center text-secondary_text dark:text-gray-400 text-[15px] bg-sub_background dark:bg-gray-800 p-5 rounded-xl border border-border_color dark:border-gray-700">
           <p>아직 기록된 식단이 없습니다.</p>
           <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
         </div>
       )}
 
       {/* 로그 카드 */}
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
+      <div className="mt-2.5 flex flex-col items-center gap-5">
         {logs.map((meal) =>
           meal.foods.map((food, idx) => (
             <LogCard
