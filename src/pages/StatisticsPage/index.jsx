@@ -148,11 +148,10 @@ export const StatisticsPage = () => {
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}
-              className={`flex-1 py-2 text-sm rounded-lg ${
-                activeTab === tab
+              className={`flex-1 py-2 text-sm rounded-lg ${activeTab === tab
                   ? "bg-main_color text-white"
                   : "text-secondary_text hover:bg-sub_background"
-              }`}
+                }`}
               onClick={() => {
                 setActiveTab(tab);
                 setCurrentDate(new Date());
@@ -192,11 +191,10 @@ export const StatisticsPage = () => {
           </div>
           <button
             onClick={() => handleDateChange(1)}
-            className={`p-2 font-bold text-xl ${
-              isFuture()
+            className={`p-2 font-bold text-xl ${isFuture()
                 ? "text-gray-300 cursor-not-allowed"
                 : "text-secondary_text hover:text-primary_text"
-            }`}
+              }`}
             disabled={isFuture()}
           >
             &gt;

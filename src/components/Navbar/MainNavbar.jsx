@@ -1,35 +1,30 @@
 import { NavLink, useNavigate } from "react-router-dom";
-import { logout } from "../../services/users";
 import { useAuth } from "../../context/AuthContext";
 import { useAlert } from "../../context/AlertContext";
 import { alertBtn } from "../../utils/styles";
 
 export const MainNavBar = ({ nickname }) => {
   const navigate = useNavigate();
-  const { setUser } = useAuth();
+  const { setUser, logout } = useAuth();
   const { showAlert, closeAlert } = useAlert();
 
   const handleConfirmAndNavigate = () => {
     closeAlert();
-    setUser(null);
+    // setUser(null); // AuthContext already does this
     navigate("/");
   };
 
   const onLogout = async () => {
-    try {
-      await logout();
-      showAlert({
-        msg: "로그아웃 완료!",
-        hasNavbar: true,
-        footer: (
-          <button className={alertBtn} onClick={handleConfirmAndNavigate}>
-            확인
-          </button>
-        ),
-      });
-    } catch {
-      console.log("failed to logout");
-    }
+    await logout();
+    showAlert({
+      msg: "로그아웃 완료!",
+      hasNavbar: true,
+      footer: (
+        <button className={alertBtn} onClick={handleConfirmAndNavigate}>
+          확인
+        </button>
+      ),
+    });
   };
 
   return (

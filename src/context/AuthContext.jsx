@@ -68,9 +68,11 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await logoutService();
-      setUser(null);
     } catch (error) {
       console.error("로그아웃 실패:", error);
+    } finally {
+      setUser(null);
+      setUserInfo(null);
     }
   };
 
@@ -90,16 +92,16 @@ export const AuthProvider = ({ children }) => {
     if (userInfo.gender === "male") {
       return Math.round(
         66.47 +
-          13.75 * userInfo.weight +
-          5 * userInfo.height -
-          6.76 * userInfo.age
+        13.75 * userInfo.weight +
+        5 * userInfo.height -
+        6.76 * userInfo.age
       );
     } else {
       return Math.round(
         655.1 +
-          9.56 * userInfo.weight +
-          1.85 * userInfo.height -
-          4.68 * userInfo.age
+        9.56 * userInfo.weight +
+        1.85 * userInfo.height -
+        4.68 * userInfo.age
       );
     }
   };

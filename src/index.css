@@ -1,6 +1,8 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
 
 @theme {
   /* 메인 배경 */
@@ -46,6 +48,7 @@
   --color-over: #ff6b6b;
   --color-sufficient: #45c4b0;
 }
+
 
 body {
   font-family: "Pretendard", sans-serif;
