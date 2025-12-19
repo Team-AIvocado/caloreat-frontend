@@ -10,19 +10,14 @@ export default function FoodItem({ food }) {
   };
 
   return (
-    <div>
+    <div className="flex items-center gap-4">
       <img
         src={image_url}
         alt={name}
-        style={{
-          width: "80px",
-          height: "80px",
-          borderRadius: "8px",
-          objectFit: "cover",
-        }}
+        className="w-20 h-20 rounded-lg object-cover"
       />
       <div>
-        <h3 style={{ margin: 0 }}>{name}</h3>
+        <h3 className="m-0">{name}</h3>
         <p>
           {kcal} kcal · {amount} 인분
         </p>

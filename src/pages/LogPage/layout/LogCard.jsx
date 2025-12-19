@@ -27,78 +27,29 @@ export default function LogCard({ item, meal, index }) {
   return (
     <Link
       to={`/main/log/${meal.id}/${index}?date=${dateString}`}
-      style={{ textDecoration: "none", color: "inherit" }}
+      className="no-underline text-inherit w-full"
     >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "500px",
-          padding: "16px",
-          borderRadius: "14px",
-          background: "var(--color-sub_background)",
-          border: "1px solid var(--color-border_color)",
-          boxShadow: "0 3px 8px rgba(0,0,0,0.06)",
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
-          cursor: "pointer",
-        }}
-      >
+      <div className="w-full max-w-full p-4 rounded-[14px] bg-sub_background border border-border_color shadow-[0_3px_8px_rgba(0,0,0,0.06)] flex items-center gap-4 cursor-pointer">
         {/* 이미지 영역 */}
-        <div
-          style={{
-            width: "95px",
-            height: "95px",
-            borderRadius: "10px",
-            overflow: "hidden",
-            flexShrink: 0,
-          }}
-        >
+        <div className="w-[95px] h-[95px] rounded-[10px] overflow-hidden shrink-0">
           <img
             src={imageUrl}
             alt={foodname}
-            style={{
-              width: "100%",
-              height: "100%",
-              objectFit: "cover",
-            }}
+            className="w-full h-full object-cover"
           />
         </div>
 
         {/* 정보 영역 */}
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            gap: "6px",
-            flex: 1,
-          }}
-        >
-          <span
-            style={{
-              fontWeight: 600,
-              fontSize: "17px",
-              color: "var(--color-primary_text)",
-            }}
-          >
+        <div className="flex flex-col gap-1.5 flex-1">
+          <span className="font-semibold text-[17px] text-primary_text">
             {foodname}
           </span>
 
-          <span
-            style={{
-              color: "var(--color-secondary_text)",
-              fontSize: "14px",
-            }}
-          >
+          <span className="text-secondary_text text-sm">
             {calories} kcal · {quantity} 인분
           </span>
 
-          <span
-            style={{
-              color: "var(--color-secondary_text)",
-              fontSize: "12px",
-            }}
-          >
+          <span className="text-secondary_text text-xs">
             섭취 시간 | {formatTime(meal.eaten_at)}
           </span>
         </div>
