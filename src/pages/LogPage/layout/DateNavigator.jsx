@@ -21,9 +21,14 @@ export default function DateNavigator({ date, setDate }) {
     setDate(next);
   };
 
-  // 날짜 문자열 포맷 (렌더링용)
+  // 날짜 문자열 포맷 (렌더링용 - Local Time)
   const displayDate =
-    date instanceof Date ? date.toISOString().split("T")[0] : date;
+    date instanceof Date
+      ? `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(
+          2,
+          "0"
+        )}-${String(date.getDate()).padStart(2, "0")}`
+      : date;
 
   // 오늘 날짜인지 확인 (시간 제외하고 날짜만 비교)
   const isToday = date.toDateString() === today.toDateString();
@@ -31,7 +36,10 @@ export default function DateNavigator({ date, setDate }) {
   return (
     <div className="relative flex flex-col items-center">
       <div className="flex items-center gap-4 text-lg font-semibold">
-        <button onClick={prevDay} className="hover:opacity-70 transition-opacity">
+        <button
+          onClick={prevDay}
+          className="hover:opacity-70 transition-opacity"
+        >
           {"<"}
         </button>
 

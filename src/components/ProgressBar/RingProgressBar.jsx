@@ -15,13 +15,21 @@ function RingProgressBar({ totalkcal, kcal }) {
   const customText = (
     <tspan>
       <tspan
-        dx="3"
-        font-size="20px"
+        x="50%"
+        dy="-0.2em"
+        textAnchor="middle"
+        fontSize="20px"
         style={{ fill: "#1D2E50", fontWeight: "bold" }}
       >
         {kcal}
       </tspan>
-      <tspan dx="-16" dy="12" fontSize="9px" style={{ fill: "#6C6C6C" }}>
+      <tspan
+        x="50%"
+        dy="1.5em"
+        textAnchor="middle"
+        fontSize="9px"
+        style={{ fill: "#6C6C6C" }}
+      >
         /{totalkcal} kcal
       </tspan>
     </tspan>

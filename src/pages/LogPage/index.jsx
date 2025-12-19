@@ -21,94 +21,51 @@ export const LogPage = () => {
   useEffect(() => {
     fetchLogs(date);
 
-    // URL에는 문자열로 넣어야 하므로 포맷 변환
-    const formatted = date.toISOString().slice(0, 10);
+    // URL에는 문자열로 넣어야 하므로 포맷 변환 (Local Time)
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formatted = `${year}-${month}-${day}`;
     setSearchParams({ date: formatted });
   }, [date]);
 
   return (
-    <div
-      style={{
-        padding: "32px",
-        maxWidth: "900px",
-        margin: "0 auto",
-        background: "var(--color-main_background)",
-        minHeight: "100vh",
-      }}
-    >
-      <h2
-        style={{
-          color: "var(--color-primary_text)",
-          marginBottom: "20px",
-          fontSize: "24px",
-          fontWeight: 600,
-          textAlign: "center",
-        }}
-      >
+    <div className="px-4 py-8 md:px-8 max-w-[900px] mx-auto bg-main_background">
+      <h2 className="text-primary_text mb-5 text-2xl font-semibold text-center">
         음식 로그
       </h2>
 
       {/* 날짜 네비게이터 (CalendarModal 포함) */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          marginBottom: "24px",
-        }}
-      >
+      <div className="flex justify-center mb-6">
         <DateNavigator date={date} setDate={setDate} />
       </div>
 
       {error && (
-        <div
-          style={{
-            textAlign: "center",
-            color: "var(--color-error_color)",
-            marginTop: "20px",
-            fontSize: "14px",
-            fontWeight: 500,
-          }}
-        >
+        <div className="text-center text-error_color mt-5 text-sm font-medium">
           데이터를 불러오는 데 문제가 발생했습니다.
         </div>
       )}
 
       {loading && <div className="loader" />}
 
-      {!loading && logs.length === 0 && !error && (
-        <div
-          style={{
-            marginTop: "50px",
-            textAlign: "center",
-            color: "var(--color-secondary_text)",
-            fontSize: "15px",
-            background: "var(--color-sub_background)",
-            padding: "20px",
-            borderRadius: "12px",
-            border: "1px solid var(--color-border_color)",
-          }}
-        >
-          <p>아직 기록된 식단이 없습니다.</p>
-          <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
-        </div>
-      )}
+      {!loading &&
+        !error &&
+        (logs.length === 0 ||
+          logs.every((meal) => meal.meal_items.length === 0)) && (
+          <div className="mt-[50px] text-center text-secondary_text text-[15px] bg-sub_background p-5 rounded-xl border border-border_color">
+            <p>아직 기록된 식단이 없습니다.</p>
+            <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
+          </div>
+        )}
 
       {/* 로그 카드 */}
-      <div
-        style={{
-          marginTop: "10px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          gap: "20px",
-        }}
-      >
+      <div className="mt-2.5 flex flex-col items-center gap-5">
         {logs.map((meal) =>
-          meal.foods.map((food, idx) => (
+          meal.meal_items.map((item, idx) => (
             <LogCard
-              key={`${meal.meal_id}-${idx}`}
-              food={food}
-              mealId={meal.meal_id}
+              key={`${meal.id}-${idx}`}
+              item={item}
+              meal={meal}
               index={idx}
             />
           ))

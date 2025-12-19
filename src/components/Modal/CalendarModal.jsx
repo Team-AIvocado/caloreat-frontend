@@ -1,8 +1,6 @@
 import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
 import { ko } from "date-fns/locale";
-import "../../styles/datepicker.css";
 
 const MONTHS = [
   "1월",
@@ -36,7 +34,7 @@ export const CalendarModal = ({ open, value, onClose, onSelect }) => {
 
   return (
     <div
-      className="pl-52 fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+      className="md:pl-52 fixed inset-0 bg-black/40 flex items-center justify-center z-50"
       onClick={onClose}
     >
       <div

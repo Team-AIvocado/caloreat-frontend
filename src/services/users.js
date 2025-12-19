@@ -94,19 +94,21 @@ export const getUserInfo = async () => {
   }
 };
 
-export const createUserInfo = async (UserProfile, goal_type, conditions) => {
+export const createUserInfo = async (userProfile, goal_type, conditions) => {
   const data = {
-    gender: UserProfile.gender,
-    birthdate: UserProfile.birthdate,
-    height: UserProfile.height,
-    weight: UserProfile.weight,
+    gender: userProfile.gender,
+    birthdate: userProfile.birthdate,
+    height: parseFloat(userProfile.height),
+    weight: parseFloat(userProfile.weight),
     goal_type: goal_type,
     conditions: conditions,
   };
   try {
     const response = await api.post("/users/me/profile/form", data);
-    console.log("create comoplete", response.data);
+    console.log("create complete", response.data);
+    return response.data;
   } catch (e) {
-    console.log("failed to create userinfo", e);
+    console.error("failed to create userinfo", e.response?.data || e.message);
+    throw e;
   }
 };
