@@ -30,19 +30,10 @@ export const foodDetect = async (imgSrc) => {
     });
     return response.data;
   } catch (e) {
-    console.log("failed to food detect ", e);
+    console.error("failed to food detect", e);
     throw e;
   }
 };
-// return {
-//   image_id: "uuid",
-//   food_name: "된장찌개",
-//   candidates: [
-//     { label: "된장찌개", confidence: 0.93 },
-//     { label: "김치찌개", confidence: 0.72 },
-//     { label: "청국장", confidence: 0.65 },
-//   ],
-// };
 
 export const fetchFood = async (foods) => {
   const data = { foodnames: [foods] };
@@ -69,28 +60,9 @@ export const fetchFood = async (foods) => {
 
     return response.data;
   } catch (e) {
-    console.log("failed to fetch food details ", e);
+    console.error("failed to fetch food details", e);
+    throw e;
   }
-
-  // return {
-  //   results: [
-  //     {
-  //       foodname: foods,
-  //       calories: 230,
-  //       carbs: 30,
-  //       protein: 12,
-  //       fat: 240,
-  //       nutritions: {
-  //         sugar: 40,
-  //         fiber: 15,
-  //         sodium: 12,
-  //         cholesterol: 4,
-  //         saturated_fat: 9,
-  //       },
-  //       micronutrients: { vitamin_c: 20, calcium: 50 },
-  //     },
-  //   ],
-  // };
 };
 
 export const getTotalKcal = async () => {
@@ -107,7 +79,10 @@ export const createMealLog = async (mealData) => {
     const response = await api.post("/meals/log", mealData);
     return response.data;
   } catch (e) {
-    console.log("failed to create meal log", e);
+    console.error("failed to create meal log", e);
     throw e;
   }
 };
+
+// Alias for backward compatibility
+export const saveMealLog = createMealLog;

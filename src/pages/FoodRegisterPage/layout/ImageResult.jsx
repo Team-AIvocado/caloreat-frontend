@@ -1,7 +1,6 @@
 import { Slider } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createMealLog } from "../../../services/meal";
 import {
   Bar,
   BarChart,
@@ -11,6 +10,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { createMealLog } from "../../../services/meal";
 
 export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
@@ -26,13 +26,14 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     return "snack";
   });
 
-  const result = foodDetail.results[0] || {};
+  const result = foodDetail?.results?.[0] || {};
+
   const {
-    foodname,
-    calories,
-    carbs,
-    protein,
-    fat,
+    foodname = "",
+    calories = 0,
+    carbs = 0,
+    protein = 0,
+    fat = 0,
     nutritions = {},
     micronutrients = {},
   } = result;
@@ -42,7 +43,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const currentProtein = Math.round(protein * intake);
   const currentFat = Math.round(fat * intake);
   const totalMicronutrients = Math.round(
-    Object.values(micronutrients).reduce((total, cur) => total + cur, 0) *
+    Object.values(micronutrients || {}).reduce((total, cur) => total + cur, 0) *
       intake
   );
 
@@ -60,12 +61,18 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     try {
       await createMealLog({
         meal_type: mealType,
-        eaten_at: new Date(),
+        eaten_at: new Date().toISOString(),
         meal_items: [
           {
             foodname: foodname,
             quantity: intake,
-            nutritions: { ...nutritions, micronutrients },
+            nutritions: {
+              calories: Math.round(calories * intake),
+              carbs: Math.round(carbs * intake),
+              protein: Math.round(protein * intake),
+              fat: Math.round(fat * intake),
+              ...nutritions,
+            },
           },
         ],
         tmp_image_ids: imageId ? [imageId] : [],
@@ -79,7 +86,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     }
   };
 
-  const handleSliderChange = (event, newValue) => {
+  const handleSliderChange = (_event, newValue) => {
     setIntake(newValue);
   };
 

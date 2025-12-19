@@ -15,8 +15,6 @@ import { AlertProvider } from "./context/AlertContext";
 import { LogDetailPage } from "./pages/LogDetailPage";
 import { MealProvider } from "./context/MealContext";
 import { LogEditPage } from "./pages/LogEditPage";
-import "react-datepicker/dist/react-datepicker.css";
-import "./styles/datepicker.css";
 // import { UserInfoPageMob } from "./pages/UserInfoPageMob";
 
 /**

@@ -15,12 +15,14 @@ export const DashBoardPage = () => {
     fetchLogs(new Date());
   }, []); // Fetch today's logs on mount
 
-  // Calculate total calories
-  const totalKcal = logs.reduce((total, meal) => {
+  // Calculate total calories (백엔드 구조에 맞게 수정)
+  const totalKcal = (logs || []).reduce((total, meal) => {
     return (
       total +
-      meal.foods.reduce(
-        (mealTotal, food) => mealTotal + (food.kcal * food.amount || 0),
+      (meal.meal_items || []).reduce(
+        (mealTotal, item) =>
+          mealTotal +
+          (item.nutritions?.calories * item.nutritions?.amount || 0),
         0
       )
     );
@@ -44,16 +46,18 @@ export const DashBoardPage = () => {
       </div>
       <RingProgressBar totalkcal={goalCalories} kcal={Math.round(totalKcal)} />
 
-      {logs.length > 0 ? (
-        <div className="border w-full max-w-[450px] border-sub_color px-6 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
+      {logs && logs.length > 0 ? (
+        <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
           {logs.map((meal) => {
-            const mealKcal = meal.foods.reduce(
-              (acc, cur) => acc + (cur.kcal * cur.amount || 0),
+            const mealKcal = (meal.meal_items || []).reduce(
+              (acc, item) =>
+                acc +
+                (item.nutritions?.calories * item.nutritions?.amount || 0),
               0
             );
             return (
               <div
-                key={meal.meal_id}
+                key={meal.id}
                 className="text-secondary_text w-full flex justify-between items-center"
               >
                 <div className="flex items-center gap-4">
@@ -61,7 +65,9 @@ export const DashBoardPage = () => {
                     {mealTypeLabels[meal.meal_type] || meal.meal_type}
                   </div>
                   <div className="text-sm">
-                    {meal.foods.map((f) => f.name).join(", ")}
+                    {(meal.meal_items || [])
+                      .map((item) => item.foodname)
+                      .join(", ")}
                   </div>
                 </div>
                 <div className="text-primary_text font-light whitespace-nowrap">
