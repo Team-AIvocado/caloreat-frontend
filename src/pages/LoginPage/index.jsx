@@ -70,35 +70,52 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col justify-center items-center bg-main_background px-4">
-        <div className="text-main_color text-3xl mb-8">
-          <div className="font-bold text-center">caloreat</div>
-        </div>
+      <div className="flex min-h-screen flex-col bg-main_background px-4 max-w-[600px] mx-auto relative">
+        {/* 중앙 콘텐츠 (로고 + 로그인 폼) - flex-1과 justify-center로 화면 정중앙 배치 */}
+        <div className="flex-1 flex flex-col justify-center items-center w-full">
+          <div className="text-main_color text-3xl mb-12">
+            <div className="font-bold text-center">caloreat</div>
+          </div>
 
-        {loading || isLoggingIn ? (
-          <div className="text-gray-400">로딩중입니다...</div>
-        ) : (
-          <>
-            {user ? (
-              <LoginComp
-                logout={logout}
-                nickname={user.nickname}
-                userInfo={userInfo}
-              />
-            ) : (
-              <OnLogin
-                error={error}
-                userId={userId}
-                setUserId={setUserId}
-                setError={setError}
-                password={password}
-                setPassword={setPassword}
-                onMain={onMain}
-                onSignup={onSignup}
-              />
-            )}
-          </>
-        )}
+          {loading || isLoggingIn ? (
+            <div className="text-gray-400">로딩중입니다...</div>
+          ) : (
+            <>
+              {user ? (
+                <LoginComp
+                  logout={logout}
+                  nickname={user.nickname}
+                  userInfo={userInfo}
+                />
+              ) : (
+                <OnLogin
+                  error={error}
+                  userId={userId}
+                  setUserId={setUserId}
+                  setError={setError}
+                  password={password}
+                  setPassword={setPassword}
+                  onMain={onMain}
+                  onSignup={onSignup}
+                />
+              )}
+            </>
+          )}
+          {/* 회원가입 링크 - 로그인 폼 바로 아래 배치 */}
+          {!user && !loading && !isLoggingIn && (
+            <div className="w-full text-center mt-6">
+              <div className="text-sm text-secondary_text dark:text-gray-400">
+                <span>아직 회원이 아니라면?</span>{" "}
+                <span
+                  className="text-gray-900 dark:text-white cursor-pointer underline ml-2 font-medium"
+                  onClick={onSignup}
+                >
+                  회원가입
+                </span>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
