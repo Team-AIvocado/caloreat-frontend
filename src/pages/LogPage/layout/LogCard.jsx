@@ -31,7 +31,8 @@ export default function LogCard({ item, meal, index }) {
     >
       <div
         style={{
-          width: "500px",
+          width: "100%",
+          maxWidth: "500px",
           padding: "16px",
           borderRadius: "14px",
           background: "var(--color-sub_background)",

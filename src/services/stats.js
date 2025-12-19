@@ -97,34 +97,39 @@ const generateMockStats = (type, date, goal) => {
 };
 
 export const fetchDailyStats = async (date, goal) => {
-  // try {
-  //   const response = await api.get(`/stats/daily?date=${date}`);
-  //   return response.data;
-  // } catch (e) {
-  //   console.log("failed to fetch daily stats", e);
-  // }
-
-  return generateMockStats("daily", new Date(date), goal);
+  try {
+    const formattedDate =
+      date instanceof Date ? date.toISOString().split("T")[0] : date;
+    const response = await api.get(`/stats/daily?date=${formattedDate}`);
+    return response.data;
+  } catch (e) {
+    console.log("failed to fetch daily stats", e);
+    return generateMockStats("daily", new Date(date), goal);
+  }
 };
 
 export const fetchWeeklyStats = async (startDate, goal) => {
-  // try {
-  //   const response = await api.get(`/stats/weekly?startDate=${startDate}`);
-  //   return response.data;
-  // } catch (e) {
-  //   console.log("failed to fetch weekly stats", e);
-  // }
-
-  return generateMockStats("weekly", new Date(startDate), goal);
+  try {
+    const formattedDate =
+      startDate instanceof Date
+        ? startDate.toISOString().split("T")[0]
+        : startDate;
+    const response = await api.get(`/stats/weekly?startDate=${formattedDate}`);
+    return response.data;
+  } catch (e) {
+    console.log("failed to fetch weekly stats", e);
+    return generateMockStats("weekly", new Date(startDate), goal);
+  }
 };
 
 export const fetchMonthlyStats = async (year, month, goal) => {
-  // try {
-  //   const response = await api.get(`/stats/monthly?year=${year}&month=${month}`);
-  //   return response.data;
-  // } catch (e) {
-  //   console.log("failed to fetch monthly stats", e);
-  // }
-
-  return generateMockStats("monthly", new Date(year, month - 1, 1), goal);
+  try {
+    const response = await api.get(
+      `/stats/monthly?year=${year}&month=${month}`
+    );
+    return response.data;
+  } catch (e) {
+    console.log("failed to fetch monthly stats", e);
+    return generateMockStats("monthly", new Date(year, month - 1, 1), goal);
+  }
 };

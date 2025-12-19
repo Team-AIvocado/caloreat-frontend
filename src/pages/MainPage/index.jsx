@@ -6,9 +6,9 @@ export const MainPage = () => {
   const { user, userInfo } = useAuth();
 
   return (
-    <div>
+    <div className="min-h-screen bg-main_background">
       <MainNavBar nickname={userInfo?.nickname || user?.nickname || ""} />
-      <div className="ml-52 pb-0">
+      <div className="md:ml-52 pt-16 md:pt-0 pb-0">
         <Outlet />
       </div>
     </div>

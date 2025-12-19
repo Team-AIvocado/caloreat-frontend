@@ -114,8 +114,8 @@ export const SignUpPage = () => {
     if (!nickname.trim()) {
       setError({ ...error, name: "닉네임을 입력해주세요" });
       return;
-    } else if (nickname.length > 5) {
-      setError({ ...error, name: "닉네임은 5자 이하로 입력해주세요" });
+    } else if (nickname.length > 8) {
+      setError({ ...error, name: "닉네임은 8자 이하로 입력해주세요" });
       return;
     }
 
@@ -170,7 +170,7 @@ export const SignUpPage = () => {
 
   return (
     <>
-      <div className="flex h-screen flex-col justify-center items-center">
+      <div className="flex min-h-screen flex-col justify-center items-center bg-main_background py-10">
         <div className="text-main_color text-3xl">
           <div className="pb-10 font-bold">
             <span className="cursor-pointer" onClick={() => navigate("/")}>
@@ -197,8 +197,8 @@ export const SignUpPage = () => {
           setConfirmPassword={setConfirmPassword}
         />
 
-        <div className="flex flex-row ml-24">
-          <div className="text-xs mt-2 ml-20 ">
+        <div className="flex flex-col-reverse md:flex-row items-center md:ml-24 mt-8 md:mt-0 w-full md:w-auto">
+          <div className="text-xs mt-4 md:mt-2 md:ml-20 text-center md:text-left whitespace-nowrap">
             <span>이미 회원이라면?</span>{" "}
             <span
               className="text-main_color cursor-pointer underline ml-1"
@@ -208,7 +208,7 @@ export const SignUpPage = () => {
             </span>
           </div>
           <button
-            className="bg-main_color text-white rounded-lg ml-7 px-8 py-2 text-sm cursor-pointer"
+            className="bg-main_color text-white rounded-lg md:ml-7 px-8 py-2 text-sm cursor-pointer w-72 md:w-auto"
             onClick={handleSignUp}
           >
             완료
