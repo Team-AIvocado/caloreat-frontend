@@ -71,7 +71,7 @@ export const CPFChart = ({ stats, type }) => {
           </div>
         </div>
 
-        <div className="flex flex-col w-1/3 items-start">
+        <div className="flex flex-col w-full max-w-[180px] items-start">
           {renderLegendItem(
             "탄수화물",
             carbs.amount,

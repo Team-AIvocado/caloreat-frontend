@@ -31,8 +31,8 @@ export const LogPage = () => {
 
   return (
     <div
+      className="px-4 py-8 md:px-8"
       style={{
-        padding: "32px",
         maxWidth: "900px",
         margin: "0 auto",
         background: "var(--color-main_background)",

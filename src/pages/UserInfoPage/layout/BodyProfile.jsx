@@ -1,91 +1,73 @@
-import { sty } from "../../../utils/styles";
-
 export const BodyProfile = ({
   userProfile,
   setUserProfile,
   setError,
   error,
+  onNext,
+  onPrev,
 }) => {
   return (
-    <>
-      <div className="text-sm text-secondary_text mb-1.5 font-semibold">
-        신체 정보
+    <div className="flex flex-col items-center w-full">
+      <div className="text-lg text-secondary_text mb-3 font-semibold w-full text-center">
+        신체 정보 입력
       </div>
 
-      <div className="pl-7">
+      <div className="flex flex-col items-center w-full space-y-4">
+        <div className="flex flex-col w-2/3">
+          <label className="text-xs text-secondary_text mb-1 ml-1">키</label>
+          <input
+            className="rounded-lg border w-full pl-3 py-3 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
+            placeholder="키(cm)를 입력하세요"
+            value={userProfile.height}
+            onChange={(e) => {
+              setUserProfile({ ...userProfile, height: e.target.value });
+              setError({ ...error, height: "" });
+            }}
+            type="text"
+          />
+          {error.height && (
+            <div className="text-red-400 text-xs mt-1 ml-1 text-center">
+              {error.height}
+            </div>
+          )}
+        </div>
+
+        <div className="flex flex-col w-2/3">
+          <label className="text-xs text-secondary_text mb-1 ml-1">
+            몸무게
+          </label>
+          <input
+            className="rounded-lg border w-full pl-3 py-3 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
+            placeholder="몸무게(kg)를 입력하세요"
+            value={userProfile.weight}
+            onChange={(e) => {
+              setUserProfile({ ...userProfile, weight: e.target.value });
+              setError({ ...error, weight: "" });
+            }}
+            type="text"
+          />
+          {error.weight && (
+            <div className="text-red-400 text-xs mt-1 ml-1 text-center">
+              {error.weight}
+            </div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex flex-row justify-between w-full mt-6">
         <button
-          className={userProfile.gender == "male" ? sty[1] : sty[0]}
-          onClick={() => {
-            setUserProfile({ ...userProfile, gender: "male" });
-            setError({ ...error, gender: "" });
-          }}
+          className="bg-white border border-border_color text-secondary_text rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
+          onClick={onPrev}
         >
-          남성
+          이전
         </button>
         <button
-          className={userProfile.gender == "female" ? sty[1] : sty[0]}
-          onClick={() => {
-            setUserProfile({ ...userProfile, gender: "female" });
-            setError({ ...error, gender: "" });
-          }}
+          className="bg-main_color text-white rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
+          onClick={onNext}
         >
-          여성
+          다음
         </button>
       </div>
-      {error.gender && (
-        <div className="text-red-400 text-xs mb-1">{error.gender}</div>
-      )}
-      <label className="text-xs text-secondary_text ">
-        생년월일{" "}
-        <input
-          type="date"
-          className="rounded-lg border w-36 pl-3 py-2 ml-1 mr-4 mb-1.5 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
-          value={userProfile.birthdate}
-          onChange={(e) => {
-            setUserProfile({ ...userProfile, birthdate: e.target.value });
-            setError({ ...error, birthdate: "" });
-          }}
-        />
-        {error.birthdate && (
-          <div className="text-red-400 text-xs mb-1 pl-10">
-            {error.birthdate}
-          </div>
-        )}
-      </label>
-
-      <label className="text-xs text-secondary_text pl-6 ">
-        키{" "}
-        <input
-          className="rounded-lg border w-36 pl-3 py-2 ml-2.5 mr-4 mb-1.5 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
-          placeholder="키(cm)를 입력하세요"
-          value={userProfile.height}
-          onChange={(e) => {
-            setUserProfile({ ...userProfile, height: e.target.value });
-            setError({ ...error, height: "" });
-          }}
-          type="text"
-        />
-        {error.height && (
-          <div className="text-red-400 text-xs mb-1 pl-10">{error.height}</div>
-        )}
-      </label>
-
-      <label className="text-xs text-secondary_text ">
-        몸무게{" "}
-        <input
-          className="rounded-lg border w-40 ml-2.5 pl-3 py-2 mb-1.5 text-sm bg-white focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color"
-          placeholder="몸무게(kg)를 입력하세요"
-          value={userProfile.weight}
-          onChange={(e) => {
-            setUserProfile({ ...userProfile, weight: e.target.value });
-            setError({ ...error, weight: "" });
-          }}
-          type="text"
-        />
-        {error.weight && (
-          <div className="text-red-400 text-xs mp-1 pl-14">{error.weight}</div>
-        )}
-      </label>
-    </>
+    </div>
   );
 };

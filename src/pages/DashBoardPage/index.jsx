@@ -2,10 +2,14 @@ import { useNavigate } from "react-router-dom";
 import RingProgressBar from "../../components/ProgressBar/RingProgressBar";
 import { useEffect } from "react";
 import { useMeals } from "../../context/MealContext";
+import { useAuth } from "../../context/AuthContext";
 
 export const DashBoardPage = () => {
   const navigate = useNavigate();
+  const { calculateBMR } = useAuth();
   const { logs, fetchLogs } = useMeals();
+
+  const goalCalories = calculateBMR();
 
   useEffect(() => {
     fetchLogs(new Date());
@@ -15,7 +19,10 @@ export const DashBoardPage = () => {
   const totalKcal = logs.reduce((total, meal) => {
     return (
       total +
-      meal.foods.reduce((mealTotal, food) => mealTotal + (food.kcal || 0), 0)
+      meal.foods.reduce(
+        (mealTotal, food) => mealTotal + (food.kcal * food.amount || 0),
+        0
+      )
     );
   }, 0);
 
@@ -31,17 +38,17 @@ export const DashBoardPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
+    <div className="flex flex-col justify-center items-center px-4">
+      <div className="pt-32 pb-11 text-center text-2xl text-secondary_text">
         오늘의 누적 칼로리
       </div>
-      <RingProgressBar totalkcal={2400} kcal={Math.round(totalKcal)} />
+      <RingProgressBar totalkcal={goalCalories} kcal={Math.round(totalKcal)} />
 
       {logs.length > 0 ? (
-        <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
+        <div className="border w-full max-w-[450px] border-sub_color px-6 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
           {logs.map((meal) => {
             const mealKcal = meal.foods.reduce(
-              (acc, cur) => acc + (cur.kcal || 0),
+              (acc, cur) => acc + (cur.kcal * cur.amount || 0),
               0
             );
             return (

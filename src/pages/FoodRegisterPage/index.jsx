@@ -3,6 +3,7 @@ import { useAlert } from "../../context/AlertContext";
 import { ImageInput } from "./layout/ImageInput";
 import { ImageAnalysis } from "./layout/ImageAnalysis";
 import { ImageResult } from "./layout/ImageResult";
+import { useNavigate } from "react-router-dom";
 
 export const FoodRegisterPage = () => {
   const { showAlert, closeAlert } = useAlert();
@@ -12,21 +13,38 @@ export const FoodRegisterPage = () => {
   const [foodInfe, setFoodInfe] = useState("");
   const [resultMode, setResultMode] = useState(false);
   const [foodDetail, setFoodDetail] = useState("");
+  const navigate = useNavigate();
+
+  const resetAll = () => {
+    setCameraMode(false);
+    setImgSrc("");
+    setAnalysisMode(false);
+    setFoodInfe("");
+    setResultMode(false);
+    setFoodDetail("");
+    navigate("/main/dashboard");
+  };
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      {resultMode ? (
-        <ImageResult
-          imgSrc={imgSrc}
-          foodDetail={foodDetail}
-          imageId={foodInfe?.image_id}
-        />
-      ) : (
-        <>
-          <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
-            음식 기록하기
-          </div>
-          <div className="flex flex-col justify-center">
+    <div className="flex flex-col justify-center items-center relative">
+      <button
+        className="absolute top-5 right-5 text-xs text-secondary_text underline cursor-pointer"
+        onClick={resetAll}
+      >
+        기록 그만두기
+      </button>
+      <div className="mt-20 pb-7 text-center text-2xl text-secondary_text">
+        음식 기록하기
+      </div>
+      <div className="flex flex-col justify-center">
+        {resultMode ? (
+          <ImageResult
+            imgSrc={imgSrc}
+            foodDetail={foodDetail}
+            imageId={foodInfe?.image_id}
+          />
+        ) : (
+          <>
             {analysisMode ? (
               <ImageAnalysis
                 imgSrc={imgSrc}
@@ -47,9 +65,9 @@ export const FoodRegisterPage = () => {
                 setFoodInfe={setFoodInfe}
               />
             )}
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </div>
     </div>
   );
 };

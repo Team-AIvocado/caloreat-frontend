@@ -47,8 +47,13 @@
   --color-sufficient: #45c4b0;
 }
 
+html,
 body {
   font-family: "Pretendard", sans-serif;
+  background-color: #f4f6fa;
+  margin: 0;
+  padding: 0;
+  overscroll-behavior: none;
 }
 
 .loader {

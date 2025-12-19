@@ -70,9 +70,9 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className="flex h-screen flex-col justify-center items-center">
-        <div className="text-main_color text-3xl ml-11">
-          <div className="pr-16 pb-7 font-bold">caloreat</div>
+      <div className="flex min-h-screen flex-col justify-center items-center bg-main_background px-4">
+        <div className="text-main_color text-3xl mb-8">
+          <div className="font-bold text-center">caloreat</div>
         </div>
 
         {loading || isLoggingIn ? (
