@@ -14,10 +14,20 @@ export const LogEditPage = () => {
   const meal = logs.find((m) => m.id === Number(mealId));
   const item = meal?.meal_items[Number(foodIndex)];
 
+  // eaten_at에서 시간 추출
+  const getTimeFromEatenAt = (eatenAt) => {
+    if (!eatenAt) return "12:00";
+    const d = new Date(eatenAt);
+    return `${String(d.getHours()).padStart(2, "0")}:${String(
+      d.getMinutes()
+    ).padStart(2, "0")}`;
+  };
+
   const [form, setForm] = useState({
     foodname: item?.foodname || "",
     calories: item?.nutritions?.calories || 0,
     quantity: item?.quantity || 1,
+    eatenTime: getTimeFromEatenAt(meal?.eaten_at),
   });
 
   const [isSaving, setIsSaving] = useState(false);
@@ -25,15 +35,26 @@ export const LogEditPage = () => {
   const handleSave = async () => {
     setIsSaving(true);
     try {
+      // 기존 eaten_at의 날짜와 새로운 시간 조합
+      const originalDate = new Date(meal.eaten_at);
+      const [hours, minutes] = form.eatenTime.split(":").map(Number);
+      originalDate.setHours(hours, minutes, 0, 0);
+      const newEatenAt = originalDate.toISOString();
+
       // nutritions 객체 구조 유지하면서 calories만 업데이트
-      await updateFood(Number(mealId), Number(foodIndex), {
-        foodname: form.foodname,
-        quantity: form.quantity,
-        nutritions: {
-          ...item?.nutritions,
-          calories: form.calories,
+      await updateFood(
+        Number(mealId),
+        Number(foodIndex),
+        {
+          foodname: form.foodname,
+          quantity: form.quantity,
+          nutritions: {
+            ...item?.nutritions,
+            calories: form.calories,
+          },
         },
-      });
+        { eaten_at: newEatenAt }
+      );
       navigate(`/main/log/${mealId}/${foodIndex}?date=${dateFromUrl}`);
     } catch (err) {
       console.error(err);
@@ -45,7 +66,7 @@ export const LogEditPage = () => {
 
   if (!item) {
     return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
+      <div className="p-5 text-center">
         <p>해당 음식 정보를 찾을 수 없습니다.</p>
         <button onClick={() => navigate(-1)}>← back</button>
       </div>
@@ -53,75 +74,30 @@ export const LogEditPage = () => {
   }
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "24px",
-        background: "var(--color-main_background)",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="max-w-[600px] mx-auto p-6 bg-main_background min-h-screen">
       <button
         onClick={() => navigate(-1)}
-        style={{
-          border: "none",
-          background: "none",
-          fontSize: "16px",
-          color: "var(--color-primary_text)",
-          cursor: "pointer",
-          marginBottom: "16px",
-        }}
+        className="border-none bg-transparent text-base text-primary_text cursor-pointer mb-4"
       >
         ← back
       </button>
 
-      <h2
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "var(--color-primary_text)",
-          marginBottom: "24px",
-        }}
-      >
+      <h2 className="text-2xl font-semibold text-primary_text mb-6">
         음식 정보 수정
       </h2>
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          gap: "16px",
-          background: "var(--color-sub_background)",
-          padding: "20px",
-          borderRadius: "14px",
-          border: "1px solid var(--color-border_color)",
-        }}
-      >
-        <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span
-            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
-          >
-            음식명
-          </span>
+      <div className="flex flex-col gap-4 bg-sub_background p-5 rounded-[14px] border border-border_color">
+        <label className="flex flex-col gap-1.5">
+          <span className="text-secondary_text text-sm">음식명</span>
           <input
             value={form.foodname}
             onChange={(e) => setForm({ ...form, foodname: e.target.value })}
-            style={{
-              padding: "12px",
-              borderRadius: "8px",
-              border: "1px solid var(--color-border_color)",
-              fontSize: "16px",
-            }}
+            className="p-3 rounded-lg border border-border_color text-base"
           />
         </label>
 
-        <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span
-            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
-          >
-            칼로리 (kcal)
-          </span>
+        <label className="flex flex-col gap-1.5">
+          <span className="text-secondary_text text-sm">칼로리 (kcal)</span>
           <input
             type="number"
             value={form.calories}
@@ -129,41 +105,74 @@ export const LogEditPage = () => {
               setForm({ ...form, calories: Number(e.target.value) })
             }
             readOnly
-            style={{
-              padding: "12px",
-              borderRadius: "8px",
-              border: "1px solid var(--color-border_color)",
-              fontSize: "16px",
-            }}
+            className="p-3 rounded-lg border border-border_color text-base"
           />
         </label>
 
-        <label style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-          <span
-            style={{ color: "var(--color-secondary_text)", fontSize: "14px" }}
-          >
-            섭취량 (인분)
-          </span>
+        <div className="flex flex-col gap-1.5">
+          <span className="text-secondary_text text-sm">섭취량 (인분)</span>
+          <div className="flex items-center gap-3">
+            <button
+              type="button"
+              onClick={() => {
+                if (form.quantity <= 0.5) return;
+                setForm((prev) => ({
+                  ...prev,
+                  calories: Number(
+                    Math.round(
+                      (prev.calories * (prev.quantity - 0.5)) / prev.quantity
+                    )
+                  ),
+                  quantity: prev.quantity - 0.5,
+                }));
+              }}
+              className="w-10 h-10 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
+            >
+              -
+            </button>
+            <input
+              type="number"
+              value={form.quantity}
+              step="0.5"
+              onChange={(e) => {
+                if (e.target.value <= 0) return;
+                setForm((prev) => ({
+                  ...prev,
+                  calories: Number(
+                    Math.round((prev.calories * e.target.value) / prev.quantity)
+                  ),
+                  quantity: Number(e.target.value),
+                }));
+              }}
+              className="flex-1 p-3 rounded-lg border border-border_color text-base text-center"
+            />
+            <button
+              type="button"
+              onClick={() => {
+                setForm((prev) => ({
+                  ...prev,
+                  calories: Number(
+                    Math.round(
+                      (prev.calories * (prev.quantity + 0.5)) / prev.quantity
+                    )
+                  ),
+                  quantity: prev.quantity + 0.5,
+                }));
+              }}
+              className="w-10 h-10 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
+            >
+              +
+            </button>
+          </div>
+        </div>
+
+        <label className="flex flex-col gap-1.5">
+          <span className="text-secondary_text text-sm">섭취 시간</span>
           <input
-            type="number"
-            value={form.quantity}
-            step="0.5"
-            onChange={(e) => {
-              if (e.target.value <= 0) return;
-              setForm((prev) => ({
-                ...prev,
-                calories: Number(
-                  Math.round((prev.calories * e.target.value) / prev.quantity)
-                ),
-                quantity: Number(e.target.value),
-              }));
-            }}
-            style={{
-              padding: "12px",
-              borderRadius: "8px",
-              border: "1px solid var(--color-border_color)",
-              fontSize: "16px",
-            }}
+            type="time"
+            value={form.eatenTime}
+            onChange={(e) => setForm({ ...form, eatenTime: e.target.value })}
+            className="p-3 rounded-lg border border-border_color text-base"
           />
         </label>
       </div>
@@ -171,19 +180,9 @@ export const LogEditPage = () => {
       <button
         onClick={handleSave}
         disabled={isSaving}
-        style={{
-          width: "100%",
-          marginTop: "24px",
-          padding: "14px",
-          borderRadius: "10px",
-          background: "var(--color-main_color)",
-          border: "none",
-          color: "#fff",
-          fontSize: "16px",
-          fontWeight: 600,
-          cursor: isSaving ? "not-allowed" : "pointer",
-          opacity: isSaving ? 0.6 : 1,
-        }}
+        className={`w-full mt-6 py-3.5 rounded-[10px] bg-main_color border-none text-white text-base font-semibold ${
+          isSaving ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+        }`}
       >
         {isSaving ? "저장 중..." : "저장하기"}
       </button>

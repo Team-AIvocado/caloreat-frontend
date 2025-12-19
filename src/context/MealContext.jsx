@@ -64,7 +64,7 @@ export const MealProvider = ({ children }) => {
     }
   };
 
-  const updateFood = async (mealId, itemIndex, updatedFields) => {
+  const updateFood = async (mealId, itemIndex, updatedFields, mealFields = {}) => {
     const meal = logs.find((m) => m.id === mealId);
     if (!meal) return;
 
@@ -73,10 +73,12 @@ export const MealProvider = ({ children }) => {
       idx === itemIndex ? { ...item, ...updatedFields } : item
     );
 
+    const newEatenAt = mealFields.eaten_at || meal.eaten_at;
+
     try {
       await api.put(`/meals/log/${mealId}`, {
         meal_type: meal.meal_type,
-        eaten_at: meal.eaten_at,
+        eaten_at: newEatenAt,
         meal_items: updatedItems.map((item) => ({
           foodname: item.foodname,
           quantity: item.quantity,
@@ -86,7 +88,7 @@ export const MealProvider = ({ children }) => {
 
       // 성공 시 로컬 상태 업데이트
       const updated = logs.map((m) =>
-        m.id === mealId ? { ...m, meal_items: updatedItems } : m
+        m.id === mealId ? { ...m, meal_items: updatedItems, eaten_at: newEatenAt } : m
       );
       setLogs(updated);
     } catch (err) {
