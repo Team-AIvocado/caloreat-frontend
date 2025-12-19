@@ -21,8 +21,7 @@ export const DashBoardPage = () => {
       total +
       (meal.meal_items || []).reduce(
         (mealTotal, item) =>
-          mealTotal +
-          (item.nutritions?.calories * item.nutritions?.amount || 0),
+          mealTotal + (item.nutritions?.calories * item?.quantity || 0),
         0
       )
     );
@@ -51,8 +50,7 @@ export const DashBoardPage = () => {
           {logs.map((meal) => {
             const mealKcal = (meal.meal_items || []).reduce(
               (acc, item) =>
-                acc +
-                (item.nutritions?.calories * item.nutritions?.amount || 0),
+                acc + (item.nutritions?.calories * item?.quantity || 0),
               0
             );
             return (
