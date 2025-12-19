@@ -20,7 +20,8 @@ export const DashBoardPage = () => {
     return (
       total +
       (meal.meal_items || []).reduce(
-        (mealTotal, item) => mealTotal + (item.nutritions?.calories || 0),
+        (mealTotal, item) =>
+          mealTotal + (item.nutritions?.calories * item?.quantity || 0),
         0
       )
     );
@@ -48,7 +49,8 @@ export const DashBoardPage = () => {
         <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
           {logs.map((meal) => {
             const mealKcal = (meal.meal_items || []).reduce(
-              (acc, item) => acc + (item.nutritions?.calories || 0),
+              (acc, item) =>
+                acc + (item.nutritions?.calories * item?.quantity || 0),
               0
             );
             return (
