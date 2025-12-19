@@ -10,6 +10,7 @@ import DiseaseSection from "./components/DiseaseSection";
 export const SettingPage = () => {
   return (
     <div className="flex flex-col items-center min-h-screen bg-main_background p-6">
+      {/* 모바일 UI환경에 맞게 최대너비 600px설정 */}
       <div className="w-full max-w-150 space-y-6">
         {/* 페이지 제목 */}
         <h1 className="text-2xl font-bold text-primary_text">설정 페이지</h1>

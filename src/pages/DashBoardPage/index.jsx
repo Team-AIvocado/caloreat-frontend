@@ -34,7 +34,7 @@ export const DashBoardPage = () => {
         오늘의 누적 칼로리
       </div>
       <RingProgressBar totalkcal={2400} kcal={360} />
-      <div className="border w-full max-w-[400px] border-sub_color px-8 py-3 pb-3 mt-6 rounded-lg bg-sub_background">
+      <div className="border w-full max-w-100 border-sub_color px-8 py-3 pb-3 mt-6 rounded-lg bg-sub_background">
         {/* TODO: 불러온 하루 음식 로그 list 형식으로 출력 */}
         {/* 일단 하드코딩 */}
         <div className="text-secondary_text w-full flex justify-between items-center">

@@ -1,42 +1,42 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
 @import "tailwindcss";
+/* HTML 요소에 .dark 클래스가 붙었을 때 내부 스타일이 적용되도록 설정 */
 @custom-variant dark (&:where(.dark, .dark *));
 
+/* 라이트 모드 CSS 변수 정의 */
 :root {
-  /* --- Light Mode (Base) --- */
+  /* 라이트 모드 기본 배경색 */
   --color-main_background: #f8fafc;
-  /* Slate 50 */
   --color-sub_background: #ffffff;
-  /* White */
 
+  /* 텍스트 컬러 */
   --color-primary_text: #1e293b;
-  /* Slate 800 */
   --color-secondary_text: #64748b;
-  /* Slate 500 */
   --color-third_text: #94a3b8;
 
+  /* Border 컬러 */
   --color-border_color: #e2e8f0;
-  /* Slate 200 */
   --color-sub_border: #e2e8f0;
 
+  /* 브랜드 컬러 */
   --color-main_color: #3b82f6;
-  /* Blue 500 */
   --color-sub_color: #dbeafe;
-  /* Blue 100 */
 
-  /* Status Colors */
+
+  /* 상태 색상 (부족, 충분, 과다) */
   --color-complete_color: #a6f2e8;
   --color-warning_color: #ffe7d3;
   --color-alert_color: #ffb085;
   --color-error_color: #ff4d4d;
   --color-lack_color: #fff4d0;
 
-  /* Chart & Icon Colors */
+  /* 차트 및 아이콘 컬러 */
   --color-icon_color1: #bec9ff;
   --color-icon_color2: #cfe7ff;
   --color-icon_color3: #ffe2c1;
   --color-icon_color4: #d9e3f3;
 
+  /* 상태 기반 배경/보더 컬러 */
   --color-light-alert-border: #ffebab;
   --color-light-alert: #fffdf6;
   --color-lack_bg: #fffaf6;
@@ -47,75 +47,60 @@
   --color-over: #ff6b6b;
   --color-sufficient: #45c4b0;
 
-  /* Semantic Status Colors (Base) */
+  /* 의미 기반 상태 컬러 */
   --color-status-lack: #ffe2c1;
   --color-status-good: #A6F2E8;
   --color-status-over: #ff6b6b;
   --color-status-default: #dcdcdc;
 }
 
+/* 다크모드 CSS 변수 정의 */
 .dark {
-  /* --- Dark Mode (Slate Theme) --- */
+  /* 다크 모드 기본 배경색 */
   --color-main_background: #0f172a;
-  /* Slate 900 */
   --color-sub_background: #1e293b;
-  /* Slate 800 */
 
+  /* 텍스트 컬러 */
   --color-primary_text: #f1f5f9;
-  /* Slate 100 */
   --color-secondary_text: #94a3b8;
-  /* Slate 400 */
   --color-third_text: #64748b;
 
+  /* Border 컬러 */
   --color-border_color: #334155;
-  /* Slate 700 */
   --color-sub_border: #334155;
 
+  /* 브랜드 컬러 */
   --color-main_color: #60a5fa;
-  /* Blue 400 */
   --color-sub_color: #1e3a8a;
-  /* Blue 900 */
-  /* Chart Colors (Darker/Deeper for Dark Mode) */
-  --color-icon_color1: #6366f1;
-  /* Indigo 500 (Carbs) */
-  --color-icon_color2: #3b82f6;
-  /* Blue 500 (Protein) */
-  --color-icon_color3: #f59e0b;
-  /* Amber 500 (Fat) */
-  --color-icon_color4: #94a3b8;
-  /* Slate 400 */
 
-  /* Status Backgrounds (Dark Mode) */
+  /* 다크 모드 전용 차트/아이콘 컬러 */
+  --color-icon_color1: #6366f1;
+  --color-icon_color2: #3b82f6;
+  --color-icon_color3: #f59e0b;
+  --color-icon_color4: #94a3b8;
+
+  /* 상태 기반 컬러 */
   --color-lack_bg: #431407;
-  /* Dark Red/Orange Base */
   --color-lack_border: #7c2d12;
   --color-lack: #fbbf24;
-  /* Amber Text */
 
   --color-light-alert: #422006;
-  /* Dark Brown Base */
   --color-light-alert-border: #713f12;
 
   --color-enough: #064e3b;
-  /* Dark Green Base */
   --color-enough-border: #065f46;
 
   --color-over: #ef4444;
-  /* Red 500 */
   --color-sufficient: #10b981;
-  /* Emerald 500 */
 
-  /* Semantic Status Colors (Dark Mode) */
+  /* 의미 기반 상태 컬러 */
   --color-status-lack: #f59e0b;
-  /* Amber 500 */
   --color-status-good: #10b981;
-  /* Emerald 500 */
   --color-status-over: #ef4444;
-  /* Red 500 */
   --color-status-default: #475569;
-  /* Slate 600 */
 }
 
+/* Tailwind CSS에서 CSS변수를 theme 색상처럼 바로 사용 가능하게 연결 */
 @theme {
   --color-main_background: var(--color-main_background);
   --color-sub_background: var(--color-sub_background);
@@ -157,11 +142,13 @@
   --color-status-default: var(--color-status-default);
 }
 
+/* body 기본 스타일 */
 body {
   font-family: "Pretendard", sans-serif;
   @apply bg-main_background text-primary_text;
 }
 
+/* 로딩 스피너 스타일 */
 .loader {
   border: 4px solid var(--color-border_color);
   border-top: 4px solid var(--color-main_color);
@@ -173,6 +160,7 @@ body {
   margin: 20px auto;
 }
 
+/* 회전 애니메이션 */
 @keyframes spin {
   to {
     transform: rotate(360deg);

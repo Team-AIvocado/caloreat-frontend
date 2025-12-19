@@ -10,8 +10,8 @@ export const sty1 = [
 ];
 
 export const errorInput = [
-  "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3",
-  "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3",
+  "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3 text-black placeholder:text-gray-500 font-medium",
+  "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3 text-black placeholder:text-gray-500 font-medium",
 ];
 
 //중복확인 버튼
