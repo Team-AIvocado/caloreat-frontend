@@ -92,7 +92,7 @@ export const ImageInput = ({
                     </button>
                   </div>
                   <div className="flex justify-center">
-                    <button className={backBtn} onClick={closeAlert}>
+                    <button className={`${backBtn} font-bold`} onClick={closeAlert}>
                       닫기
                     </button>
                   </div>

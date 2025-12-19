@@ -70,7 +70,7 @@ export const LoginPage = () => {
 
   return (
     <>
-      <div className="flex min-h-screen flex-col bg-main_background px-4 max-w-[600px] mx-auto relative">
+      <div className="flex h-screen flex-col bg-main_background px-4 max-w-[600px] mx-auto relative">
         {/* 중앙 콘텐츠 (로고 + 로그인 폼) - flex-1과 justify-center로 화면 정중앙 배치 */}
         <div className="flex-1 flex flex-col justify-center items-center w-full">
           <div className="text-main_color text-3xl mb-12">
@@ -102,6 +102,7 @@ export const LoginPage = () => {
             </>
           )}
           {/* 회원가입 링크 - 로그인 폼 바로 아래 배치 */}
+          {/* 회원가입 링크 - 로그인 폼 바로 아래 배치 */}
           {!user && !loading && !isLoggingIn && (
             <div className="w-full text-center mt-6">
               <div className="text-sm text-secondary_text dark:text-gray-400">
@@ -117,6 +118,7 @@ export const LoginPage = () => {
           )}
         </div>
       </div>
+
     </>
   );
 };
