@@ -51,7 +51,7 @@ const GoalSection = () => {
     return (
         <div className="bg-sub_background p-6 rounded-lg shadow-sm">
             {/* 섹션 제목 */}
-            <h2 className="text-xl font-bold mb-4">목표 설정</h2>
+            <h2 className="text-xl font-bold mb-4 text-primary_text">목표 설정</h2>
 
             {/* 목표 선택 버튼들 */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -63,14 +63,14 @@ const GoalSection = () => {
                         className={`
                             p-4 rounded-lg border-2 text-left transition-all
                             ${selectedGoal === goal.id
-                                ? "border-blue-500 bg-blue-50 text-blue-700" // 선택됨
-                                : "border-gray-200 hover:border-blue-200"      // 비선택
+                                ? "border-blue-500 bg-blue-50 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300 dark:border-blue-400" // 선택됨
+                                : "border-gray-200 hover:border-blue-200 dark:border-gray-600 dark:hover:border-blue-400 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"      // 비선택
                             }
                             ${isLoading ? "opacity-50 cursor-not-allowed" : ""}
                         `}
                     >
                         <div className="font-bold mb-1">{goal.label}</div>
-                        <div className="text-sm text-gray-500">{goal.desc}</div>
+                        <div className="text-sm text-gray-500 dark:text-gray-400">{goal.desc}</div>
                     </button>
                 ))}
             </div>

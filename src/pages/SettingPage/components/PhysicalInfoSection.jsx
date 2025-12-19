@@ -62,20 +62,20 @@ const PhysicalInfoSection = () => {
     return (
         <div className="bg-sub_background p-6 rounded-lg shadow-sm">
             {/* 섹션 제목 */}
-            <h2 className="text-xl font-bold mb-4">신체 정보 설정</h2>
+            <h2 className="text-xl font-bold mb-4 text-primary_text">신체 정보 설정</h2>
 
             <div className="space-y-4">
                 {/* 성별 / 생년월일 (읽기 전용 정보) */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-1">성별</label>
+                        <label className="block text-sm font-medium text-secondary_text mb-1">성별</label>
                         <div className="p-2 bg-gray-100 rounded text-gray-700">
                             {userInfo?.gender ? formatGender(userInfo.gender) : "-"}
                         </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-500 mb-1">생년월일</label>
+                        <label className="block text-sm font-medium text-secondary_text mb-1">생년월일</label>
                         <div className="p-2 bg-gray-100 rounded text-gray-700">
                             {userInfo?.birthdate || "-"}
                         </div>
@@ -85,25 +85,25 @@ const PhysicalInfoSection = () => {
                 {/* 수정 가능한 신체 입력 값들 (키/몸무게) */}
                 <div className="grid grid-cols-2 gap-4">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">키 (cm)</label>
+                        <label className="block text-sm font-medium text-secondary_text mb-1">키 (cm)</label>
                         <input
                             type="number"
                             name="height"
                             value={formData.height}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
                             placeholder="cm"
                         />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-1">몸무게 (kg)</label>
+                        <label className="block text-sm font-medium text-secondary_text mb-1">몸무게 (kg)</label>
                         <input
                             type="number"
                             name="weight"
                             value={formData.weight}
                             onChange={handleChange}
-                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600"
                             placeholder="kg"
                         />
                     </div>

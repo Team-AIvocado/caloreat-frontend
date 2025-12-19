@@ -66,7 +66,7 @@ const PasswordSection = () => {
                         name="current"
                         value={passwords.current}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="현재 비밀번호를 입력하세요"
                     />
                 </div>
@@ -78,7 +78,7 @@ const PasswordSection = () => {
                         name="new"
                         value={passwords.new}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="새 비밀번호 (4자 이상)"
                     />
                 </div>
@@ -90,7 +90,7 @@ const PasswordSection = () => {
                         name="confirm"
                         value={passwords.confirm}
                         onChange={handleChange}
-                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-white dark:border-gray-600"
+                        className="w-full p-2 border rounded bg-white text-gray-900 dark:bg-gray-700 dark:text-gray-100 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
                         placeholder="새 비밀번호를 다시 입력하세요"
                     />
                 </div>

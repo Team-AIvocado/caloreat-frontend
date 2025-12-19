@@ -21,15 +21,17 @@ export const LogPage = () => {
   useEffect(() => {
     fetchLogs(date);
 
-    // URL에는 문자열로 넣어야 하므로 포맷 변환
-    const formatted = date.toISOString().slice(0, 10);
+    // URL에는 문자열로 넣어야 하므로 포맷 변환 (Local Time)
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const formatted = `${year}-${month}-${day}`;
     setSearchParams({ date: formatted });
   }, [date]);
 
   return (
-    // 다크/라이트 모드 전환시 잘 작동하게 코드 수정
-    <div className="min-h-screen bg-main_background dark:bg-gray-900 p-8 max-w-225 mx-auto">
-      <h2 className="mb-5 text-2xl font-semibold text-center text-primary_text dark:text-gray-100">
+    <div className="px-4 py-8 md:px-8 max-w-[900px] mx-auto bg-main_background min-h-screen">
+      <h2 className="text-primary_text mb-5 text-2xl font-semibold text-center">
         음식 로그
       </h2>
 
@@ -47,7 +49,7 @@ export const LogPage = () => {
       {loading && <div className="loader" />}
 
       {!loading && logs.length === 0 && !error && (
-        <div className="mt-12 text-center text-secondary_text dark:text-gray-400 text-[15px] bg-sub_background dark:bg-gray-800 p-5 rounded-xl border border-border_color dark:border-gray-700">
+        <div className="mt-12 text-center text-secondary_text dark:text-gray-400 text-[15px] bg-sub_background dark:bg-gray-800 p-5 rounded-xl border border-border_color dark:border-gray-600 shadow-sm dark:shadow-md">
           <p>아직 기록된 식단이 없습니다.</p>
           <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
         </div>
@@ -56,11 +58,11 @@ export const LogPage = () => {
       {/* 로그 카드 */}
       <div className="mt-2.5 flex flex-col items-center gap-5">
         {logs.map((meal) =>
-          meal.foods.map((food, idx) => (
+          meal.meal_items.map((item, idx) => (
             <LogCard
-              key={`${meal.meal_id}-${idx}`}
-              food={food}
-              mealId={meal.meal_id}
+              key={`${meal.id}-${idx}`}
+              item={item}
+              meal={meal}
               index={idx}
             />
           ))

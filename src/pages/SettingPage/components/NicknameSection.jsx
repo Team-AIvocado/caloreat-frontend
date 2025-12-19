@@ -25,14 +25,14 @@ const NicknameSection = () => {
   };
   return (
     <div className="bg-sub_background p-6 rounded-lg shadow-sm">
-      <h2 className="text-xl font-bold mb-4">닉네임 설정</h2>
+      <h2 className="text-xl font-bold mb-4 text-primary_text">닉네임 설정</h2>
 
       <div className="flex gap-2">
         <input
           type="text"
           value={nickname}
           onChange={(e) => setNickname(e.target.value)}
-          className="border p-2 rounded flex-1"
+          className="border p-2 rounded flex-1 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-main_color"
           disabled={isLoading}
         />
         <button

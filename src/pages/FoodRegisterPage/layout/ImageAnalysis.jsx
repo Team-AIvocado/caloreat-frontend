@@ -13,9 +13,11 @@ export const ImageAnalysis = ({
   const [foodText, setFoodText] = useState(foodInfe.food_name);
   const [foodCandi, setFoodCandi] = useState(foodInfe.candidates);
   const [selected, setSelected] = useState(0);
+  const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
 
   const onResult = async () => {
+    setLoading(true);
     try {
       const res = await fetchFood(foodText);
       if (res) {
@@ -24,6 +26,8 @@ export const ImageAnalysis = ({
       }
     } catch {
       console.log("failed to fetch food res");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -59,12 +63,12 @@ export const ImageAnalysis = ({
   //TODO: 음식 추가 버튼 및 기능
   return (
     <>
-      <div className="text-left underline pl-4 pb-2">음식 인식 완료!</div>
-      <div className="w-[600px] rounded-xl bg-white border-4 border-sub_border">
-        <div className="flex flex-row px-5 py-9">
+      <div className="text-left underline pl-4 pb-2 text-primary_text">음식 인식 완료!</div>
+      <div className="w-[90vw] max-w-[600px] rounded-xl bg-white dark:bg-sub_background border-4 border-sub_border dark:border-border_color">
+        <div className="flex flex-col md:flex-row px-5 py-9 items-center md:items-start">
           {" "}
           <img
-            className="w-2/4 aspect-square rounded-lg border-2 border-border_color object-cover object-center"
+            className="w-2/3 md:w-2/4 aspect-square rounded-lg border-2 border-border_color object-cover object-center"
             src={imgSrc}
             draggable="false"
           />
@@ -72,7 +76,7 @@ export const ImageAnalysis = ({
             <div className="h-1/4 text-2xl text-primary_text pl-6">
               {foodCandi[selected].label}{" "}
             </div>
-            <div className=" h-1/4 text-end pr-20 text-third_text">
+            <div className=" h-1/4 text-end pr-10 md:pr-20 text-third_text">
               정확도 {Math.round(foodCandi[selected].confidence * 100)} %
             </div>
 
@@ -107,7 +111,7 @@ export const ImageAnalysis = ({
             <div className="h-1/4 pl-4">
               <div className="mb-2 mr-4 text-xs">그래도 아니라면?</div>
               <button
-                className="underline text-sm text-gray-500 mr-5"
+                className="underline text-sm text-gray-500 dark:text-gray-400 mr-5"
                 onClick={() => {
                   setAnalysisMode(false);
                 }}
@@ -115,7 +119,7 @@ export const ImageAnalysis = ({
                 사진 재촬영
               </button>
               <button
-                className="underline text-sm text-gray-500 mr-2"
+                className="underline text-sm text-gray-500 dark:text-gray-400 mr-2"
                 onClick={() => {
                   showAlert({
                     msg: "음식명을 수정해주세요",
@@ -138,10 +142,11 @@ export const ImageAnalysis = ({
       </div>
       <div className="flex justify-center">
         <button
-          className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer "
+          className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer disabled:bg-gray-400"
           onClick={onResult}
+          disabled={loading}
         >
-          분석결과 보기
+          {loading ? "분석 중..." : "영양소 분석하기"}
         </button>
       </div>
     </>

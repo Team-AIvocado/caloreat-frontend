@@ -1,33 +1,52 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useMeals } from "../../context/MealContext";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export const LogDetailPage = () => {
   const { logs, selectedDate, fetchLogs, deleteFood } = useMeals();
   const { mealId, foodIndex } = useParams();
   const [searchParams] = useSearchParams();
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const dateFromUrl = searchParams.get("date");
+  const navigate = useNavigate();
 
   useEffect(() => {
     // Logs가 없으면 날짜 기반으로 다시 fetch
     if (logs.length === 0) {
-      const d = dateFromUrl || selectedDate;
+      const d = dateFromUrl ? new Date(dateFromUrl) : selectedDate;
       if (d) fetchLogs(d);
     }
   }, []);
-  const navigate = useNavigate();
 
-  const meal = logs.find((m) => m.meal_id === Number(mealId));
-  const food = meal?.foods[Number(foodIndex)];
+  // 백엔드 구조에 맞게 변경
+  const meal = logs.find((m) => m.id === Number(mealId));
+  const item = meal?.meal_items[Number(foodIndex)];
 
-  const handleDelete = () => {
+  // meal 레벨에서 이미지, 시간 추출
+  const imageUrl = meal?.image_urls?.[0] ?? "";
+  const calories = item?.nutritions?.calories ?? 0;
+
+  const handleDelete = async () => {
     if (!window.confirm("정말 삭제하시겠습니까?")) return;
-    deleteFood(Number(mealId), Number(foodIndex));
-    navigate(-1);
+
+    setIsDeleting(true);
+    try {
+      await deleteFood(Number(mealId), Number(foodIndex));
+      // 삭제 후 로그 페이지로 이동
+      navigate(`/main/log?date=${dateFromUrl}`);
+    } catch (err) {
+      alert("삭제에 실패했습니다.");
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  if (!food) {
+  const handleEdit = () => {
+    navigate(`/main/log/${mealId}/${foodIndex}/edit?date=${dateFromUrl}`);
+  };
+
+  if (!item) {
     return (
       <div style={{ padding: "20px", textAlign: "center" }}>
         <p>해당 음식 정보를 찾을 수 없습니다.</p>
@@ -37,6 +56,7 @@ export const LogDetailPage = () => {
   }
 
   const formatTime = (t) => {
+    if (!t) return "";
     const d = new Date(t);
     return `${d.getHours().toString().padStart(2, "0")}:${d
       .getMinutes()
@@ -76,12 +96,12 @@ export const LogDetailPage = () => {
           marginBottom: "20px",
         }}
       >
-        {food.name}
+        {item.foodname}
       </h2>
 
       <img
-        src={food.image_url}
-        alt={food.name}
+        src={imageUrl}
+        alt={item.foodname}
         style={{
           width: "100%",
           borderRadius: "14px",
@@ -99,9 +119,9 @@ export const LogDetailPage = () => {
           marginBottom: "28px",
         }}
       >
-        <InfoRow label="칼로리" value={`${food.kcal} kcal`} highlight />
-        <InfoRow label="섭취량" value={`${food.amount} 인분`} />
-        <InfoRow label="섭취 시간" value={formatTime(food.created_at)} />
+        <InfoRow label="칼로리" value={`${calories} kcal`} highlight />
+        <InfoRow label="섭취량" value={`${item.quantity} 인분`} />
+        <InfoRow label="섭취 시간" value={formatTime(meal.eaten_at)} />
       </div>
 
       <div
@@ -111,7 +131,7 @@ export const LogDetailPage = () => {
         }}
       >
         <button
-          onClick={() => navigate(-1)}
+          onClick={handleEdit}
           style={{
             flex: 1,
             padding: "14px",
@@ -129,6 +149,7 @@ export const LogDetailPage = () => {
 
         <button
           onClick={handleDelete}
+          disabled={isDeleting}
           style={{
             flex: 1,
             padding: "14px",
@@ -137,11 +158,12 @@ export const LogDetailPage = () => {
             border: "none",
             color: "#fff",
             fontSize: "16px",
-            cursor: "pointer",
+            cursor: isDeleting ? "not-allowed" : "pointer",
             fontWeight: 600,
+            opacity: isDeleting ? 0.6 : 1,
           }}
         >
-          삭제하기
+          {isDeleting ? "삭제 중..." : "삭제하기"}
         </button>
       </div>
     </div>

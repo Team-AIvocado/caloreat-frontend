@@ -115,13 +115,9 @@ export const StatisticsPage = () => {
     if (activeTab === "daily") {
       return currentDate.toLocaleDateString("ko-KR", options);
     } else if (activeTab === "weekly") {
-      const first = currentDate.getDate() - currentDate.getDay();
-      const last = first + 6;
-
-      const firstDay = new Date(currentDate);
-      firstDay.setDate(first);
       const lastDay = new Date(currentDate);
-      lastDay.setDate(last);
+      const firstDay = new Date(currentDate);
+      firstDay.setDate(lastDay.getDate() - 6);
 
       return `${firstDay.toLocaleDateString("ko-KR", {
         month: "short",
@@ -140,7 +136,7 @@ export const StatisticsPage = () => {
 
   return (
     <>
-      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
+      <div className="pt-7 pb-5 text-center text-2xl text-secondary_text">
         통계
       </div>
       <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">

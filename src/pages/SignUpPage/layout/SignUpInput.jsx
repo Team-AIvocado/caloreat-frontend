@@ -20,11 +20,13 @@ export const SignUpInput = ({
 }) => {
   return (
     <div className="flex flex-row">
-      <div className="flex flex-col">
-        <div className="flex flex-row">
-          <div>
+      <div className="flex flex-col w-72 md:w-96">
+        <div className="flex flex-row items-start">
+          <div className="flex-1">
             <input
-              className={error.email ? errorInput[1] : errorInput[0]}
+              className={`${
+                error.email ? errorInput[1] : errorInput[0]
+              } !w-full !pr-2`}
               type="text"
               placeholder="이메일을 입력하세요"
               value={userEmail}
@@ -41,16 +43,20 @@ export const SignUpInput = ({
             )}
           </div>
           <button
-            className={dbCheck.email ? checkBtn[1] : checkBtn[0]}
+            className={`${
+              dbCheck.email ? checkBtn[1] : checkBtn[0]
+            } !mt-5 !ml-2 whitespace-nowrap `}
             onClick={onEmailCheck}
           >
             중복확인
           </button>
         </div>
-        <div className="flex flex-row">
-          <div>
+        <div className="flex flex-row items-start">
+          <div className="flex-1">
             <input
-              className={error.id ? errorInput[1] : errorInput[0]}
+              className={`${
+                error.id ? errorInput[1] : errorInput[0]
+              } !w-full !pr-2`}
               type="text"
               placeholder="아이디를 입력하세요"
               value={userId}
@@ -67,16 +73,18 @@ export const SignUpInput = ({
             )}
           </div>
           <button
-            className={dbCheck.id ? checkBtn[1] : checkBtn[0]}
+            className={`${
+              dbCheck.id ? checkBtn[1] : checkBtn[0]
+            } !mt-5 !ml-2 whitespace-nowrap`}
             onClick={onIdCheck}
           >
             중복확인
           </button>
         </div>
         <input
-          className={error.name ? errorInput[1] : errorInput[0]}
+          className={`${error.name ? errorInput[1] : errorInput[0]} !w-full`}
           type="text"
-          placeholder="서비스에서 사용할 닉네임을 입력해주세요 (5자 이하)"
+          placeholder="서비스에서 사용할 닉네임을 입력해주세요"
           value={nickname}
           onChange={(e) => {
             setNickName(e.target.value);
@@ -89,9 +97,11 @@ export const SignUpInput = ({
           </div>
         )}
         <input
-          className={error.password ? errorInput[1] : errorInput[0]}
+          className={`${
+            error.password ? errorInput[1] : errorInput[0]
+          } !w-full`}
           type="password"
-          placeholder="비밀번호를 입력하세요 (영문 숫자 섞어서 5자 이상)"
+          placeholder="비밀번호를 입력하세요"
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
@@ -104,7 +114,9 @@ export const SignUpInput = ({
           </div>
         )}
         <input
-          className={error.confirmPassword ? errorInput[1] : errorInput[0]}
+          className={`${
+            error.confirmPassword ? errorInput[1] : errorInput[0]
+          } !w-full`}
           type="password"
           placeholder="비밀번호를 다시 한 번 입력하세요"
           value={confirmPassword}
