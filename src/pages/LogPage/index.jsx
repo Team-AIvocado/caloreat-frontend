@@ -30,7 +30,7 @@ export const LogPage = () => {
   }, [date]);
 
   return (
-    <div className="px-4 py-8 md:px-8 max-w-[900px] mx-auto bg-main_background min-h-screen">
+    <div className="px-4 py-8 md:px-8 max-w-225 mx-auto bg-main_background min-h-screen">
       <h2 className="text-primary_text mb-5 text-2xl font-semibold text-center">
         음식 로그
       </h2>
