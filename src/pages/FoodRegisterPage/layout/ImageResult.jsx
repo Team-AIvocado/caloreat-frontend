@@ -11,11 +11,14 @@ import {
   YAxis,
 } from "recharts";
 import { createMealLog } from "../../../services/meal";
+import { backBtn } from "../../../utils/styles";
+import { useAlert } from "../../../context/AlertContext";
 
 export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [loading, setLoading] = useState(false);
+  const { showAlert, closeAlert } = useAlert();
 
   // Lazy init for mealType based on current time
   const [mealType, setMealType] = useState(() => {
@@ -34,27 +37,28 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     carbs = 0,
     protein = 0,
     fat = 0,
+    sugar = 0,
+    sodium = 0,
     nutritions = {},
-    micronutrients = {},
   } = result;
 
   // Derived state (No useEffect needed)
   const currentCarbs = Math.round(carbs * intake);
   const currentProtein = Math.round(protein * intake);
   const currentFat = Math.round(fat * intake);
-  const totalMicronutrients = Math.round(
-    Object.values(micronutrients || {}).reduce((total, cur) => total + cur, 0) *
-      intake
-  );
+  const currentSugar = Math.round(sugar * intake);
+  const currentSodium = Math.round(sodium * intake) / 1000;
 
   const chartData = [
     { name: "탄수화물", value: currentCarbs, fill: "#bec9ff" },
     { name: "단백질", value: currentProtein, fill: "#cfe7ff" },
     { name: "지방", value: currentFat, fill: "#ffe2c1" },
-    { name: "영양소", value: totalMicronutrients, fill: "#d9e3f3" },
+    { name: "당류", value: currentSugar, fill: "#d9e3f3" },
+    { name: "나트륨", value: currentSodium, fill: "#b1f3eb" },
   ];
 
-  const showWarning = (nutritions.sugar || 0) * intake > 30;
+  //TODO:로직 추가 경고창 출력, 예시
+  const showWarning = (nutritions.sodium || 0) * intake > 5;
 
   const onSave = async () => {
     setLoading(true);
@@ -80,7 +84,17 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
       navigate("/main/dashboard");
     } catch (e) {
       console.error(e);
-      alert("식단 저장에 실패했습니다.");
+      showAlert({
+        msg: "식단 저장에 실패했습니다.",
+        hasNavbar: true,
+        footer: (
+          <div className="flex justify-center">
+            <button className={backBtn} onClick={closeAlert}>
+              닫기
+            </button>
+          </div>
+        ),
+      });
     } finally {
       setLoading(false);
     }

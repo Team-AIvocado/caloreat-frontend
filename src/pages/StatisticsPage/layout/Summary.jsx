@@ -1,5 +1,6 @@
 export const Summary = ({ stats, goalCalories }) => {
-  if (!stats || !stats.nutrients) return null;
+  // 데이터가 없거나 총 칼로리가 0인 경우(섭취 기록 없음) 표시하지 않음
+  if (!stats || !stats.nutrients || stats.totalCalories === 0) return null;
 
   const { carbs, protein, fat } = stats.nutrients;
 

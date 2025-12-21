@@ -21,15 +21,6 @@ export const StatisticsPage = () => {
 
   const goalCalories = calculateBMR();
 
-  // Calculate Goals
-  const goals = {
-    sugar: (goalCalories * 0.1) / 4, // 10% of calories, 4kcal/g
-    fiber: (goalCalories / 1000) * 14, // 14g per 1000kcal
-    sodium: 2000, // 2000mg (standard limit)
-    cholesterol: 300, // 300mg (standard limit)
-    saturated_fat: (goalCalories * 0.1) / 9, // 10% of calories, 9kcal/g
-  };
-
   const calculateStatus = (value, goal, isLimit = false) => {
     if (!goal) return "충분";
     const ratio = value / goal;
@@ -51,14 +42,13 @@ export const StatisticsPage = () => {
       let data = null;
       try {
         if (activeTab === "daily") {
-          data = await fetchDailyStats(currentDate, goalCalories);
+          data = await fetchDailyStats(currentDate);
         } else if (activeTab === "weekly") {
-          data = await fetchWeeklyStats(currentDate, goalCalories);
+          data = await fetchWeeklyStats(currentDate);
         } else {
           data = await fetchMonthlyStats(
             currentDate.getFullYear(),
-            currentDate.getMonth() + 1,
-            goalCalories
+            currentDate.getMonth() + 1
           );
         }
         setStatsData(data);
@@ -212,7 +202,7 @@ export const StatisticsPage = () => {
             <CPFChart stats={statsData} type={activeTab} />
             <NutritionChart
               stats={statsData}
-              goals={goals}
+              goals={statsData.goals}
               calculateStatus={calculateStatus}
             />
             {activeTab === "daily" ? (
@@ -221,13 +211,16 @@ export const StatisticsPage = () => {
               <Summary stats={statsData} goalCalories={goalCalories} />
             )}
 
-            <ConditionAlert
-              totalCalories={statsData.totalCalories}
-              goalCalories={goalCalories}
-              nutritions={statsData.nutrients}
-              goals={goals}
-              calculateStatus={calculateStatus}
-            />
+            {/* 백엔드에서 전달받은 showAlert 값에 따라 컨디션 알림 표시 여부 결정 */}
+            {statsData.showAlert && (
+              <ConditionAlert
+                totalCalories={statsData.totalCalories}
+                goalCalories={goalCalories}
+                nutritions={statsData.nutrients}
+                goals={statsData.goals}
+                calculateStatus={calculateStatus}
+              />
+            )}
           </div>
         )}
       </div>{" "}

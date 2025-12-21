@@ -1,12 +1,14 @@
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useMeals } from "../../context/MealContext";
 import { useEffect, useState } from "react";
+import { ConfirmModal } from "../../components/Modal/ConfirmModal";
 
 export const LogDetailPage = () => {
   const { logs, selectedDate, fetchLogs, deleteFood } = useMeals();
   const { mealId, foodIndex } = useParams();
   const [searchParams] = useSearchParams();
   const [isDeleting, setIsDeleting] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const dateFromUrl = searchParams.get("date");
   const navigate = useNavigate();
@@ -27,13 +29,15 @@ export const LogDetailPage = () => {
   const imageUrl = meal?.image_urls?.[0] ?? "";
   const calories = item?.nutritions?.calories ?? 0;
 
-  const handleDelete = async () => {
-    if (!window.confirm("정말 삭제하시겠습니까?")) return;
+  const handleDeleteClick = () => {
+    setShowDeleteConfirm(true);
+  };
 
+  const handleDeleteConfirm = async () => {
+    setShowDeleteConfirm(false);
     setIsDeleting(true);
     try {
       await deleteFood(Number(mealId), Number(foodIndex));
-      // 삭제 후 로그 페이지로 이동
       navigate(`/main/log?date=${dateFromUrl}`);
     } catch (err) {
       alert("삭제에 실패했습니다.");
@@ -48,7 +52,7 @@ export const LogDetailPage = () => {
 
   if (!item) {
     return (
-      <div style={{ padding: "20px", textAlign: "center" }}>
+      <div className="p-5 text-center">
         <p>해당 음식 정보를 찾을 수 없습니다.</p>
         <button onClick={() => navigate(-1)}>← back</button>
       </div>
@@ -65,135 +69,67 @@ export const LogDetailPage = () => {
   };
 
   return (
-    <div
-      style={{
-        maxWidth: "600px",
-        margin: "0 auto",
-        padding: "24px",
-        background: "var(--color-main_background)",
-        minHeight: "100vh",
-      }}
-    >
+    <div className="max-w-[600px] mx-auto p-6 bg-main_background min-h-screen">
       <button
         onClick={() => navigate(-1)}
-        style={{
-          border: "none",
-          background: "none",
-          fontSize: "16px",
-          color: "var(--color-primary_text)",
-          cursor: "pointer",
-          marginBottom: "16px",
-        }}
+        className="border-none bg-transparent text-base text-primary_text cursor-pointer mb-4"
       >
         ← back
       </button>
 
-      <h2
-        style={{
-          fontSize: "24px",
-          fontWeight: 600,
-          color: "var(--color-primary_text)",
-          marginBottom: "20px",
-        }}
-      >
+      <h2 className="text-2xl font-semibold text-primary_text mb-5">
         {item.foodname}
       </h2>
 
       <img
         src={imageUrl}
         alt={item.foodname}
-        style={{
-          width: "100%",
-          borderRadius: "14px",
-          boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-          marginBottom: "20px",
-        }}
+        className="w-full rounded-[14px] shadow-[0_4px_10px_rgba(0,0,0,0.1)] mb-5"
       />
 
-      <div
-        style={{
-          background: "var(--color-sub_background)",
-          border: "1px solid var(--color-border_color)",
-          borderRadius: "14px",
-          padding: "20px",
-          marginBottom: "28px",
-        }}
-      >
+      <div className="bg-sub_background border border-border_color rounded-[14px] p-5 mb-7">
         <InfoRow label="칼로리" value={`${calories} kcal`} highlight />
         <InfoRow label="섭취량" value={`${item.quantity} 인분`} />
         <InfoRow label="섭취 시간" value={formatTime(meal.eaten_at)} />
       </div>
 
-      <div
-        style={{
-          display: "flex",
-          gap: "12px",
-        }}
-      >
+      <div className="flex gap-3">
         <button
           onClick={handleEdit}
-          style={{
-            flex: 1,
-            padding: "14px",
-            borderRadius: "10px",
-            background: "var(--color-main_color)",
-            border: "none",
-            color: "#fff",
-            fontSize: "16px",
-            cursor: "pointer",
-            fontWeight: 600,
-          }}
+          className="flex-1 py-3.5 rounded-[10px] bg-main_color border-none text-white text-base cursor-pointer font-semibold"
         >
           수정하기
         </button>
 
         <button
-          onClick={handleDelete}
+          onClick={handleDeleteClick}
           disabled={isDeleting}
-          style={{
-            flex: 1,
-            padding: "14px",
-            borderRadius: "10px",
-            background: "var(--color-error_color)",
-            border: "none",
-            color: "#fff",
-            fontSize: "16px",
-            cursor: isDeleting ? "not-allowed" : "pointer",
-            fontWeight: 600,
-            opacity: isDeleting ? 0.6 : 1,
-          }}
+          className={`flex-1 py-3.5 rounded-[10px] bg-error_color border-none text-white text-base font-semibold ${
+            isDeleting ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+          }`}
         >
           {isDeleting ? "삭제 중..." : "삭제하기"}
         </button>
       </div>
+
+      <ConfirmModal
+        open={showDeleteConfirm}
+        msg="정말 삭제하시겠습니까?"
+        confirmText="삭제"
+        cancelText="취소"
+        onConfirm={handleDeleteConfirm}
+        onCancel={() => setShowDeleteConfirm(false)}
+      />
     </div>
   );
 };
 
 const InfoRow = ({ label, value, highlight }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        padding: "12px 0",
-        borderBottom: "1px solid var(--color-border_color)",
-      }}
-    >
+    <div className="flex justify-between py-3 border-b border-border_color last:border-b-0">
+      <span className="text-secondary_text">{label}</span>
       <span
-        style={{
-          color: "var(--color-secondary_text)",
-        }}
-      >
-        {label}
-      </span>
-      <span
-        style={{
-          fontWeight: highlight ? 700 : 500,
-          color: highlight
-            ? "var(--color-main_color)"
-            : "var(--color-primary_text)",
-        }}
+        className={`${highlight ? "font-bold text-main_color" : "font-medium text-primary_text"}`}
       >
         {value}
       </span>
