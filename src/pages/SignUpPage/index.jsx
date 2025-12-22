@@ -198,7 +198,7 @@ export const SignUpPage = () => {
         />
 
         <div className="flex flex-col-reverse md:flex-row items-center md:ml-24 mt-8 md:mt-0 w-full md:w-auto">
-          <div className="text-xs mt-4 md:mt-2 md:ml-20 text-center md:text-left whitespace-nowrap">
+          <div className="text-xs mt-4 md:mt-2 md:ml-20 text-center md:text-left whitespace-nowrap text-gray-900 dark:text-gray-100">
             <span>이미 회원이라면?</span>{" "}
             <span
               className="text-main_color cursor-pointer underline ml-1"

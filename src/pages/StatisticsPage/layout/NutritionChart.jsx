@@ -15,13 +15,13 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
   const getBarColor = (status) => {
     switch (status) {
       case "부족":
-        return "#ffe2c1";
+        return "var(--color-status-lack)";
       case "충분":
-        return "#A6F2E8";
+        return "var(--color-status-good)";
       case "과다":
-        return "#ff6b6b";
+        return "var(--color-status-over)";
       default:
-        return "#dcdcdc";
+        return "var(--color-status-default)";
     }
   };
 
@@ -79,20 +79,20 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl p-7 border-3 border-sub_border w-full mt-4 ">
-      <div className="flex text-primary_text text-xl pl-5 pt-4">
-        <div className="text-primary_text ">필수 영양분</div>
-        <div className="flex pl-10 items-end gap-2 text-xs">
+    <div className="bg-sub_background rounded-xl p-7 border-3 border-sub_border w-full mt-4 ">
+      <div className="flex text-primary_text text-xl pl-5 pt-4 font-bold">
+        <div className="text-primary_text font-bold">필수 영양분</div>
+        <div className="flex pl-10 items-end gap-2 text-xs font-normal">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full bg-[#ffe2c1]"></div>
+            <div className="w-3 h-3 rounded-full bg-status-lack"></div>
             <span className="text-secondary_text">부족</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full bg-[#A6F2E8] "></div>
+            <div className="w-3 h-3 rounded-full bg-status-good"></div>
             <span className="text-secondary_text">충분</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 rounded-full bg-[#ff6b6b]"></div>
+            <div className="w-3 h-3 rounded-full bg-status-over"></div>
             <span className="text-secondary_text">과다</span>
           </div>
         </div>
@@ -117,7 +117,7 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
                 dataKey="name"
                 type="category"
                 width={70}
-                tick={{ fontSize: 12, fill: "#1d2e50" }}
+                tick={{ fontSize: 13, fill: "var(--color-primary_text)", fontWeight: "bold" }}
                 axisLine={false}
                 tickLine={false}
               />
@@ -127,14 +127,14 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
                 orientation="right"
                 yAxisId="right"
                 width={56}
-                tick={{ fontSize: 12, fill: "#6c6c6c" }}
+                tick={{ fontSize: 12, fill: "var(--color-secondary_text)", fontWeight: "bold" }}
                 axisLine={false}
                 tickLine={false}
               />
               <Bar
                 dataKey="barValue"
                 radius={[0, 10, 10, 0]}
-                background={{ fill: "#f4f6fa", radius: [0, 10, 10, 0] }}
+                background={{ fill: "var(--color-sub_border)", radius: [0, 10, 10, 0] }}
               >
                 {chartData.map((entry, index) => (
                   <Cell

@@ -32,13 +32,20 @@ const ProviderLayout = () => {
   );
 };
 
-/**
- * 모든 페이지에 렌더링 될 layout 이곳에 추가
- * 예시) navigation bar등등
- */
+import { useEffect } from "react";
+
+/* DarkModeSection에선 토글을 담당하지만 새로고침하면 돌아갈수 있기에
+   App.jsx에서 유지담당 */
 const RootLayout = () => {
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-main_background">
+    <div className="min-h-screen bg-main_background dark:bg-gray-900 transition-colors">
       <Outlet />
     </div>
   );

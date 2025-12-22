@@ -5,7 +5,7 @@ export const LoginComp = ({ logout, nickname, userInfo }) => {
   const navigate = useNavigate();
   return (
     <div className="flex flex-col items-center w-full px-4">
-      <div className="border flex flex-col md:flex-row border-sub_color px-6 md:px-10 py-8 rounded-lg bg-white/60 w-full max-w-md items-center">
+      <div className="border flex flex-col md:flex-row border-sub_color px-6 md:px-10 py-8 rounded-lg bg-white/60 dark:bg-sub_background w-full max-w-md items-center">
         <div className="text-primary_text text-bold text-sm whitespace-pre-line text-center md:text-left flex-1">
           <div className="font-bold text-main_color text-xl mb-4">
             {nickname}님의 Caloreat!
@@ -31,14 +31,14 @@ export const LoginComp = ({ logout, nickname, userInfo }) => {
       </div>
       {userInfo ? (
         <button
-          className={`${alertBtn} mt-8 cursor-pointer w-full max-w-md py-4 px-10 whitespace-nowrap`}
+          className={`${alertBtn} mt-8 cursor-pointer w-full max-w-md py-4 px-10 whitespace-nowrap !border-main_color !text-white`}
           onClick={() => navigate("/main/dashboard")}
         >
           홈으로
         </button>
       ) : (
         <button
-          className={`${alertBtn} mt-8 cursor-pointer w-full max-w-md py-4 px-10 whitespace-nowrap`}
+          className={`${alertBtn} mt-8 cursor-pointer w-full max-w-md py-4 px-10 whitespace-nowrap !border-main_color !text-white`}
           onClick={() => navigate("/userinfo")}
         >
           서비스 시작하기!

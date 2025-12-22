@@ -19,7 +19,8 @@ function RingProgressBar({ totalkcal, kcal }) {
         dy="-0.2em"
         textAnchor="middle"
         fontSize="20px"
-        style={{ fill: "#1D2E50", fontWeight: "bold" }}
+        fontWeight="bold"
+        className="fill-primary_text"
       >
         {kcal}
       </tspan>
@@ -28,7 +29,7 @@ function RingProgressBar({ totalkcal, kcal }) {
         dy="1.5em"
         textAnchor="middle"
         fontSize="9px"
-        style={{ fill: "#6C6C6C" }}
+        className="fill-secondary_text"
       >
         /{totalkcal} kcal
       </tspan>

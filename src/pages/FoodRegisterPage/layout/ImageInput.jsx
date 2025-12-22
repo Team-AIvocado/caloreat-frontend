@@ -61,7 +61,7 @@ export const ImageInput = ({
 
   return (
     <>
-      <div className="text-left underline pl-4 pb-2 cursor-pointer">
+      <div className="text-left underline pl-4 pb-2 cursor-pointer text-primary_text">
         <span
           onClick={() => {
             showAlert({
@@ -92,7 +92,7 @@ export const ImageInput = ({
                     </button>
                   </div>
                   <div className="flex justify-center">
-                    <button className={backBtn} onClick={closeAlert}>
+                    <button className={`${backBtn} font-bold`} onClick={closeAlert}>
                       닫기
                     </button>
                   </div>
@@ -118,7 +118,7 @@ export const ImageInput = ({
             {cameraMode ? (
               <WebCamera setImgSrc={setImgSrc} setCameraMode={setCameraMode} />
             ) : (
-              <div className="text-center text-secondary_text w-full h-full flex flex-col justify-center items-center">
+              <div className="text-center text-secondary_text dark:text-gray-400 w-full h-full flex flex-col justify-center items-center">
                 <div className="h-2/3"></div>
                 <div>음식을 등록해주세요</div>
               </div>

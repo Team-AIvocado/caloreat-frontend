@@ -1,41 +1,42 @@
 @import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css");
-
 @import "tailwindcss";
+/* HTML 요소에 .dark 클래스가 붙었을 때 내부 스타일이 적용되도록 설정 */
+@custom-variant dark (&:where(.dark, .dark *));
 
-@theme {
-  /* 메인 배경 */
-  --color-main_background: #f4f6fa;
-  /* 메인 브랜드 컬러, CTA */
-  --color-main_color: #3a7dff;
-  --color-sub_color: #d9e9ff;
-  /* border_color (Divider/Border) */
-  --color-border_color: #dcdcdc;
-  /* text_secondary (Text Secondary) */
-  --color-secondary_text: #6c6c6c;
-  /* 헤더, 타이틀, 그래프 핵심선 */
-  --color-primary_text: #1d2e50;
-  --color-sub_background: #e9f1fc;
-  /* 성공 상태 표시(달성/양호) 좋아요 */
+/* 라이트 모드 CSS 변수 정의 */
+:root {
+  /* 라이트 모드 기본 배경색 */
+  --color-main_background: #f8fafc;
+  --color-sub_background: #ffffff;
+
+  /* 텍스트 컬러 */
+  --color-primary_text: #1e293b;
+  --color-secondary_text: #64748b;
+  --color-third_text: #94a3b8;
+
+  /* Border 컬러 */
+  --color-border_color: #e2e8f0;
+  --color-sub_border: #e2e8f0;
+
+  /* 브랜드 컬러 */
+  --color-main_color: #3b82f6;
+  --color-sub_color: #dbeafe;
+
+
+  /* 상태 색상 (부족, 충분, 과다) */
   --color-complete_color: #a6f2e8;
-  /* 경고, 영양 불균형 영역 표시 (부드러운 경고) */
   --color-warning_color: #ffe7d3;
-  /* 유도형 알림(오늘 물 섭취량 부족) */
   --color-alert_color: #ffb085;
-  /* 심각 경고: 즉시 알림 필요 (혈당 위험 수준의 음식) */
   --color-error_color: #ff4d4d;
-  /* 영양소 부족한 부분의 배경색 */
   --color-lack_color: #fff4d0;
-  /* 탄수화물 */
+
+  /* 차트 및 아이콘 컬러 */
   --color-icon_color1: #bec9ff;
-  /* 단백질 */
   --color-icon_color2: #cfe7ff;
-  /* 지방 */
   --color-icon_color3: #ffe2c1;
-  /* 영양소 */
   --color-icon_color4: #d9e3f3;
 
-  --color-sub_border: #e3eefd;
-  --color-third_text: #a8b2c7;
+  /* 상태 기반 배경/보더 컬러 */
   --color-light-alert-border: #ffebab;
   --color-light-alert: #fffdf6;
   --color-lack_bg: #fffaf6;
@@ -45,20 +46,117 @@
   --color-enough-border: #b1f3eb;
   --color-over: #ff6b6b;
   --color-sufficient: #45c4b0;
+
+  /* 의미 기반 상태 컬러 */
+  --color-status-lack: #ffe2c1;
+  --color-status-good: #A6F2E8;
+  --color-status-over: #ff6b6b;
+  --color-status-default: #dcdcdc;
+}
+
+/* 다크모드 CSS 변수 정의 */
+.dark {
+  /* 다크 모드 기본 배경색 */
+  --color-main_background: #0f172a;
+  --color-sub_background: #1e293b;
+
+  /* 텍스트 컬러 */
+  --color-primary_text: #f1f5f9;
+  --color-secondary_text: #e2e8f0;
+  --color-third_text: #cbd5e1;
+
+  /* Border 컬러 */
+  --color-border_color: #334155;
+  --color-sub_border: #334155;
+
+  /* 브랜드 컬러 */
+  --color-main_color: #60a5fa;
+  --color-sub_color: #1e3a8a;
+
+  /* 다크 모드 전용 차트/아이콘 컬러 */
+  --color-icon_color1: #6366f1;
+  --color-icon_color2: #3b82f6;
+  --color-icon_color3: #f59e0b;
+  --color-icon_color4: #94a3b8;
+
+  /* 상태 기반 컬러 */
+  --color-lack_bg: #431407;
+  --color-lack_border: #7c2d12;
+  --color-lack: #fbbf24;
+
+  --color-light-alert: #422006;
+  --color-light-alert-border: #713f12;
+
+  --color-enough: #064e3b;
+  --color-enough-border: #065f46;
+
+  --color-over: #ef4444;
+  --color-sufficient: #10b981;
+
+  /* 의미 기반 상태 컬러 */
+  --color-status-lack: #f59e0b;
+  --color-status-good: #10b981;
+  --color-status-over: #ef4444;
+  --color-status-default: #475569;
+}
+
+/* Tailwind CSS에서 CSS변수를 theme 색상처럼 바로 사용 가능하게 연결 */
+@theme {
+  --color-main_background: var(--color-main_background);
+  --color-sub_background: var(--color-sub_background);
+
+  --color-primary_text: var(--color-primary_text);
+  --color-secondary_text: var(--color-secondary_text);
+  --color-third_text: var(--color-third_text);
+
+  --color-border_color: var(--color-border_color);
+  --color-sub_border: var(--color-sub_border);
+
+  --color-main_color: var(--color-main_color);
+  --color-sub_color: var(--color-sub_color);
+
+  --color-complete_color: var(--color-complete_color);
+  --color-warning_color: var(--color-warning_color);
+  --color-alert_color: var(--color-alert_color);
+  --color-error_color: var(--color-error_color);
+  --color-lack_color: var(--color-lack_color);
+
+  --color-icon_color1: var(--color-icon_color1);
+  --color-icon_color2: var(--color-icon_color2);
+  --color-icon_color3: var(--color-icon_color3);
+  --color-icon_color4: var(--color-icon_color4);
+
+  --color-light-alert-border: var(--color-light-alert-border);
+  --color-light-alert: var(--color-light-alert);
+  --color-lack_bg: var(--color-lack_bg);
+  --color-lack_border: var(--color-lack_border);
+  --color-lack: var(--color-lack);
+  --color-enough: var(--color-enough);
+  --color-enough-border: var(--color-enough-border);
+  --color-over: var(--color-over);
+  --color-sufficient: var(--color-sufficient);
+
+  --color-status-lack: var(--color-status-lack);
+  --color-status-good: var(--color-status-good);
+  --color-status-over: var(--color-status-over);
+  --color-status-default: var(--color-status-default);
 }
 
 html,
 body {
   font-family: "Pretendard", sans-serif;
-  background-color: #f4f6fa;
+  background-color: var(--color-main_background);
   margin: 0;
   padding: 0;
   overscroll-behavior: none;
+
 }
 
+/* 로딩 스피너 스타일 */
 .loader {
-  border: 4px solid #eee;
-  border-top: 4px solid #3a7dff;
+  border: 4px solid var(--color-border_color);
+  border-top: 4px solid var(--color-main_color);
+  /* ... existing styles ... */
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -66,6 +164,7 @@ body {
   margin: 20px auto;
 }
 
+/* 회전 애니메이션 */
 @keyframes spin {
   to {
     transform: rotate(360deg);

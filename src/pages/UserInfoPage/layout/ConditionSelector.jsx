@@ -8,11 +8,10 @@ export const ConditionSelector = ({
   return (
     <div className="flex flex-col items-center w-full gap-3">
       <button
-        className={`${
-          condition.diabetes == true
+        className={`${condition.diabetes == true
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() =>
           updateCondition("diabetes", handleToggle(condition.diabetes, true))
         }
@@ -20,11 +19,10 @@ export const ConditionSelector = ({
         당뇨
       </button>
       <button
-        className={`${
-          condition.high_blood_pressure == true
+        className={`${condition.high_blood_pressure == true
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() =>
           updateCondition(
             "high_blood_pressure",
@@ -35,11 +33,10 @@ export const ConditionSelector = ({
         고혈압
       </button>
       <button
-        className={`${
-          condition.low_blood_pressure == true
+        className={`${condition.low_blood_pressure == true
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() =>
           updateCondition(
             "low_blood_pressure",
@@ -50,11 +47,10 @@ export const ConditionSelector = ({
         저혈압
       </button>
       <button
-        className={`${
-          condition.hyperlipidemia == true
+        className={`${condition.hyperlipidemia == true
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() =>
           updateCondition(
             "hyperlipidemia",

@@ -25,7 +25,7 @@ export const StatisticsPage = () => {
     if (!goal) return "충분";
     const ratio = value / goal;
     if (isLimit) {
-      if (ratio < 0.5) return "부족";
+      if (ratio < 0.8) return "부족";
       if (ratio <= 1.0) return "충분";
       return "과다";
     } else {
@@ -130,15 +130,14 @@ export const StatisticsPage = () => {
         통계
       </div>
       <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">
-        <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
+        <div className="flex w-full max-w-150 bg-sub_background rounded-xl p-1 mb-6 border-2 border-main_color">
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}
-              className={`flex-1 py-2 text-sm rounded-lg ${
-                activeTab === tab
-                  ? "bg-main_color text-white"
-                  : "text-secondary_text hover:bg-sub_background"
-              }`}
+              className={`flex-1 py-2 text-sm rounded-lg ${activeTab === tab
+                ? "bg-main_color text-white"
+                : "text-secondary_text hover:bg-sub_border"
+                }`}
               onClick={() => {
                 setActiveTab(tab);
                 setCurrentDate(new Date());
@@ -149,7 +148,7 @@ export const StatisticsPage = () => {
           ))}
         </div>
 
-        <div className="flex items-center justify-between w-full max-w-[600px] mb-6 px-4">
+        <div className="flex items-center justify-between w-full max-w-150 mb-6 px-4">
           <button
             onClick={() => handleDateChange(-1)}
             className="p-2 text-secondary_text hover:text-primary_text font-bold text-xl"
@@ -178,11 +177,10 @@ export const StatisticsPage = () => {
           </div>
           <button
             onClick={() => handleDateChange(1)}
-            className={`p-2 font-bold text-xl ${
-              isFuture()
-                ? "text-gray-300 cursor-not-allowed"
-                : "text-secondary_text hover:text-primary_text"
-            }`}
+            className={`p-2 font-bold text-xl ${isFuture()
+              ? "text-gray-300 cursor-not-allowed"
+              : "text-secondary_text hover:text-primary_text"
+              }`}
             disabled={isFuture()}
           >
             &gt;
@@ -192,7 +190,7 @@ export const StatisticsPage = () => {
         {loading || !statsData ? (
           <div className="text-secondary_text mt-10">Loading...</div>
         ) : (
-          <div className="w-full max-w-[600px] flex flex-col gap-4">
+          <div className="w-full max-w-150 flex flex-col gap-4">
             <TotalKcal
               totalCalories={statsData.totalCalories}
               goalCalories={goalCalories}

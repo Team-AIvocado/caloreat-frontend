@@ -63,8 +63,8 @@ export const ImageAnalysis = ({
   //TODO: 음식 추가 버튼 및 기능
   return (
     <>
-      <div className="text-left underline pl-4 pb-2">음식 인식 완료!</div>
-      <div className="w-[90vw] max-w-[600px] rounded-xl bg-white border-4 border-sub_border">
+      <div className="text-left underline pl-4 pb-2 text-primary_text">음식 인식 완료!</div>
+      <div className="w-[90vw] max-w-[600px] rounded-xl bg-white dark:bg-sub_background border-4 border-sub_border dark:border-border_color">
         <div className="flex flex-col md:flex-row px-5 py-9 items-center md:items-start">
           {" "}
           <img
@@ -83,7 +83,7 @@ export const ImageAnalysis = ({
             <div className="h-1/4 text-sm text-secondary_text pl-4 mb-10 mt-9">
               {/* 후보가 없는경우 대비 */}
               {candidateButtons.length > 0 && (
-                <div className="mb-4">만약 아니면 혹시 이런 음식인가요?</div>
+                <div className="mb-4 text-secondary_text">만약 아니면 혹시 이런 음식인가요?</div>
               )}
 
               <div className="h-1/4 text-xs text-secondary_text">
@@ -109,9 +109,9 @@ export const ImageAnalysis = ({
             </div>
 
             <div className="h-1/4 pl-4">
-              <div className="mb-2 mr-4 text-xs">그래도 아니라면?</div>
+              <div className="mb-2 mr-4 text-xs text-secondary_text">그래도 아니라면?</div>
               <button
-                className="underline text-sm text-gray-500 mr-5"
+                className="underline text-sm text-gray-500 dark:text-gray-300 mr-5"
                 onClick={() => {
                   setAnalysisMode(false);
                 }}
@@ -119,7 +119,7 @@ export const ImageAnalysis = ({
                 사진 재촬영
               </button>
               <button
-                className="underline text-sm text-gray-500 mr-2"
+                className="underline text-sm text-gray-500 dark:text-gray-300 mr-2"
                 onClick={() => {
                   showAlert({
                     msg: "음식명을 수정해주세요",

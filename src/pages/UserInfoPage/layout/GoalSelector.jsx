@@ -4,11 +4,10 @@ export const GoalSelector = ({ modeSelect, setModeSelect, handleToggle }) => {
   return (
     <div className="flex flex-col items-center w-full gap-3">
       <button
-        className={`${
-          modeSelect == "loss"
+        className={`${modeSelect == "loss"
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() => {
           setModeSelect(handleToggle(modeSelect, "loss"));
         }}
@@ -16,11 +15,10 @@ export const GoalSelector = ({ modeSelect, setModeSelect, handleToggle }) => {
         체중 감량
       </button>
       <button
-        className={`${
-          modeSelect == "maintain"
+        className={`${modeSelect == "maintain"
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() => {
           setModeSelect(handleToggle(modeSelect, "maintain"));
         }}
@@ -28,11 +26,10 @@ export const GoalSelector = ({ modeSelect, setModeSelect, handleToggle }) => {
         유지
       </button>
       <button
-        className={`${
-          modeSelect == "gain"
+        className={`${modeSelect == "gain"
             ? "bg-main_color text-white"
-            : "bg-white text-secondary_text"
-        } border border-border_color rounded-lg py-3 w-2/3`}
+            : "bg-white dark:bg-sub_background text-secondary_text"
+          } border border-border_color rounded-lg py-3 w-2/3`}
         onClick={() => {
           setModeSelect(handleToggle(modeSelect, "gain"));
         }}

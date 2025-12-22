@@ -46,7 +46,7 @@ export const DashBoardPage = () => {
       <RingProgressBar totalkcal={goalCalories} kcal={Math.round(totalKcal)} />
 
       {logs && logs.length > 0 ? (
-        <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
+        <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-sub_background flex flex-col gap-4">
           {logs.map((meal) => {
             const mealKcal = (meal.meal_items || []).reduce(
               (acc, item) =>

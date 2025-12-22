@@ -28,12 +28,12 @@ export const FoodRegisterPage = () => {
   return (
     <div className="flex flex-col justify-center items-center relative">
       <button
-        className="absolute top-5 right-5 text-xs text-secondary_text underline cursor-pointer"
+        className="absolute top-5 right-5 text-xs text-secondary_text dark:text-gray-400 underline cursor-pointer"
         onClick={resetAll}
       >
         기록 그만두기
       </button>
-      <div className="mt-20 pb-7 text-center text-2xl text-secondary_text">
+      <div className="mt-20 pb-7 text-center text-2xl text-primary_text font-bold">
         음식 기록하기
       </div>
       <div className="flex flex-col justify-center">

@@ -18,10 +18,10 @@ export const OnLogin = ({
 
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center justify-center md:ml-6">
-        <div className="flex flex-col md:ml-10">
+      <div className="flex flex-col items-center justify-center w-full px-4">
+        <div className="flex flex-col w-full max-w-sm">
           <input
-            className={error.id ? errorInput[1] : errorInput[0]}
+            className={`${error.id ? errorInput[1] : errorInput[0]} mb-2`}
             type="text"
             placeholder="이메일 및 아이디를 입력하세요"
             value={userId}
@@ -31,7 +31,7 @@ export const OnLogin = ({
             }}
           />
           <input
-            className={error.pw ? errorInput[1] : errorInput[0]}
+            className={`${error.pw ? errorInput[1] : errorInput[0]} mb-6`}
             type="password"
             placeholder="비밀번호를 입력하세요"
             value={password}
@@ -42,9 +42,9 @@ export const OnLogin = ({
             onKeyDown={handleKeyPress}
           />
         </div>
-        <div className="w-full md:w-auto flex justify-center">
+        <div className="w-full max-w-sm">
           <button
-            className="bg-main_color text-white rounded-lg md:ml-7 px-16 py-3 mt-4 md:mt-20 text-sm cursor-pointer w-72 md:w-auto whitespace-nowrap"
+            className="bg-main_color text-white rounded-lg px-4 py-3 text-sm cursor-pointer w-full font-bold hover:bg-blue-600 transition-colors"
             onClick={onMain}
           >
             로그인
@@ -52,17 +52,6 @@ export const OnLogin = ({
         </div>
       </div>
 
-      <div className="text-xs mt-4 md:mt-2 md:ml-2 text-center md:text-left w-full md:w-auto">
-        <div className="inline-block whitespace-nowrap">
-          <span>아직 회원이 아니라면?</span>{" "}
-          <span
-            className="text-main_color cursor-pointer underline ml-1"
-            onClick={onSignup}
-          >
-            회원가입
-          </span>
-        </div>
-      </div>
     </>
   );
 };
