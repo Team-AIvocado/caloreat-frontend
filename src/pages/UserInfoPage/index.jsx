@@ -6,6 +6,7 @@ import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
 import { ConditionSelector } from "./layout/ConditionSelector";
 import { createUserInfo } from "../../services/users";
+import { useAuth } from "../../context/AuthContext";
 
 export const UserInfoPage = () => {
   const numberRegex = /^\d+(\.\d+)?$/;
@@ -116,6 +117,8 @@ export const UserInfoPage = () => {
     }
   };
 
+  const { checkPreInfo } = useAuth(); // AuthContext에서 정보 갱신 함수 가져오기
+
   const onMain = async () => {
     const trueConditions = Object.keys(condition).filter(
       (cond) => condition[cond] === true
@@ -123,6 +126,7 @@ export const UserInfoPage = () => {
 
     try {
       await createUserInfo(userProfile, modeSelect, trueConditions);
+      await checkPreInfo(); // 백엔드에 저장된 정보로 전역 상태 갱신
       navigate("/main/dashboard");
     } catch (e) {
       console.error("failed to create user info", e);

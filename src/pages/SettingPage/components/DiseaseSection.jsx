@@ -79,8 +79,8 @@ const DiseaseSection = () => {
                         className={`
                             flex items-center p-3 border rounded-lg cursor-pointer transition-all
                             ${selectedConditions.includes(item.id)
-                                ? "border-blue-500 bg-blue-50" // 선택됨
-                                : "border-gray-200 hover:border-blue-200" // 선택되지 않음
+                                ? "border-blue-500 bg-blue-50 dark:bg-blue-900/50" // 선택됨
+                                : "border-gray-200 hover:border-blue-200 dark:border-gray-700 dark:hover:border-blue-500" // 선택되지 않음
                             }
                         `}
                         onClick={() => handleToggle(item.id)}
