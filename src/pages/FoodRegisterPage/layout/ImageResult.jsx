@@ -44,7 +44,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const currentFat = Math.round(fat * intake);
   const totalMicronutrients = Math.round(
     Object.values(micronutrients || {}).reduce((total, cur) => total + cur, 0) *
-      intake
+    intake
   );
 
   const chartData = [
@@ -101,7 +101,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
-      <div className="w-full max-w-[600px] bg-white rounded-xl border-3 border-sub_border px-6 md:p-6">
+      <div className="w-full max-w-[600px] bg-white dark:bg-sub_background rounded-xl border-3 border-sub_border px-6 md:p-6">
         <div className="flex flex-row md:flex-row gap-6 pt-7 items-center md:items-start">
           <img
             className="w-40 h-40 md:w-48 md:h-48 rounded-xl border border-border_color object-cover "
@@ -209,11 +209,10 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
           <button
             key={type.value}
             onClick={() => setMealType(type.value)}
-            className={`px-4 py-2 rounded-lg text-sm transition-colors ${
-              mealType === type.value
+            className={`px-4 py-2 rounded-lg text-sm transition-colors ${mealType === type.value
                 ? "bg-main_color text-white"
-                : "bg-white text-secondary_text border border-border_color"
-            }`}
+                : "bg-white dark:bg-sub_background text-secondary_text border border-border_color"
+              }`}
           >
             {type.label}
           </button>

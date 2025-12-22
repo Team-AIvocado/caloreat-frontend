@@ -136,7 +136,7 @@ export const UserInfoPage = () => {
           <div className="text-main_color text-3xl">
             <div className=" pb-5 font-bold">caloreat</div>
           </div>
-          <div className="bg-white border border-sub_color px-4 py-4 rounded-lg text-sm mb-4 text-secondary_text font-light w-72 md:w-96">
+          <div className="bg-white dark:bg-gray-800 border border-sub_color px-4 py-4 rounded-lg text-sm mb-4 text-secondary_text font-light w-72 md:w-96 dark:text-white">
             당신의 맞춤 분석을 위해 몇 가지만 알려주세요!
             <div className="text-xs font-extralight text-center pt-2">
               정확하지 않아도 괜찮아요!
@@ -201,7 +201,7 @@ export const UserInfoPage = () => {
                 />
                 <div className="flex flex-row justify-between w-full mt-6">
                   <button
-                    className="bg-white border border-border_color text-secondary_text rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
+                    className="bg-white dark:bg-gray-800 border border-border_color text-secondary_text dark:text-white rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
                     onClick={onPrev}
                   >
                     이전
@@ -238,7 +238,7 @@ export const UserInfoPage = () => {
                 />
                 <div className="flex flex-row justify-between w-full mt-6">
                   <button
-                    className="bg-white border border-border_color text-secondary_text rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
+                    className="bg-white dark:bg-gray-800 border border-border_color text-secondary_text dark:text-white rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
                     onClick={onPrev}
                   >
                     이전

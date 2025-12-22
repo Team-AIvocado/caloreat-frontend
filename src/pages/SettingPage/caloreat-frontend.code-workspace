@@ -1,0 +1,14 @@
+{
+  "folders": [
+    {
+      "path": "../../../.."
+    },
+    {
+      "path": "../../../../../caloreat-backend/caloreat-backend"
+    },
+    {
+      "path": "../../../../../ai-module"
+    }
+  ],
+  "settings": {}
+}

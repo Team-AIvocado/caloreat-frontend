@@ -112,6 +112,8 @@ export const LogEditPage = () => {
               borderRadius: "8px",
               border: "1px solid var(--color-border_color)",
               fontSize: "16px",
+              color: "var(--color-primary_text)",
+              background: "var(--color-sub_background)",
             }}
           />
         </label>
@@ -134,6 +136,8 @@ export const LogEditPage = () => {
               borderRadius: "8px",
               border: "1px solid var(--color-border_color)",
               fontSize: "16px",
+              color: "var(--color-primary_text)",
+              background: "var(--color-sub_background)",
             }}
           />
         </label>
@@ -163,6 +167,8 @@ export const LogEditPage = () => {
               borderRadius: "8px",
               border: "1px solid var(--color-border_color)",
               fontSize: "16px",
+              color: "var(--color-primary_text)",
+              background: "var(--color-sub_background)",
             }}
           />
         </label>

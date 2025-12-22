@@ -15,11 +15,10 @@ export const Gender = ({
       </div>
       <div className="flex flex-row justify-center w-full mb-4">
         <button
-          className={`${
-            userProfile.gender === "male"
-              ? "bg-main_color text-white"
-              : "bg-white text-secondary_text"
-          } text-lg px-10 py-7 rounded-lg mr-2 border border-border_color !px-10 !py-7 !mr-2 !mb-0`}
+          className={`${userProfile.gender === "male"
+            ? "bg-main_color text-white"
+            : "bg-white dark:bg-gray-800 text-secondary_text dark:text-white"
+            } text-lg px-10 py-7 rounded-lg mr-2 border border-border_color !px-10 !py-7 !mr-2 !mb-0`}
           onClick={() => {
             setUserProfile({ ...userProfile, gender: "male" });
             setError({ ...error, gender: "" });
@@ -28,11 +27,10 @@ export const Gender = ({
           남성
         </button>
         <button
-          className={`${
-            userProfile.gender === "female"
-              ? "bg-main_color text-white"
-              : "bg-white text-secondary_text"
-          } text-lg px-10 py-7 rounded-lg border border-border_color !px-10 !py-7 !mr-0 !mb-0`}
+          className={`${userProfile.gender === "female"
+            ? "bg-main_color text-white"
+            : "bg-white dark:bg-gray-800 text-secondary_text dark:text-white"
+            } text-lg px-10 py-7 rounded-lg border border-border_color !px-10 !py-7 !mr-0 !mb-0`}
           onClick={() => {
             setUserProfile({ ...userProfile, gender: "female" });
             setError({ ...error, gender: "" });
@@ -49,7 +47,7 @@ export const Gender = ({
 
       <div className="flex flex-row justify-between w-full mt-6">
         <button
-          className="bg-white border border-border_color text-secondary_text rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
+          className="bg-white dark:bg-gray-800 border border-border_color text-secondary_text dark:text-white rounded-lg px-8 py-2 text-sm cursor-pointer w-[48%]"
           onClick={onPrev}
         >
           이전

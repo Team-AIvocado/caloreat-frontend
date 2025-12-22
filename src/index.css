@@ -62,8 +62,8 @@
 
   /* 텍스트 컬러 */
   --color-primary_text: #f1f5f9;
-  --color-secondary_text: #94a3b8;
-  --color-third_text: #64748b;
+  --color-secondary_text: #e2e8f0;
+  --color-third_text: #cbd5e1;
 
   /* Border 컬러 */
   --color-border_color: #334155;

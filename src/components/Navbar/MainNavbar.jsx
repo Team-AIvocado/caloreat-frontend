@@ -34,7 +34,7 @@ export const MainNavBar = ({ nickname }) => {
   return (
     <>
       {/* Mobile Top Bar */}
-      <div className="md:hidden fixed top-0 left-0 w-full bg-white h-16 flex items-center justify-between px-6 z-50 border-b border-border_color">
+      <div className="md:hidden fixed top-0 left-0 w-full bg-sub_background h-16 flex items-center justify-between px-6 z-50 border-b border-border_color">
         <div
           className="text-main_color font-bold text-xl cursor-pointer"
           onClick={() => navigate("/main/dashboard")}
@@ -87,10 +87,27 @@ export const MainNavBar = ({ nickname }) => {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-sub_background z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
+        <button
+          className="absolute top-5 right-6 text-main_color focus:outline-none"
+          onClick={() => setIsOpen(false)}
+        >
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M6 18L18 6M6 6l12 12"
+            />
+          </svg>
+        </button>
         <div className="flex flex-col pt-20 px-6">
           <div className="text-main_color text-2xl mb-8">
             <div className="font-bold">{nickname}'s</div>
@@ -133,7 +150,7 @@ export const MainNavBar = ({ nickname }) => {
       </div>
 
       {/* Desktop Sidebar */}
-      <div className="hidden md:flex fixed top-0 left-0 bg-white h-full w-52 border-r border-border_color flex-col pt-10 z-30">
+      <div className="hidden md:flex fixed top-0 left-0 bg-sub_background h-full w-52 border-r border-border_color flex-col pt-10 z-30">
         <div
           className="text-main_color text-3xl ml-11 mt-20 mb-10 cursor-pointer"
           onClick={() => navigate("/main/dashboard")}
@@ -169,7 +186,7 @@ const NavItem = ({ to, label, vertical, onClick }) => (
     onClick={onClick}
     className={({ isActive }) =>
       `${vertical ? "text-end pr-14 py-4" : "text-left py-2 text-lg"} 
-       ${isActive ? "font-semibold text-main_color" : "text-secondary_text"}`
+       ${isActive ? "font-bold text-main_color" : "font-medium text-secondary_text"}`
     }
   >
     {label}

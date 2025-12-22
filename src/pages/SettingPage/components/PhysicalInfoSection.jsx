@@ -69,14 +69,14 @@ const PhysicalInfoSection = () => {
                 <div className="grid grid-cols-2 gap-4">
                     <div>
                         <label className="block text-sm font-medium text-secondary_text mb-1">성별</label>
-                        <div className="p-2 bg-gray-100 rounded text-gray-700">
+                        <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded text-gray-700 dark:text-gray-100">
                             {userInfo?.gender ? formatGender(userInfo.gender) : "-"}
                         </div>
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium text-secondary_text mb-1">생년월일</label>
-                        <div className="p-2 bg-gray-100 rounded text-gray-700">
+                        <div className="p-2 bg-gray-100 dark:bg-gray-700 rounded text-gray-700 dark:text-gray-100">
                             {userInfo?.birthdate || "-"}
                         </div>
                     </div>
