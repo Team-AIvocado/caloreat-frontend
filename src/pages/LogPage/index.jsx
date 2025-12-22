@@ -37,12 +37,10 @@ export const LogPage = () => {
 
       {/* 날짜 네비게이터 (CalendarModal 포함) */}
       <div className="flex justify-center mb-6">
-      <div className="flex justify-center mb-6">
         <DateNavigator date={date} setDate={setDate} />
       </div>
 
       {error && (
-        <div className="text-center text-error_color mt-5 text-sm font-medium">
         <div className="text-center text-error_color mt-5 text-sm font-medium">
           데이터를 불러오는 데 문제가 발생했습니다.
         </div>
@@ -61,7 +59,6 @@ export const LogPage = () => {
         )}
 
       {/* 로그 카드 */}
-      <div className="mt-2.5 flex flex-col items-center gap-5">
       <div className="mt-2.5 flex flex-col items-center gap-5">
         {logs.map((meal) =>
           meal.meal_items.map((item, idx) => (
