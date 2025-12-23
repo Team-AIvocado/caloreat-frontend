@@ -1,4 +1,11 @@
 export const DailyLog = ({ logs }) => {
+  const mealTypeMap = {
+    breakfast: "아침",
+    lunch: "점심",
+    dinner: "저녁",
+    snack: "간식",
+  };
+
   if (!logs || logs.length === 0) {
     return (
       <div className="bg-white rounded-xl p-5 border border-sub_border w-full mt-4 text-center text-secondary_text">
@@ -20,7 +27,7 @@ export const DailyLog = ({ logs }) => {
           >
             <div className="flex items-center gap-3">
               <span className="text-secondary_text font-medium w-10">
-                {log.mealType}
+                {mealTypeMap[log.mealType] || log.mealType}
               </span>
               <span className="text-primary_text font-bold">{log.name}</span>
             </div>

@@ -50,6 +50,8 @@ export const fetchFood = async (foods) => {
           carbs: nuts.carbs_g,
           protein: nuts.protein_g,
           fat: nuts.fat_g,
+          sugar: nuts.sugar_g,
+          sodium: nuts.sodium_mg,
           micronutrients: nuts.micronutrients,
           // Keep original nutritions for other fields like sugar
           nutritions: nuts,

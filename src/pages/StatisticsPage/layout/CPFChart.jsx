@@ -27,7 +27,7 @@ export const CPFChart = ({ stats, type }) => {
         <span className="text-secondary_text">{label}</span>
       </div>
       <div className="flex items-center space-x-2">
-        <span className="font-bold text-primary_text">{value}g</span>
+        <span className="font-bold text-primary_text">{value.toFixed(1)}g</span>
         <span className="text-third_text w-8 text-right">{percentage}%</span>
       </div>
     </div>
@@ -66,7 +66,7 @@ export const CPFChart = ({ stats, type }) => {
           <div className="absolute inset-0 flex items-center justify-center flex-col pointer-events-none">
             <span className="text-xs text-secondary_text">Total</span>
             <span className="text-sm font-bold text-primary_text">
-              {total}g
+              {total.toFixed(1)}g
             </span>
           </div>
         </div>

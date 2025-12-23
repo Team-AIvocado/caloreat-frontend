@@ -63,7 +63,9 @@ export const DashBoardPage = () => {
                     {mealTypeLabels[meal.meal_type] || meal.meal_type}
                   </div>
                   <div className="text-sm">
-                    {(meal.meal_items || []).map((item) => item.foodname).join(", ")}
+                    {(meal.meal_items || [])
+                      .map((item) => item.foodname)
+                      .join(", ")}
                   </div>
                 </div>
                 <div className="text-primary_text font-light whitespace-nowrap">
