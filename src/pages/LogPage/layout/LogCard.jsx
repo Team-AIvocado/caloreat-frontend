@@ -6,7 +6,7 @@ export default function LogCard({ item, meal, index }) {
 
   // 백엔드 필드명에 맞게 추출
   const { foodname, quantity, nutritions } = item;
-  const calories = nutritions?.calories ?? 0;
+  const calories = Math.round((nutritions?.calories ?? 0) * (quantity ?? 1));
   const imageUrl = meal.image_urls?.[0] ?? "";
 
   // selectedDate를 문자열로 변환
