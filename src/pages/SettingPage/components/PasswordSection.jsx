@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { updatePassword } from "../../../services/users";
+import { useAlert } from "../../../context/AlertContext";
 
 const PasswordSection = () => {
     // 입력 상태 관리
@@ -9,6 +10,7 @@ const PasswordSection = () => {
         confirm: ""
     });
     const [isLoading, setIsLoading] = useState(false);
+    const { showAlert } = useAlert();
 
     const handleChange = (e) => {
         setPasswords({ ...passwords, [e.target.name]: e.target.value });
@@ -17,17 +19,22 @@ const PasswordSection = () => {
     const handleUpdate = async () => {
         // 1. 빈 값 검사
         if (!passwords.current || !passwords.new || !passwords.confirm) {
-            alert("새 비밀번호를 작성해주세요.");
+            showAlert({ msg: "새 비밀번호를 작성해주세요." });
             return;
         }
-        // 2. 비밀번호 일치 검사
+        // 2. 현재 비밀번호와 동일한지 검사
+        if (passwords.current === passwords.new) {
+            showAlert({ msg: "현재 비밀번호와 다른 비밀번호를 입력해주세요." });
+            return;
+        }
+        // 3. 비밀번호 일치 검사
         if (passwords.new !== passwords.confirm) {
-            alert("새 비밀번호가 일치하지 않습니다.");
+            showAlert({ msg: "새 비밀번호가 일치하지 않습니다." });
             return;
         }
-        // 3. 길이 검사
+        // 4. 길이 검사
         if (passwords.new.length < 4) {
-            alert("비밀 번호는 5자 이상이어야 합니다.");
+            showAlert({ msg: "비밀 번호는 5자 이상이어야 합니다." });
             return;
         }
 
@@ -35,7 +42,7 @@ const PasswordSection = () => {
         try {
             // API 호출
             await updatePassword(passwords.current, passwords.new);
-            alert("비밀번호가 성공적으로 변경되었습니다.");
+            showAlert({ msg: "비밀번호가 성공적으로 변경되었습니다." });
             // 입력창 초기화
             setPasswords({ current: "", new: "", confirm: "" });
         } catch (error) {
@@ -47,7 +54,7 @@ const PasswordSection = () => {
                 msg = "현재 비밀번호가 일치하지 않습니다.";
             }
 
-            alert(msg);
+            showAlert({ msg: msg });
         } finally {
             setIsLoading(false);
         }

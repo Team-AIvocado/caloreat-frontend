@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useAlert } from "../../../context/AlertContext";
 import { updatePhysicalInfo } from "../../../services/users";
 
 const PhysicalInfoSection = () => {
     // 전역 상태에서 사용자 기본프로필과 갱신 함수 가져오기
     const { userInfo, checkPreInfo } = useAuth();
+    const { showAlert } = useAlert();
     // 키, 몸무게를 관리할 로컬 상태값
     const [formData, setFormData] = useState({
         height: "",
@@ -32,7 +34,13 @@ const PhysicalInfoSection = () => {
     const handleUpdate = async () => {
         // 빈값 방지 검증
         if (!formData.height || !formData.weight) {
-            alert("키와 몸무게를 입력해주세요.");
+            showAlert({ msg: "키와 몸무게를 입력해주세요." });
+            return;
+        }
+
+        // 변경사항 없음 검증
+        if (Number(formData.height) === userInfo.height && Number(formData.weight) === userInfo.weight) {
+            showAlert({ msg: "변경된 내용이 없습니다." });
             return;
         }
 
@@ -43,10 +51,10 @@ const PhysicalInfoSection = () => {
             // 2. 전역 프로필 정보 갱신
             await checkPreInfo();
 
-            alert("신체 정보가 수정되었습니다.");
+            showAlert({ msg: "신체 정보가 수정되었습니다." });
         } catch (error) {
             console.error("업데이트 실패", error);
-            alert("수정에 실패하였습니다.");
+            showAlert({ msg: "수정에 실패하였습니다." });
         } finally {
             setIsLoading(false);
         }

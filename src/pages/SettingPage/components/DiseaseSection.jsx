@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useAlert } from "../../../context/AlertContext";
 import { updateConditions } from "../../../services/users";
 
 const DiseaseSection = () => {
     // 전역 사용자 정보, 최신 정보 갱신 함수 불러오기
     const { userInfo, checkPreInfo } = useAuth();
+    const { showAlert } = useAlert();
     // 로컬 상태 : 선택된 질환 리스트
     const [selectedConditions, setSelectedConditions] = useState([]);
     // API 요청 시 로딩 상태
@@ -42,10 +44,10 @@ const DiseaseSection = () => {
             // 2. 전역 사용자 정보 갱신
             await checkPreInfo();
 
-            alert("건강 정보가 수정되었습니다.");
+            showAlert({ msg: "건강 정보가 수정되었습니다." });
         } catch (error) {
             console.error("업데이트 실패", error);
-            alert("수정에 실패했습니다.");
+            showAlert({ msg: "수정에 실패했습니다." });
         } finally {
             setIsLoading(false);
         }
@@ -56,9 +58,9 @@ const DiseaseSection = () => {
     // label/desc : 화면에 보여지는 이름/설명
     const conditionsList = [
         { id: "diabetes", label: "당뇨", desc: "혈당 관리가 필요해요" },
-        { id: "hypertension", label: "고혈압", desc: "나트륨 조절이 필요해요" },
+        { id: "high_blood_pressure", label: "고혈압", desc: "나트륨 조절이 필요해요" },
+        { id: "low_blood_pressure", label: "저혈압", desc: "규칙적인 식사가 필요해요" },
         { id: "hyperlipidemia", label: "고지혈증", desc: "지방 섭취 주의가 필요해요" },
-        { id: "none", label: "없음/해당사항 없음", desc: "특별한 질환이 없어요" },
     ];
 
     return (

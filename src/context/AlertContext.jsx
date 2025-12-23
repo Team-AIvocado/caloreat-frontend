@@ -24,7 +24,16 @@ export function AlertProvider({ children }) {
         <AlertModal
           open={alert}
           msg={alert.msg}
-          footer={alert.footer}
+          footer={
+            alert.footer || (
+              <button
+                onClick={closeAlert}
+                className="bg-main_color text-white px-4 py-2 rounded-lg hover:bg-opacity-90 transition-all font-medium"
+              >
+                확인
+              </button>
+            )
+          }
           hasNavbar={alert.hasNavbar}
           input={alert.input}
         />

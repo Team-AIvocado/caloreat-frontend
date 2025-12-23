@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useAlert } from "../../../context/AlertContext";
 import { updateGoal } from "../../../services/users";
 
 const GoalSection = () => {
     // 전역 사용자 정보와 최신 정보 갱신 함수 불러오기
     const { userInfo, checkPreInfo } = useAuth();
+    const { showAlert } = useAlert();
     // 로컬 상태 : 선택된 목표 저장
     const [selectedGoal, setSelectedGoal] = useState("");
     // 로컬 로딩 상태 
@@ -32,10 +34,10 @@ const GoalSection = () => {
             // 3. 로컬 상태 갱신
             setSelectedGoal(newGoal);
 
-            alert("목표가 변경되었습니다.");
+            showAlert({ msg: "목표가 변경되었습니다." });
         } catch (error) {
             console.error("업데이트 실패", error);
-            alert("목표 변경에 실패했습니다.");
+            showAlert({ msg: "목표 변경에 실패했습니다." });
         } finally {
             setIsLoading(false);
         }
