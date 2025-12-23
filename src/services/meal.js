@@ -35,8 +35,9 @@ export const foodDetect = async (imgSrc) => {
   }
 };
 
-export const fetchFood = async (foods) => {
-  const data = { foodnames: [foods] };
+export const fetchFood = async (foodName) => {
+  const data = { foodname: foodName };
+
   try {
     const response = await api.post("/meals/analyze", data);
 
@@ -60,7 +61,7 @@ export const fetchFood = async (foods) => {
       return { results: transformedResults };
     }
 
-    return response.data;
+    return { results: [] };
   } catch (e) {
     console.error("failed to fetch food details", e);
     throw e;

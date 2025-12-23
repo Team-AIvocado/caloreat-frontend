@@ -149,6 +149,9 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
             onChange={handleSliderChange}
             sx={{
               color: "#3a7dff",
+              "& .MuiSlider-markLabel": {
+                color: "var(--color-secondary_text)",
+              },
             }}
           />
         </div>
@@ -178,7 +181,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
               <YAxis
                 dataKey="name"
                 type="category"
-                tick={{ fontSize: 12 }}
+                tick={{ fontSize: 12, fill: "var(--color-secondary_text)" }}
                 width={60}
                 axisLine={false}
                 tickLine={false}
@@ -195,7 +198,10 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
                   dataKey="value"
                   position="right"
                   formatter={(value) => `${value}g`}
-                  style={{ fill: "#6c6c6c", fontSize: "12px" }}
+                  style={{
+                    fill: "var(--color-secondary_text)",
+                    fontSize: "12px",
+                  }}
                 />
               </Bar>
             </BarChart>

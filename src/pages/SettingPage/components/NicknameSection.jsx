@@ -1,13 +1,26 @@
 import { useState } from "react";
 import { useAuth } from "../../../context/AuthContext";
+import { useAlert } from "../../../context/AlertContext";
 import { updateNickname } from "../../../services/users";
+import { alertBtn } from "../../../utils/styles";
 
 const NicknameSection = () => {
   const { user, setUser } = useAuth(); // 전역 상태 업데이트용
+  const { showAlert, closeAlert } = useAlert();
   const [nickname, setNickname] = useState(user?.nickname || ""); // 초기값 안전하게 할당
   const [isLoading, setIsLoading] = useState(false);
   const handleUpdate = async () => {
-    if (!nickname.trim()) return;
+    if (!nickname.trim()) {
+      showAlert({
+        msg: "새 닉네임을 작성해주세요.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
+      return;
+    }
 
     setIsLoading(true);
     try {
@@ -15,10 +28,24 @@ const NicknameSection = () => {
       await updateNickname(nickname);
 
       setUser({ ...user, nickname: nickname });
-      alert("닉네임이 변경되었습니다.");
+      showAlert({
+        msg: "닉네임이 변경되었습니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
     } catch (error) {
       console.error("업데이트 실패", error);
-      alert("변경에 실패했습니다.");
+      showAlert({
+        msg: "변경에 실패했습니다.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
     } finally {
       setIsLoading(false);
     }
@@ -47,5 +74,3 @@ const NicknameSection = () => {
   );
 };
 export default NicknameSection;
-
-
