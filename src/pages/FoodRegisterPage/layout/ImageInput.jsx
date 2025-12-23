@@ -1,6 +1,7 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { alertBtn, backBtn } from "../../../utils/styles";
 import { WebCamera } from "../../../components/WebCamera/index";
+import { foodDetect } from "../../../services/meal";
 
 export const ImageInput = ({
   showAlert,
@@ -9,8 +10,12 @@ export const ImageInput = ({
   setImgSrc,
   cameraMode,
   imgSrc,
+  setAnalysisMode,
+  setFoodInfe,
 }) => {
   const fileRef = useRef();
+
+  const [loading, setLoading] = useState(false);
 
   //image file preview 가능하도록 encoding
   const encodeFileToBase64 = (fileBlob) => {
@@ -38,14 +43,26 @@ export const ImageInput = ({
     fileRef.current.click();
   };
 
+  const onAnalysis = async () => {
+    setLoading(true);
+    try {
+      const res = await foodDetect(imgSrc);
+      if (res) {
+        setFoodInfe(res);
+        setAnalysisMode(true);
+      }
+    } catch {
+      setAnalysisMode(false);
+      console.log("failed to fetch food res");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className="pt-24 pb-11 text-center text-2xl text-secondary_text">
-        음식 기록하기
-      </div>
-      <div className="flex flex-col justify-center">
-        <div
-          className="text-left underline pl-4 pb-2 cursor-pointer"
+    <>
+      <div className="text-left underline pl-4 pb-2 cursor-pointer">
+        <span
           onClick={() => {
             showAlert({
               msg: "음식 사진을 등록해주세요",
@@ -87,37 +104,39 @@ export const ImageInput = ({
           {cameraMode || (
             <> {imgSrc ? "사진 다시 등록하기" : "사진 등록하기"}</>
           )}
-        </div>
-        <div className="w-[500px] aspect-square rounded-lg bg-sub_background border border-border_color">
-          {imgSrc ? (
-            <img
-              className="w-[500px] h-[500px] object-cover object-center"
-              src={imgSrc}
-              alt="Selected food"
-            />
-          ) : (
-            <>
-              {cameraMode ? (
-                <WebCamera
-                  setImgSrc={setImgSrc}
-                  setCameraMode={setCameraMode}
-                />
-              ) : (
-                <div className="text-center text-secondary_text w-full h-full flex justify-center items-center">
-                  음식을 등록해주세요
-                </div>
-              )}
-            </>
-          )}
-        </div>
-        {imgSrc && (
-          <div className="flex justify-center">
-            <button className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer ">
-              사진 분석하기
-            </button>
-          </div>
+        </span>
+      </div>
+      <div className="w-[90vw] max-w-[500px] aspect-square rounded-lg bg-sub_background border border-border_color overflow-hidden">
+        {imgSrc ? (
+          <img
+            className="w-full h-full object-cover object-center"
+            draggable="false"
+            src={imgSrc}
+          />
+        ) : (
+          <>
+            {cameraMode ? (
+              <WebCamera setImgSrc={setImgSrc} setCameraMode={setCameraMode} />
+            ) : (
+              <div className="text-center text-secondary_text w-full h-full flex flex-col justify-center items-center">
+                <div className="h-2/3"></div>
+                <div>음식을 등록해주세요</div>
+              </div>
+            )}
+          </>
         )}
       </div>
-    </div>
+      {imgSrc && (
+        <div className="flex justify-center">
+          <button
+            className=" bg-main_color w-2/3 text-white rounded-lg px-8 py-2 mt-5 text-sm cursor-pointer disabled:bg-gray-400"
+            onClick={onAnalysis}
+            disabled={loading}
+          >
+            {loading ? "분석 중..." : "사진 분석하기"}
+          </button>
+        </div>
+      )}
+    </>
   );
 };

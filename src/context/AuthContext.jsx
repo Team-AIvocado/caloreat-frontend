@@ -14,7 +14,7 @@ const AuthContext = createContext(null);
  */
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [userInfo, serUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(true);
 
   /**
@@ -25,6 +25,9 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await getUser();
       setUser(userData);
+      if (userData) {
+        await checkPreInfo();
+      }
     } catch (error) {
       console.error("인증 확인 실패:", error);
       setUser(null);
@@ -35,7 +38,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     checkAuth();
-    checkPreInfo();
   }, []);
 
   /**
@@ -51,10 +53,10 @@ export const AuthProvider = ({ children }) => {
     let checkUserInfo = "";
     try {
       checkUserInfo = await getUserInfo();
-      serUserInfo(checkUserInfo);
+      setUserInfo(checkUserInfo);
     } catch {
       console.log("failed to get user info");
-      serUserInfo(null);
+      setUserInfo(null);
     }
     return { userData: data, userInfoData: checkUserInfo };
   };
@@ -75,10 +77,30 @@ export const AuthProvider = ({ children }) => {
   const checkPreInfo = async () => {
     try {
       const checkUserInfo = await getUserInfo();
-      serUserInfo(checkUserInfo);
+      setUserInfo(checkUserInfo);
     } catch {
       console.log("failed to get user info on initial load");
-      serUserInfo(null);
+      setUserInfo(null);
+    }
+  };
+
+  const calculateBMR = () => {
+    if (!userInfo) return 2400;
+
+    if (userInfo.gender === "male") {
+      return Math.round(
+        66.47 +
+          13.75 * userInfo.weight +
+          5 * userInfo.height -
+          6.76 * userInfo.age
+      );
+    } else {
+      return Math.round(
+        655.1 +
+          9.56 * userInfo.weight +
+          1.85 * userInfo.height -
+          4.68 * userInfo.age
+      );
     }
   };
 
@@ -93,6 +115,7 @@ export const AuthProvider = ({ children }) => {
         setUser,
         checkPreInfo,
         userInfo,
+        calculateBMR,
       }}
     >
       {children}
