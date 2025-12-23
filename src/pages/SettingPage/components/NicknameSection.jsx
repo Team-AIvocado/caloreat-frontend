@@ -14,10 +14,7 @@ const NicknameSection = () => {
       return;
     }
 
-    if (user?.nickname === nickname) {
-      showAlert({ msg: "현재 닉네임과 동일합니다." });
-      return;
-    }
+
 
     setIsLoading(true);
     try {

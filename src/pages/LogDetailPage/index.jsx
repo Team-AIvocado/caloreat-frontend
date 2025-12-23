@@ -41,7 +41,6 @@ export const LogDetailPage = () => {
       setIsDeleting(false);
     }
   };
-
   const handleEdit = () => {
     navigate(`/main/log/${mealId}/${foodIndex}/edit?date=${dateFromUrl}`);
   };

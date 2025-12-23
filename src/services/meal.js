@@ -35,30 +35,28 @@ export const foodDetect = async (imgSrc) => {
   }
 };
 
-export const fetchFood = async (foods) => {
-  const data = { foodnames: [foods] };
-  try {
-    const response = await api.post("/meals/analyze", data);
+export const fetchFood = async (foodName) => {
+  const data = { foodname: foodName };
 
-    // Backend returns nested structure, flatten it for frontend
-    if (response.data && response.data.results) {
-      const transformedResults = response.data.results.map((item) => {
-        const nuts = item.nutritions || {};
-        return {
-          ...item,
-          calories: nuts.calories,
-          carbs: nuts.carbs_g,
-          protein: nuts.protein_g,
-          fat: nuts.fat_g,
-          micronutrients: nuts.micronutrients,
-          // Keep original nutritions for other fields like sugar
-          nutritions: nuts,
-        };
-      });
-      return { results: transformedResults };
+  try {
+    const response = await api.post("/meals/analyze/single", data);
+    const resultData = response.data;
+
+    if (resultData && resultData.nutritions) {
+      const nuts = resultData.nutritions;
+      const transformedItem = {
+        ...resultData,
+        calories: nuts.calories,
+        carbs: nuts.carbs_g,
+        protein: nuts.protein_g,
+        fat: nuts.fat_g,
+        micronutrients: nuts.micronutrients,
+        nutritions: nuts,
+      };
+      return { results: [transformedItem] };
     }
 
-    return response.data;
+    return { results: [] };
   } catch (e) {
     console.error("failed to fetch food details", e);
     throw e;

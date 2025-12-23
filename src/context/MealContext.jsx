@@ -43,21 +43,31 @@ export const MealProvider = ({ children }) => {
     const updatedItems = meal.meal_items.filter((_, idx) => idx !== itemIndex);
 
     try {
-      await api.put(`/meals/log/${mealId}`, {
-        meal_type: meal.meal_type,
-        eaten_at: meal.eaten_at,
-        meal_items: updatedItems.map((item) => ({
-          foodname: item.foodname,
-          quantity: item.quantity,
-          nutritions: item.nutritions,
-        })),
-      });
+      if (updatedItems.length === 0) {
+        // 모든 아이템이 삭제되면 식단(MealLog) 자체를 삭제 (DELETE 요청)
+        await api.delete(`/meals/log/${mealId}`);
 
-      // 성공 시 로컬 상태 업데이트
-      const updated = logs.map((m) =>
-        m.id === mealId ? { ...m, meal_items: updatedItems } : m
-      );
-      setLogs(updated);
+        // 로컬 상태에서 해당 식단 제거
+        const updated = logs.filter((m) => m.id !== mealId);
+        setLogs(updated);
+      } else {
+        // 일부 아이템만 삭제되면 식단 수정 (PUT 요청)
+        await api.put(`/meals/log/${mealId}`, {
+          meal_type: meal.meal_type,
+          eaten_at: meal.eaten_at,
+          meal_items: updatedItems.map((item) => ({
+            foodname: item.foodname,
+            quantity: item.quantity,
+            nutritions: item.nutritions,
+          })),
+        });
+
+        // 로컬 상태 업데이트
+        const updated = logs.map((m) =>
+          m.id === mealId ? { ...m, meal_items: updatedItems } : m
+        );
+        setLogs(updated);
+      }
     } catch (err) {
       console.error("음식 삭제 실패:", err);
       throw err;
