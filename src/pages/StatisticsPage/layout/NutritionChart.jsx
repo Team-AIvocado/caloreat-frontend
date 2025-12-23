@@ -89,7 +89,7 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full bg-[#A6F2E8] "></div>
-            <span className="text-secondary_text">충분</span>
+            <span className="text-secondary_text">적절</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full bg-[#ff6b6b]"></div>

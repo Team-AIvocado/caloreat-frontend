@@ -52,11 +52,12 @@ export const ConditionAlert = ({
           message: `${config.label} 섭취량이 적정량을 초과했어요!`,
           detail: `권장: ${goalDisplay}${config.unit} 미만 / 섭취: ${value}${config.unit}`,
         });
-      } else if (status === "부족") {
+      } else if (status === "부족" && !config.isLimit) {
+        // fiber만 부족 경고 (isLimit: false인 것만)
         alerts.push({
           type: "lack",
           message: `${config.label} 섭취량이 부족해요!`,
-          detail: `권장: ${goalDisplay}${config.unit} 미만 / 섭취: ${value}${config.unit}`,
+          detail: `권장: ${goalDisplay}${config.unit} 이상 / 섭취: ${value}${config.unit}`,
         });
       }
     }
