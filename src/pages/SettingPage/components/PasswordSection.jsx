@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { updatePassword } from "../../../services/users";
 import { useAlert } from "../../../context/AlertContext";
+import { alertBtn } from "../../../utils/styles";
 
 const PasswordSection = () => {
   // 입력 상태 관리
@@ -10,7 +11,7 @@ const PasswordSection = () => {
     confirm: "",
   });
   const [isLoading, setIsLoading] = useState(false);
-  const { showAlert } = useAlert();
+  const { showAlert, closeAlert } = useAlert();
 
   const handleChange = (e) => {
     setPasswords({ ...passwords, [e.target.name]: e.target.value });
