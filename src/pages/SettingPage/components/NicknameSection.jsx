@@ -15,6 +15,7 @@ export const NicknameSection = ({ initialNickname, onUpdate }) => {
     /* 닉네임 변경 후 전역 사용자 정보 즉시 갱신 */
     const { checkAuth } = useAuth();
 
+    /* 서버에서 받아온 닉네임을 입력창에 자동으로 채워넣음 */
     useEffect(() => {
         if (initialNickname) {
             setNickname(initialNickname);
