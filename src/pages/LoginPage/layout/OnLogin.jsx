@@ -11,12 +11,6 @@ export const OnLogin = ({
   onMain,
   onSignup,
 }) => {
-  const handleKeyPress = (e) => {
-    if (e.key === "Enter") {
-      onMain();
-    }
-  };
-
   const handleGoogleLogin = async () => {
     try {
       const response = await api.get("/auth/google/login");
@@ -35,15 +29,21 @@ export const OnLogin = ({
     }
   };
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onMain();
+  };
+
   return (
     <>
-      <div className="flex flex-col md:flex-row items-center justify-center md:ml-6">
+      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row items-center justify-center md:ml-6">
         <div className="flex flex-col md:ml-10">
           <input
             className={error.id ? errorInput[1] : errorInput[0]}
             type="text"
             placeholder="이메일 및 아이디를 입력하세요"
             value={userId}
+            autoComplete="username"
             onChange={(e) => {
               setUserId(e.target.value);
               setError({ ...error, id: false });
@@ -54,22 +54,23 @@ export const OnLogin = ({
             type="password"
             placeholder="비밀번호를 입력하세요"
             value={password}
+            autoComplete="current-password"
             onChange={(e) => {
               setPassword(e.target.value);
               setError({ ...error, pw: false });
             }}
-            onKeyDown={handleKeyPress}
           />
         </div>
         <div className="w-full md:w-auto flex flex-col items-center">
           <button
+            type="submit"
             className="bg-main_color text-white rounded-lg md:ml-7 px-16 py-3 mt-4 md:mt-20 text-sm cursor-pointer w-72 md:w-auto whitespace-nowrap"
-            onClick={onMain}
           >
             로그인
           </button>
           <div className="flex gap-2 mt-3 w-72 md:w-auto md:ml-7">
             <button
+              type="button"
               className="bg-white text-gray-700 border border-gray-300 rounded-lg py-3 text-sm cursor-pointer flex-1 whitespace-nowrap flex items-center justify-center gap-2 hover:bg-gray-50"
               onClick={handleGoogleLogin}
             >
@@ -82,6 +83,7 @@ export const OnLogin = ({
               Google
             </button>
             <button
+              type="button"
               className="bg-[#FEE500] text-[#000000D9] rounded-lg py-3 text-sm cursor-pointer flex-1 whitespace-nowrap flex items-center justify-center gap-2 hover:bg-[#F5DC00]"
               onClick={handleKakaoLogin}
             >
@@ -92,7 +94,7 @@ export const OnLogin = ({
             </button>
           </div>
         </div>
-      </div>
+      </form>
 
       <div className="text-xs mt-4 md:mt-2 md:ml-2 text-center md:text-left w-full md:w-auto">
         <div className="inline-block whitespace-nowrap">

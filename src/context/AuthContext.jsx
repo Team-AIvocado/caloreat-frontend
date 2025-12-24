@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         await checkPreInfo();
       }
     } catch (error) {
+      // 네트워크 오류 등 예상치 못한 에러만 로깅
       console.error("인증 확인 실패:", error);
       setUser(null);
     } finally {

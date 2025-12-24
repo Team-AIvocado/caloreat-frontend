@@ -62,14 +62,9 @@ export const signUp = async (email, username, nickname, password) => {
 };
 
 export const getUser = async () => {
-  try {
-    const response = await api.get("/users/me");
-    console.log("success to get user", response.data);
-    return response.data;
-  } catch (e) {
-    console.log("failed to get user", e.response.data.detail);
-    throw e;
-  }
+  // /me/check는 401 대신 null 반환 (브라우저 콘솔 에러 방지)
+  const response = await api.get("/users/me/check");
+  return response.data;
 };
 
 export const logout = async () => {
