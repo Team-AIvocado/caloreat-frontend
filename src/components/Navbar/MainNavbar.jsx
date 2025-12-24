@@ -92,9 +92,8 @@ export const MainNavBar = ({ nickname }) => {
 
       {/* Mobile Menu Drawer */}
       <div
-        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`md:hidden fixed top-0 right-0 h-full w-64 bg-white z-50 transform transition-transform duration-300 ease-in-out ${isOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="flex flex-col pt-20 px-6">
           <div className="text-main_color text-2xl mb-8">

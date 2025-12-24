@@ -13,20 +13,21 @@ export const SettingPage = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
+  const fetchData = async () => {
+    try {
+      const [profileData, basicInfo] = await Promise.all([
+        getUserInfo(),
+        getUser()
+      ]);
+      setUserData({ ...profileData, ...basicInfo });
+    } catch (error) {
+      console.error("Failed to load user settings", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [profileData, basicInfo] = await Promise.all([
-          getUserInfo(),
-          getUser()
-        ]);
-        setUserData({ ...profileData, ...basicInfo });
-      } catch (error) {
-        console.error("Failed to load user settings", error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -50,7 +51,7 @@ export const SettingPage = () => {
       </header>
 
       <div className="space-y-6">
-        <NicknameSection initialNickname={userData?.nickname} />
+        <NicknameSection initialNickname={userData?.nickname} onUpdate={fetchData} />
         <PasswordSection />
         <PhysicalInfoSection initialData={userData} />
         <GoalSection initialGoal={userData?.goal_type} />

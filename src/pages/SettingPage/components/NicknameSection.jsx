@@ -3,17 +3,24 @@ import { updateNickname } from '../../../services/users';
 import { useAuth } from '../../../context/AuthContext';
 
 
-export const NicknameSection = ({ initialNickname }) => {
+export const NicknameSection = ({ initialNickname, onUpdate }) => {
     /* 입력창에 바인딩되는 닉네임 상태 */
-    const [nickname, setNickname] = useState(''); 
+    const [nickname, setNickname] = useState(initialNickname || '');
     /* 닉네임 변경 성공/실패시 메세지 */
     const [message, setMessage] = useState('');
     /* 입력한 닉네임과 기존 닉네임이 동일한지 검증 */
     const isSame = nickname === initialNickname;
     /* 버튼 비활성화 조건 - 기존과 동일하거나 비어있을 시 */
-    const isDisabled = isSame || !nickname; 
+    const isDisabled = isSame || !nickname;
     /* 닉네임 변경 후 전역 사용자 정보 즉시 갱신 */
     const { checkAuth } = useAuth();
+
+    useEffect(() => {
+        if (initialNickname) {
+            setNickname(initialNickname);
+        }
+    }, [initialNickname]);
+
     /* "수정"버튼 클릭 시 실행 */
     const handleUpdate = async () => {
         /* 비활성화 상태에서는 실행 방지 */
@@ -22,7 +29,9 @@ export const NicknameSection = ({ initialNickname }) => {
         try {/* 서버에 닉네임 변경 요청 */
             await updateNickname(nickname);
             /* 변경 즉시 전역 사용자 정보 재조회 */
-            await checkAuth(); 
+            await checkAuth();
+            /* 부모 컴포넌트 정보 갱신 */
+            if (onUpdate) await onUpdate();
             setMessage('닉네임이 변경되었습니다.');
         } catch (error) {
             setMessage('닉네임 변경에 실패했습니다.');
@@ -58,11 +67,10 @@ export const NicknameSection = ({ initialNickname }) => {
                         </button>
                     </div>
                 </div>
-                
-                {isSame && nickname ? (
-                    <p className="text-sm text-red-500 font-medium">닉네임을 다르게 설정해주세요.</p>
-                ) : (
-                    message && <p className={`text-sm ${message.includes('실패') ? 'text-red-500' : 'text-blue-600'} animate-fade-in`}>{message}</p>
+
+                {message && <p className={`text-sm ${message.includes('실패') ? 'text-red-500' : 'text-blue-600'} animate-fade-in`}>{message}</p>}
+                {!message && isSame && nickname && (
+                    <p className="text-sm text-gray-400 font-medium">현재 사용 중인 닉네임입니다.</p>
                 )}
             </div>
         </div>
