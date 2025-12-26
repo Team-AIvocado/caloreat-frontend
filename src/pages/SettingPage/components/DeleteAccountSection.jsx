@@ -10,31 +10,34 @@ export const DeleteAccountSection = ({ currentUser }) => {
     const [isExpanded, setIsExpanded] = useState(false);
     /* 실수 방지를 위해 아이디 또는 이메일 2차 검증 */
     const [verificationId, setVerificationId] = useState('');
-    /* 실제 서버에 전달되는 계쩡 삭제 인증 정보 */
+    /* 실제 서버에 전달되는 계쩡 삭제 인증 정보 (일반 회원만 사용) */
     const [password, setPassword] = useState('');
     /* 성공/실패 메세지를 UI에 띄우기 위한 State */
     const [message, setMessage] = useState('');
     const [error, setError] = useState('');
     /* 회원 탈퇴 후 메인 로그인 페이지로 강제 이동 */
     const navigate = useNavigate();
-    /* 계정 삭제 즉시 프론트 인증 State 제거 */
-    const { setUser } = useAuth();
+    /* 계정 삭제 즉시 프론트 인증 State 제거 + 쿠키 삭제 */
+    const { logout } = useAuth();
     /* 탈퇴 최종 확인을 위한 알람 */
     const { showAlert, closeAlert } = useAlert();
+
+    /* 소셜 로그인 여부 확인 */
+    const isSocialLogin = currentUser?.provider && currentUser.provider !== 'local';
 
     /* 알람에서 "확인"을 눌렀을 때 실행 */
     const handleConfirm = async () => {
         try {
-            await deleteAccount(password); // 서버에 비밀번호 전달
-            setUser(null); // 인증 state 즉시 제거
+            // 소셜 로그인은 비밀번호 없이, 일반 회원은 비밀번호와 함께 요청
+            await deleteAccount(isSocialLogin ? null : password);
             closeAlert(); // 알람 닫기
-            setMessage('계정이 성공적으로 삭제되었습니다.');
-            setTimeout(() => {
-                navigate('/');
-            }, 1000);
+            await logout(); // 인증 state + 쿠키 삭제
+            navigate('/'); // 로그인 페이지로 이동
         } catch (err) {
             closeAlert(); // 실패 시에도 닫아서 혼란 방지
-            setError('계정 삭제에 실패했습니다. 비밀번호를 확인해주세요.');
+            setError(isSocialLogin
+                ? '계정 삭제에 실패했습니다.'
+                : '계정 삭제에 실패했습니다. 비밀번호를 확인해주세요.');
         }
     };
 
@@ -42,18 +45,30 @@ export const DeleteAccountSection = ({ currentUser }) => {
     const handleDelete = async () => {
         setMessage('');
         setError('');
-        
-        /* 필수 입력값 검증 */
-        if (!verificationId || !password) {
-            setError('아이디(이메일)와 비밀번호를 모두 입력해주세요.');
-            return;
+
+        /* 필수 입력값 검증 - 소셜 로그인은 이메일만, 일반 회원은 이메일+비밀번호 */
+        if (isSocialLogin) {
+            if (!verificationId) {
+                setError('이메일을 입력해주세요.');
+                return;
+            }
+        } else {
+            if (!verificationId || !password) {
+                setError('아이디(이메일)와 비밀번호를 모두 입력해주세요.');
+                return;
+            }
         }
 
         /* currentUser 있는 경우 사고 방지 목적 검증 */
         if (currentUser) {
-            const isMatch = verificationId === currentUser.username || verificationId === currentUser.email;
+            // 소셜 로그인은 이메일만 확인, 일반 회원은 아이디 또는 이메일 확인
+            const isMatch = isSocialLogin
+                ? verificationId === currentUser.email
+                : verificationId === currentUser.username || verificationId === currentUser.email;
             if (!isMatch) {
-                setError('입력하신 아이디(이메일)가 일치하지 않습니다.');
+                setError(isSocialLogin
+                    ? '입력하신 이메일이 일치하지 않습니다.'
+                    : '입력하신 아이디(이메일)가 일치하지 않습니다.');
                 return;
             }
         }
@@ -105,24 +120,30 @@ export const DeleteAccountSection = ({ currentUser }) => {
                 </button>
             </div>
             <p className="text-sm text-gray-500 mb-4">
-                계정을 삭제하려면 아이디(또는 이메일)와 비밀번호를 입력해주세요.<br />
-                삭제된 데이터는 복구할 수 없습니다.
+                {isSocialLogin
+                    ? <>계정을 삭제하려면 아래 이메일을 입력해주세요.<br />
+                        <span className="font-semibold text-gray-700">{currentUser?.email}</span><br />
+                        삭제된 데이터는 복구할 수 없습니다.</>
+                    : <>계정을 삭제하려면 아이디(또는 이메일)와 비밀번호를 입력해주세요.<br />삭제된 데이터는 복구할 수 없습니다.</>
+                }
             </p>
             <div className="flex flex-col gap-3">
                 <input
                     type="text"
-                    placeholder="아이디 또는 이메일 입력"
+                    placeholder={isSocialLogin ? "이메일 입력" : "아이디 또는 이메일 입력"}
                     value={verificationId}
                     onChange={(e) => setVerificationId(e.target.value)}
                     className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
                 />
-                <input
-                    type="password"
-                    placeholder="비밀번호 입력"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
-                />
+                {!isSocialLogin && (
+                    <input
+                        type="password"
+                        placeholder="비밀번호 입력"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        className="p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-red-500"
+                    />
+                )}
                 <button
                     onClick={handleDelete}
                     className="mt-2 w-full py-2 bg-red-500 text-white rounded-md hover:bg-red-600 transition-colors font-bold shadow-sm"

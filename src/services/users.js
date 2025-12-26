@@ -81,10 +81,13 @@ export const logout = async () => {
 export const getUserInfo = async () => {
   try {
     const response = await api.get("/users/me/profile/form");
-    console.log("success to get user info", response.data);
     return response.data;
   } catch (e) {
-    console.log("failed to get user info", e);
+    // 401/404는 프로필 미등록 상태 (정상 케이스) - 에러 로깅 불필요
+    if (e.response?.status === 401 || e.response?.status === 404) {
+      return null;
+    }
+    console.error("failed to get user info", e);
     throw e;
   }
 };
@@ -174,11 +177,11 @@ export const updateConditions = async (conditions) => {
   }
 }
 
-export const deleteAccount = async (password) => {
-  const data = { password: password };
+export const deleteAccount = async (password = null) => {
+  // 소셜 로그인 사용자는 password가 null, 일반 회원만 password 전달
+  const config = password ? { data: { password } } : {};
   try {
-    // Using generic request for DELETE with body if axios.delete doesn't support it easily in all versions
-    const response = await api.delete("/users/me", { data: data });
+    const response = await api.delete("/users/me", config);
     console.log("delete account success", response.data);
     return response.data;
   } catch (e) {
