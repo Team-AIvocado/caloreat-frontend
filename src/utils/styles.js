@@ -22,7 +22,7 @@ export const checkBtn = [
 
 //alert button
 export const alertBtn =
-  "bg-sub_background rounded-xl text-sm px-6 py-1 border border-secondary_text text-primary_text";
+  "bg-sub_background rounded-lg text-sm px-6 py-1 border border-secondary_text text-primary_text";
 
 export const backBtn =
   "bg-white rounded-sm text-xs px-8 py-0.5 border border-border_color text-primary_text";

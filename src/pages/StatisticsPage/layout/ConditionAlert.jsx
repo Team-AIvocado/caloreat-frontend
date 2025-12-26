@@ -70,7 +70,7 @@ export const ConditionAlert = ({
       {alerts.map((alert, index) => (
         <div
           key={index}
-          className={`w-full p-4 rounded-xl border flex items-center gap-3 ${
+          className={`w-full p-4 rounded-lg border flex items-center gap-3 ${
             alert.type === "over"
               ? "bg-lack_bg border-3 border-lack_border"
               : alert.type === "lack"

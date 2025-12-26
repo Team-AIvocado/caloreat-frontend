@@ -52,7 +52,7 @@ export const LogPage = () => {
         !error &&
         (logs.length === 0 ||
           logs.every((meal) => meal.meal_items.length === 0)) && (
-          <div className="mt-[50px] text-center text-secondary_text text-[15px] bg-sub_background p-5 rounded-xl border border-border_color">
+          <div className="mt-[50px] text-center text-secondary_text text-[15px] bg-sub_background p-5 rounded-lg border border-border_color">
             <p>아직 기록된 식단이 없습니다.</p>
             <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
           </div>

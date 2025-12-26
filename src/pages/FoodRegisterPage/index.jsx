@@ -4,6 +4,7 @@ import { ImageInput } from "./layout/ImageInput";
 import { ImageAnalysis } from "./layout/ImageAnalysis";
 import { ImageResult } from "./layout/ImageResult";
 import { useNavigate } from "react-router-dom";
+import { alertBtn } from "../../utils/styles";
 
 export const FoodRegisterPage = () => {
   const { showAlert, closeAlert } = useAlert();
@@ -16,13 +17,31 @@ export const FoodRegisterPage = () => {
   const navigate = useNavigate();
 
   const resetAll = () => {
-    setCameraMode(false);
-    setImgSrc("");
-    setAnalysisMode(false);
-    setFoodInfe("");
-    setResultMode(false);
-    setFoodDetail("");
-    navigate("/main/dashboard");
+    showAlert({
+      msg: "정말로 그만두시겠습니까?",
+      footer: (
+        <div className="flex space-x-4">
+          <button
+            className={alertBtn}
+            onClick={() => {
+              setCameraMode(false);
+              setImgSrc("");
+              setAnalysisMode(false);
+              setFoodInfe("");
+              setResultMode(false);
+              setFoodDetail("");
+              closeAlert();
+              navigate("/main/dashboard");
+            }}
+          >
+            네
+          </button>
+          <button className={alertBtn} onClick={closeAlert}>
+            아니요
+          </button>
+        </div>
+      ),
+    });
   };
 
   return (

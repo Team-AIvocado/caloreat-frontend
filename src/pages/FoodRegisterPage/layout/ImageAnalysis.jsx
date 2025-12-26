@@ -10,8 +10,16 @@ export const ImageAnalysis = ({
   setResultMode,
   setFoodDetail,
 }) => {
-  const [foodText, setFoodText] = useState(foodInfe.food_name);
-  const [foodCandi, setFoodCandi] = useState(foodInfe.candidates);
+  // foodname에 . 들어있으면 제거하도록
+  const [foodText, setFoodText] = useState(
+    foodInfe.food_name.replace(/\./g, "")
+  );
+  const [foodCandi, setFoodCandi] = useState(
+    foodInfe.candidates.map((c) => ({
+      ...c,
+      label: c.label.replace(/\./g, ""),
+    }))
+  );
   const [selected, setSelected] = useState(0);
   const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
@@ -33,12 +41,13 @@ export const ImageAnalysis = ({
 
   const handleCandidateSelect = (index) => {
     setSelected(index);
-    setFoodText(foodCandi[index].label);
+    setFoodText(foodCandi[index].label.replace(/\./g, ""));
   };
 
   const handleManualUpdate = (input) => {
+    const cleanInput = input.replace(/\./g, "");
     const UserInput = {
-      label: input,
+      label: cleanInput,
       confidence: 1.0,
     };
 
@@ -46,12 +55,12 @@ export const ImageAnalysis = ({
       UserInput,
       ...foodCandi.filter(
         //이미 존재하는 라벨 방지
-        (c) => c.label !== input
+        (c) => c.label !== cleanInput
       ),
     ];
 
     setFoodCandi(updatedCandidates);
-    setFoodText(input);
+    setFoodText(cleanInput);
     setSelected(0);
 
     closeAlert();
@@ -64,7 +73,7 @@ export const ImageAnalysis = ({
   return (
     <>
       <div className="text-left underline pl-4 pb-2">음식 인식 완료!</div>
-      <div className="w-[90vw] max-w-[600px] rounded-xl bg-white border-4 border-sub_border">
+      <div className="w-[90vw] max-w-[600px] rounded-lg bg-white border-4 border-sub_border">
         <div className="flex flex-col md:flex-row px-5 py-9 items-center md:items-start">
           {" "}
           <img
@@ -76,21 +85,20 @@ export const ImageAnalysis = ({
             <div className="h-1/4 text-2xl text-primary_text pl-6">
               {foodCandi[selected].label}{" "}
             </div>
-            <div className=" h-1/4 text-end pr-10 md:pr-20 text-third_text">
-              정확도 {Math.round(foodCandi[selected].confidence * 100)} %
-            </div>
 
             <div className="h-1/4 text-sm text-secondary_text pl-4 mb-10 mt-9">
               {/* 후보가 없는경우 대비 */}
               {candidateButtons.length > 0 && (
-                <div className="mb-4">만약 아니면 혹시 이런 음식인가요?</div>
+                <div className="mb-4 text-[1.3em]">
+                  만약 아니면 혹시 이런 음식인가요?
+                </div>
               )}
 
               <div className="h-1/4 text-xs text-secondary_text">
                 {candidateButtons.map((candidate) => (
                   <button
                     key={candidate.label}
-                    className="mr-1.5 underline"
+                    className="mr-2 underline text-[1.6em]"
                     onClick={() => {
                       const index = foodCandi.findIndex(
                         (item) => item.label === candidate.label
@@ -98,13 +106,9 @@ export const ImageAnalysis = ({
                       handleCandidateSelect(index);
                     }}
                   >
-                    {candidate.label}{" "}
-                    <span className=" text-third_text">
-                      ({Math.round(candidate.confidence * 100)} %)
-                    </span>
+                    {candidate.label}
                   </button>
                 ))}
-                ...중 선택
               </div>
             </div>
 

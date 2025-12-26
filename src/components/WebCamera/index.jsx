@@ -7,7 +7,7 @@ import { alertBtn } from "../../utils/styles";
 export const WebCamera = ({ setImgSrc, setCameraMode }) => {
   const webcamRef = React.useRef(null);
   const { showAlert, closeAlert } = useAlert();
-  const [facingMode, setFacingMode] = React.useState("user");
+  const [facingMode, setFacingMode] = React.useState("environment");
 
   const videoConstraints = {
     width: 500,

@@ -130,7 +130,7 @@ export const StatisticsPage = () => {
         통계
       </div>
       <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">
-        <div className="flex w-full max-w-[600px] bg-white rounded-xl p-1 mb-6 border border-sub_border">
+        <div className="flex w-full max-w-[600px] bg-white rounded-lg p-1 mb-6 border border-sub_border">
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}

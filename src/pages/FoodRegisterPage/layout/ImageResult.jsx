@@ -13,16 +13,22 @@ import {
 import { createMealLog } from "../../../services/meal";
 import { backBtn } from "../../../utils/styles";
 import { useAlert } from "../../../context/AlertContext";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
+import dayjs from "dayjs";
 
 export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
+  const [eatenAt, setEatenAt] = useState(dayjs());
+  const [showClock, setShowClock] = useState(false);
 
   // Lazy init for mealType based on current time
   const [mealType, setMealType] = useState(() => {
-    const hour = new Date().getHours();
+    const hour = dayjs().hour();
     if (hour >= 5 && hour < 11) return "breakfast";
     if (hour >= 11 && hour < 17) return "lunch";
     if (hour >= 17 && hour < 22) return "dinner";
@@ -65,7 +71,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     try {
       await createMealLog({
         meal_type: mealType,
-        eaten_at: new Date().toISOString(),
+        eaten_at: eatenAt.toISOString(),
         meal_items: [
           {
             foodname: foodname,
@@ -115,10 +121,10 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
-      <div className="w-full max-w-[600px] bg-white rounded-xl border-3 border-sub_border px-6 md:p-6">
+      <div className="w-full max-w-[600px] bg-white rounded-lg border-3 border-sub_border px-6 md:p-6">
         <div className="flex flex-row md:flex-row gap-6 pt-7 items-center md:items-start">
           <img
-            className="w-40 h-40 md:w-48 md:h-48 rounded-xl border border-border_color object-cover "
+            className="w-40 h-40 md:w-48 md:h-48 rounded-lg border border-border_color object-cover "
             src={imgSrc}
             alt={foodname}
             draggable="false"
@@ -130,6 +136,27 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
               </h2>
               <div className="text-secondary_text text-sm">
                 1인분 ({calories}kcal) 기준
+              </div>
+              <div className="mt-4 relative">
+                <div
+                  className="text-lg font-semibold text-main_color cursor-pointer hover:bg-sub_background px-2 py-1 rounded transition-colors inline-block"
+                  onClick={() => setShowClock(!showClock)}
+                >
+                  {eatenAt.format("hh:mm A")}
+                </div>
+                {showClock && (
+                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <DigitalClock
+                        value={eatenAt}
+                        onChange={(newValue) => {
+                          setEatenAt(newValue);
+                          setShowClock(false);
+                        }}
+                      />
+                    </LocalizationProvider>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -204,7 +231,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
       </div>
 
       {showWarning && (
-        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-xl flex items-center gap-3">
+        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center gap-3">
           <div className="text-xl">⚠️</div>
           <div className="text-primary_text text-sm">
             <span className="font-bold">주의:</span> 당류 섭취량이 높습니다.

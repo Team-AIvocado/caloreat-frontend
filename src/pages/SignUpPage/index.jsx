@@ -22,6 +22,11 @@ export const SignUpPage = () => {
     confirmPassword: false,
   });
 
+  const [accessMessage, setAccessMessage] = useState({
+    email: "",
+    id: "",
+  });
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const passwordRegex = /^(?=.*[a-zA-Z])(?=.*[0-9]).{5,}$/;
 
@@ -39,9 +44,11 @@ export const SignUpPage = () => {
   const onEmailCheck = async () => {
     if (!userEmail.trim()) {
       setError({ ...error, email: "이메일을 입력해주세요" });
+      setAccessMessage({ ...accessMessage, email: "" });
       return;
     } else if (!emailRegex.test(userEmail.trim())) {
       setError({ ...error, email: "정확한 이메일을 입력해주세요" });
+      setAccessMessage({ ...accessMessage, email: "" });
       return;
     }
 
@@ -51,8 +58,10 @@ export const SignUpPage = () => {
       const resp_email = await checkemail(userEmail.trim());
       console.log("available email", resp_email);
       setdbCheck({ ...dbCheck, email: true });
+      setAccessMessage({ ...accessMessage, email: "사용 가능한 email입니다" });
     } catch (e) {
       console.log("unavailable email", e);
+      setAccessMessage({ ...accessMessage, email: "" });
       showAlert({
         msg: "이미 존재하는 이메일입니다.",
         footer: (
@@ -68,6 +77,7 @@ export const SignUpPage = () => {
   const onIdCheck = async () => {
     if (!userId.trim()) {
       setError({ ...error, id: "아이디를 입력해주세요" });
+      setAccessMessage({ ...accessMessage, id: "" });
       return;
     }
     setError({ ...error, id: false });
@@ -76,8 +86,10 @@ export const SignUpPage = () => {
       const resp_id = await checkid(userId.trim());
       console.log("available id", resp_id);
       setdbCheck({ ...dbCheck, id: true });
+      setAccessMessage({ ...accessMessage, id: "사용 가능한 아이디입니다" });
     } catch (e) {
       console.log("unavailable id", e);
+      setAccessMessage({ ...accessMessage, id: "" });
       showAlert({
         msg: "이미 존재하는 아이디입니다.",
         footer: (
@@ -180,9 +192,11 @@ export const SignUpPage = () => {
         </div>
         <SignUpInput
           error={error}
+          accessMessage={accessMessage}
           userEmail={userEmail}
           setUserEmail={setUserEmail}
           setError={setError}
+          setAccessMessage={setAccessMessage}
           setdbCheck={setdbCheck}
           dbCheck={dbCheck}
           onEmailCheck={onEmailCheck}

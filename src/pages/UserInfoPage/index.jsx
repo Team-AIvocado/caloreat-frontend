@@ -88,6 +88,14 @@ export const UserInfoPage = () => {
         setError({ ...error, height: "숫자만 입력가능합니다." });
         return;
       } else {
+        const h = parseFloat(userProfile.height.trim());
+        if (h < 110 || h > 250) {
+          setError({
+            ...error,
+            height: "올바른 키 값을 입력해주세요",
+          });
+          return;
+        }
         setError({ ...error, height: "" });
       }
 
@@ -98,6 +106,14 @@ export const UserInfoPage = () => {
         setError({ ...error, weight: "숫자만 입력가능합니다." });
         return;
       } else {
+        const w = parseFloat(userProfile.weight.trim());
+        if (w < 40 || w > 160) {
+          setError({
+            ...error,
+            weight: "올바른 몸무게 값을 입력해주세요",
+          });
+          return;
+        }
         setError({ ...error, weight: "" });
       }
       setStep(4);
