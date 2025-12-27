@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
 import { LoginComp } from "./layout/LoginComp";
 import { OnLogin } from "./layout/OnLogin";
@@ -15,6 +15,24 @@ export const LoginPage = () => {
   const [isLoggingIn, setIsLoggingIn] = useState(false);
 
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  // OAuth 에러 처리 (뒤로가기 등으로 인한 state 불일치)
+  useEffect(() => {
+    const oauthError = searchParams.get("error");
+    if (oauthError === "oauth_failed") {
+      showAlert({
+        msg: "다시 로그인해주세요.",
+        footer: (
+          <button className={alertBtn} onClick={closeAlert}>
+            확인
+          </button>
+        ),
+      });
+      // 쿼리 파라미터 제거
+      setSearchParams({});
+    }
+  }, [searchParams]);
 
   const onSignup = () => {
     navigate("/signup");
