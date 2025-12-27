@@ -160,3 +160,19 @@ body {
   color: #3a7dff !important;
   font-weight: 600;
 }
+
+/* Pc + 모바일 모든 브라우저에서 스크롤바를 숨기는 전역 코드 */
+* {
+  -ms-overflow-style: none;
+  /* IE, 구형 Edge 전용 속성으로 스크롤바 완전히 숨김 */
+  scrollbar-width: none;
+  /* Firefox 전용 속성으로 스크롤바 완전히 숨심 */
+}
+
+/* 스크롤바 자체를 가리키는 가상 요소 */
+*::-webkit-scrollbar { 
+  /* 스크롤바를 아예 렌더링하지 않음 */
+  display: none !important;
+  /* 스크롤바의 폭을 0으로 설정해 혹시 남아 있을 여백 제거 */
+  width: 0 !important;
+}
