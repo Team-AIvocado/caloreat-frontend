@@ -29,6 +29,7 @@ export const AuthProvider = ({ children }) => {
         await checkPreInfo();
       }
     } catch (error) {
+      // 네트워크 오류 등 예상치 못한 에러만 로깅
       console.error("인증 확인 실패:", error);
       setUser(null);
     } finally {
@@ -50,14 +51,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (account, password) => {
     const data = await loginService(account, password);
     setUser(data);
-    let checkUserInfo = "";
-    try {
-      checkUserInfo = await getUserInfo();
-      setUserInfo(checkUserInfo);
-    } catch {
-      console.log("failed to get user info");
-      setUserInfo(null);
-    }
+    const checkUserInfo = await getUserInfo();
+    setUserInfo(checkUserInfo);
     return { userData: data, userInfoData: checkUserInfo };
   };
 
@@ -75,13 +70,8 @@ export const AuthProvider = ({ children }) => {
   };
 
   const checkPreInfo = async () => {
-    try {
-      const checkUserInfo = await getUserInfo();
-      setUserInfo(checkUserInfo);
-    } catch {
-      console.log("failed to get user info on initial load");
-      setUserInfo(null);
-    }
+    const checkUserInfo = await getUserInfo();
+    setUserInfo(checkUserInfo);
   };
 
   const calculateBMR = () => {
