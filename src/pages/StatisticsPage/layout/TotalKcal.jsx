@@ -57,7 +57,7 @@ export const TotalKcal = ({ totalCalories, goalCalories, type, chartData }) => {
               <Line
                 dataKey="calories"
                 barSize={17}
-                fill="#413ea0"
+                fill="#2BB0A6"
                 name="섭취 칼로리"
                 type="monotone"
               />

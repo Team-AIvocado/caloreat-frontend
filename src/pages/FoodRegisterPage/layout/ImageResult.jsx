@@ -175,7 +175,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
             marks={intakeMarks}
             onChange={handleSliderChange}
             sx={{
-              color: "#3a7dff",
+              color: "#2BB0A6",
             }}
           />
         </div>

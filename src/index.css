@@ -6,15 +6,15 @@
   /* 메인 배경 */
   --color-main_background: #f4f6fa;
   /* 메인 브랜드 컬러, CTA */
-  --color-main_color: #3a7dff;
-  --color-sub_color: #d9e9ff;
+  --color-main_color: #2bb0a6;
+  --color-sub_color: #a3dbc1;
   /* border_color (Divider/Border) */
   --color-border_color: #dcdcdc;
   /* text_secondary (Text Secondary) */
   --color-secondary_text: #6c6c6c;
   /* 헤더, 타이틀, 그래프 핵심선 */
   --color-primary_text: #1d2e50;
-  --color-sub_background: #e9f1fc;
+  --color-sub_background: #edfcfa;
   /* 성공 상태 표시(달성/양호) 좋아요 */
   --color-complete_color: #a6f2e8;
   /* 경고, 영양 불균형 영역 표시 (부드러운 경고) */
@@ -34,7 +34,7 @@
   /* 영양소 */
   --color-icon_color4: #d9e3f3;
 
-  --color-sub_border: #e3eefd;
+  --color-sub_border: #edfcfa;
   --color-third_text: #a8b2c7;
   --color-light-alert-border: #ffebab;
   --color-light-alert: #fffdf6;
