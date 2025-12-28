@@ -59,7 +59,7 @@ export const LogPage = () => {
         )}
 
       {/* 로그 카드 */}
-      <div className="mt-2.5 flex flex-col items-center gap-5">
+      <div className="mt-1.5 flex flex-col items-center gap-2">
         {logs.map((meal) =>
           meal.meal_items.map((item, idx) => (
             <LogCard

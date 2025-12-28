@@ -165,9 +165,9 @@ export const ImageInput = ({
         </div>
 
         {imgSrc && !cameraMode && (
-          <div className="flex flex-col items-center mt-2 space-y-4 w-full">
+          <div className="flex flex-col items-center mt-5 space-y-4 w-full">
             <button
-              className="bg-main_color w-2/3 text-white rounded-lg px-5 py-3 font-semibold disabled:bg-gray-300"
+              className="bg-main_color w-2/3 text-white rounded-lg px-3 py-2  disabled:bg-gray-300"
               onClick={onAnalysis}
               disabled={loading}
             >

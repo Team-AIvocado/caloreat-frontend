@@ -10,11 +10,11 @@ export default function FoodItem({ food }) {
   };
 
   return (
-    <div className="flex items-center gap-4">
+    <div className="flex items-center gap-3">
       <img
         src={image_url}
         alt={name}
-        className="w-20 h-20 rounded-lg object-cover"
+        className="w-16 h-16 rounded-lg object-cover"
       />
       <div>
         <h3 className="m-0">{name}</h3>
