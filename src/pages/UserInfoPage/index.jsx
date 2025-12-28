@@ -153,7 +153,7 @@ export const UserInfoPage = () => {
                 setError={setError}
                 error={error}
                 onNext={onNext}
-                onPrev={() => navigate(-1)}
+                onPrev={() => navigate("/")}
               />
             )}
 
