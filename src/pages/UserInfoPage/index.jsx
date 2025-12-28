@@ -6,8 +6,10 @@ import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
 import { ConditionSelector } from "./layout/ConditionSelector";
 import { createUserInfo } from "../../services/users";
+import { useAuth } from "../../context/AuthContext";
 
 export const UserInfoPage = () => {
+  const { checkPreInfo } = useAuth();
   const numberRegex = /^\d+(\.\d+)?$/;
 
   const initialCondition = {
@@ -139,6 +141,7 @@ export const UserInfoPage = () => {
 
     try {
       await createUserInfo(userProfile, modeSelect, trueConditions);
+      await checkPreInfo();
       navigate("/main/dashboard");
     } catch (e) {
       console.error("failed to create user info", e);

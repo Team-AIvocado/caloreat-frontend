@@ -52,7 +52,7 @@ export const FoodRegisterPage = () => {
       >
         기록 그만두기
       </button>
-      <div className="mt-20 pb-7 text-center text-2xl text-secondary_text">
+      <div className="mt-10 pb-7 text-center text-2xl text-secondary_text">
         음식 기록하기
       </div>
       <div className="flex flex-col justify-center">

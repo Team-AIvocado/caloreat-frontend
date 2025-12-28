@@ -40,7 +40,7 @@ export const DashBoardPage = () => {
 
   return (
     <div className="flex flex-col justify-center items-center px-4">
-      <div className="pt-32 pb-11 text-center text-2xl text-secondary_text">
+      <div className="pt-28 pb-11 text-center text-2xl text-secondary_text">
         오늘의 누적 칼로리
       </div>
       <RingProgressBar totalkcal={goalCalories} kcal={Math.round(totalKcal)} />

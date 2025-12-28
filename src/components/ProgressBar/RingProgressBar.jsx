@@ -41,7 +41,7 @@ function RingProgressBar({ totalkcal, kcal }) {
         value={displayPercentage}
         text={customText}
         styles={buildStyles({
-          pathColor: "#2bb0a6",
+          pathColor: "#27D0C3",
           trailColor: "#d6d6d6",
           pathTransitionDuration: 1,
         })}

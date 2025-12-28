@@ -77,9 +77,22 @@ export const LogEditPage = () => {
     <div className="max-w-[600px] mx-auto p-6 bg-main_background min-h-screen">
       <button
         onClick={() => navigate(-1)}
-        className="border-none bg-transparent text-base text-primary_text cursor-pointer mb-4"
+        className="mr-4 text-gray-600 hover:text-gray-900 mb-4"
       >
-        ← back
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
       </button>
 
       <h2 className="text-2xl font-semibold text-primary_text mb-6">

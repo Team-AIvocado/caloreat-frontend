@@ -121,8 +121,8 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
-      <div className="w-full max-w-[600px] bg-white rounded-lg border-3 border-sub_border px-6 md:p-6">
-        <div className="flex flex-row md:flex-row gap-6 pt-7 items-center md:items-start">
+      <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6">
+        <div className="flex flex-row md:flex-row gap-6 pt-3 items-center md:items-start">
           <img
             className="w-40 h-40 md:w-48 md:h-48 rounded-lg border border-border_color object-cover "
             src={imgSrc}

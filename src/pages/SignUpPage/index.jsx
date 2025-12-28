@@ -222,7 +222,7 @@ export const SignUpPage = () => {
             </span>
           </div>
           <button
-            className="bg-main_color text-white rounded-lg md:ml-7 px-8 py-2 text-sm cursor-pointer w-72 md:w-auto"
+            className="bg-main_color text-white rounded-lg md:ml-7 px-8 py-2 text-sm cursor-pointer w-72 md:w-auto focus:ring-2 focus:ring-sub_color focus:outline-none"
             onClick={handleSignUp}
           >
             완료

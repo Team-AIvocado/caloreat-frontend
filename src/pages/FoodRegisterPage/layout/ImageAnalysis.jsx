@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAlert } from "../../../context/AlertContext";
 import { ModifyInput } from "./ModifyInput";
-import { fetchFood } from "../../../services/meal";
+import { foodAnalyzeSingle } from "../../../services/meal";
 
 export const ImageAnalysis = ({
   imgSrc,
@@ -27,7 +27,7 @@ export const ImageAnalysis = ({
   const onResult = async () => {
     setLoading(true);
     try {
-      const res = await fetchFood(foodText);
+      const res = await foodAnalyzeSingle(foodText);
       if (res) {
         setResultMode(true);
         setFoodDetail(res);
@@ -72,7 +72,7 @@ export const ImageAnalysis = ({
   //TODO: 음식 추가 버튼 및 기능
   return (
     <>
-      <div className="text-left underline pl-4 pb-2">음식 인식 완료!</div>
+      <div className="text-left pl-4 pb-2">음식 인식 완료!</div>
       <div className="w-[90vw] max-w-[600px] rounded-lg bg-white border-4 border-sub_border">
         <div className="flex flex-col md:flex-row px-5 py-9 items-center md:items-start">
           {" "}
@@ -81,24 +81,24 @@ export const ImageAnalysis = ({
             src={imgSrc}
             draggable="false"
           />
-          <div className="flex flex-col w-full pt-8 pl-4">
+          <div className="flex flex-col w-full pt-7 pl-4">
             <div className="h-1/4 text-2xl text-primary_text pl-6">
               {foodCandi[selected].label}{" "}
             </div>
 
-            <div className="h-1/4 text-sm text-secondary_text pl-4 mb-10 mt-9">
+            <div className="h-1/4 text text-secondary_text pl-4 mb-10 pt-5">
               {/* 후보가 없는경우 대비 */}
               {candidateButtons.length > 0 && (
-                <div className="mb-4 text-[1.3em]">
+                <div className=" text pb-3">
                   만약 아니면 혹시 이런 음식인가요?
                 </div>
               )}
 
-              <div className="h-1/4 text-xs text-secondary_text">
+              <div className="pl-4 text text-secondary_text">
                 {candidateButtons.map((candidate) => (
                   <button
                     key={candidate.label}
-                    className="mr-2 underline text-[1.6em]"
+                    className="mr-2 underline text"
                     onClick={() => {
                       const index = foodCandi.findIndex(
                         (item) => item.label === candidate.label
@@ -113,9 +113,11 @@ export const ImageAnalysis = ({
             </div>
 
             <div className="h-1/4 pl-4">
-              <div className="mb-2 mr-4 text-xs">그래도 아니라면?</div>
+              <div className="mb-2 mr-4 text-sm text-secondary_text">
+                그래도 아니라면?
+              </div>
               <button
-                className="underline text-sm text-gray-500 mr-5"
+                className="underline pl-4 text-sm text-gray-500 mr-5"
                 onClick={() => {
                   setAnalysisMode(false);
                 }}

@@ -10,7 +10,7 @@ export const sty1 = [
 ];
 
 export const errorInput = [
-  "border bg-white my-2 focus:ring-1 focus:ring-main_color/50 focus:outline-none focus:border-main_color border-border_color text-sm pl-2 pr-11 py-3 w-72 md:w-96",
+  "border bg-white my-2 focus:ring-1 focus:ring-sub_color focus:outline-none focus:border-sub_color border-border_color text-sm pl-2 pr-11 py-3 w-72 md:w-96",
   "border bg-white my-2 focus:outline-none focus:ring-0 focus:border-red-500 border-red-500 text-sm pl-2 pr-11 py-3 w-72 md:w-96",
 ];
 

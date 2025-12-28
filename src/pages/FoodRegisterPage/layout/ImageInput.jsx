@@ -62,10 +62,17 @@ export const ImageInput = ({
   return (
     <>
       <div className="flex flex-col items-center justify-center">
+        {imgSrc && (
+          <div className="text-secondary_text pb-2 cursor-pointer">
+            <span className="text-sm">
+              재촬영을 원하신다면 이미지를 클릭하여 진행해주세요
+            </span>
+          </div>
+        )}
         <div
-          className="w-[90vw] max-w-[500px] aspect-square rounded-lg bg-white border-4 border-sub_border flex flex-col items-center justify-center relative cursor-pointer"
+          className="w-[90vw] max-w-[500px] aspect-square rounded-lg bg-white border-2 border-sub_background flex flex-col items-center justify-center relative cursor-pointer"
           onClick={() => {
-            if (!cameraMode && !imgSrc) {
+            if (!cameraMode) {
               showAlert({
                 msg: "음식 사진을 등록해주세요",
                 hasNavbar: true,
@@ -136,15 +143,6 @@ export const ImageInput = ({
 
         {imgSrc && !cameraMode && (
           <div className="flex flex-col items-center mt-6 space-y-4 w-full">
-            <button
-              className="text-secondary_text text-sm cursor-pointer hover:text-main_color transition-colors"
-              onClick={() => {
-                setImgSrc("");
-                setCameraMode(false);
-              }}
-            >
-              사진 재촬영하기!
-            </button>
             <button
               className="bg-main_color w-2/3 text-white rounded-lg px-8 py-3 font-semibold disabled:bg-gray-300"
               onClick={onAnalysis}

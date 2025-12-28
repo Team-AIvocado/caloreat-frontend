@@ -1,5 +1,3 @@
-import { sty1 } from "../../../utils/styles";
-
 export const ConditionSelector = ({
   condition,
   updateCondition,
