@@ -7,7 +7,7 @@
   --color-main_background: #f4f6fa;
   /* 메인 브랜드 컬러, CTA */
   --color-main_color: #27d0c3;
-  --color-sub_color: #a3dbc1;
+  --color-sub_color: #83e7e0;
   /* border_color (Divider/Border) */
   --color-border_color: #dcdcdc;
   /* text_secondary (Text Secondary) */
@@ -37,13 +37,13 @@
   --color-sub_border: #edfcfa;
   --color-third_text: #a8b2c7;
   --color-light-alert-border: #ffebab;
-  --color-light-alert: #fffdf6;
+  --color-light-alert: #fffef6;
   --color-lack_bg: #fffaf6;
   --color-lack_border: #ffb373;
   --color-lack: #ffe2c1;
   --color-enough: #edfcfa;
   --color-enough-border: #b1f3eb;
-  --color-over: #ff6b6b;
+  --color-over: #fd7b7b;
   --color-sufficient: #45c4b0;
 }
 

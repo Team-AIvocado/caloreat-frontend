@@ -72,10 +72,10 @@ export const ConditionAlert = ({
           key={index}
           className={`w-full p-4 rounded-lg border flex items-center gap-3 ${
             alert.type === "over"
-              ? "bg-lack_bg border-3 border-lack_border"
+              ? "bg-lack_bg border-2 border-lack_border"
               : alert.type === "lack"
-              ? "bg-light-alert border-3 border-light-alert-border"
-              : "bg-enough border-3 border-enough-border"
+              ? "bg-light-alert border-2 border-light-alert-border"
+              : "bg-enough border-2 border-enough-border"
           }`}
         >
           <div className="text-xs text-primary_text pl-3 pb-10 mr-5">

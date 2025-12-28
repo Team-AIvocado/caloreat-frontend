@@ -125,12 +125,12 @@ export const StatisticsPage = () => {
   };
 
   return (
-    <div className="pb-6">
-      <div className="pt-7 pb-5 text-center text-2xl text-secondary_text">
+    <div className="pb-3">
+      <div className="pt-7 pb-4 text-center text-2xl text-secondary_text">
         통계
       </div>
       <div className="flex flex-col items-center w-full px-4  pb-20 bg-main_background min-h-screen">
-        <div className="flex w-full max-w-[600px] bg-white rounded-lg p-1 mb-6 border border-sub_color">
+        <div className="flex w-full max-w-[600px] bg-white rounded-lg p-1 mb-6 ">
           {["daily", "weekly", "monthly"].map((tab) => (
             <button
               key={tab}
@@ -192,11 +192,11 @@ export const StatisticsPage = () => {
         {loading || !statsData ? (
           <div className="text-secondary_text mt-10">Loading...</div>
         ) : statsData.totalCalories === 0 ? (
-          <div className="w-full max-w-[600px] bg-white rounded-lg p-10 border-3 border-sub_color text-center text-secondary_text">
+          <div className="w-full max-w-[500px] bg-white rounded-lg p-10 text-center text-secondary_text">
             기록된 식단이 없습니다.
           </div>
         ) : (
-          <div className="w-full max-w-[600px] flex flex-col gap-4">
+          <div className="w-full max-w-[500px] flex flex-col">
             <TotalKcal
               totalCalories={statsData.totalCalories}
               goalCalories={goalCalories}

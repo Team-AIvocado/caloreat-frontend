@@ -34,7 +34,7 @@ export const CPFChart = ({ stats, type }) => {
   );
 
   return (
-    <div className="bg-white rounded-lg p-5 border-3 border-sub_color w-full">
+    <div className="bg-white rounded-lg p-5 border-2 border-sub_color w-full">
       <div className="text-primary_text text-xl pl-5 pt-4">
         {type === "daily" ? "총 섭취량" : "평균 섭취량"}
       </div>

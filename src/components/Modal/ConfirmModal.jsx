@@ -20,7 +20,7 @@ export const ConfirmModal = ({
         <div className="flex justify-center gap-3">
           <button
             onClick={onCancel}
-            className="bg-sub_background rounded-lg text-sm px-6 py-2 border border-secondary_text text-primary_text cursor-pointer"
+            className="bg-sub_background rounded-lg text-sm px-6 py-2 text-primary_text cursor-pointer"
           >
             {cancelText}
           </button>

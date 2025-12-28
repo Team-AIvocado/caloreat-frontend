@@ -18,7 +18,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
 import dayjs from "dayjs";
 
-export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
+export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -121,6 +121,27 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
+      <div className="w-full max-w-[600px] flex justify-start mb-4">
+        <button
+          onClick={() => setResultMode(false)}
+          className="text-gray-600 hover:text-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+      </div>
       <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6">
         <div className="flex flex-row md:flex-row gap-6 pt-3 items-center md:items-start">
           <img
@@ -175,7 +196,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
             marks={intakeMarks}
             onChange={handleSliderChange}
             sx={{
-              color: "#2BB0A6",
+              color: "#27D0C3",
             }}
           />
         </div>

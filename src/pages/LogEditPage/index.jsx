@@ -74,7 +74,7 @@ export const LogEditPage = () => {
   }
 
   return (
-    <div className="max-w-[600px] mx-auto p-6 bg-main_background min-h-screen">
+    <div className="max-w-[600px] mx-auto p-6 bg-main_background">
       <button
         onClick={() => navigate(-1)}
         className="mr-4 text-gray-600 hover:text-gray-900 mb-4"
@@ -95,7 +95,7 @@ export const LogEditPage = () => {
         </svg>
       </button>
 
-      <h2 className="text-2xl font-semibold text-primary_text mb-6">
+      <h2 className="text-2xl font-semibold text-primary_text mb-4">
         음식 정보 수정
       </h2>
 
@@ -105,7 +105,7 @@ export const LogEditPage = () => {
           <input
             value={form.foodname}
             onChange={(e) => setForm({ ...form, foodname: e.target.value })}
-            className="p-3 rounded-lg border border-border_color text-base"
+            className="p-3 rounded-lg border border-border_color text-base bg-white"
           />
         </label>
 
@@ -118,7 +118,7 @@ export const LogEditPage = () => {
               setForm({ ...form, calories: Number(e.target.value) })
             }
             readOnly
-            className="p-3 rounded-lg border border-border_color text-base"
+            className="p-3 rounded-lg border border-border_color text-base bg-white"
           />
         </label>
 
@@ -157,7 +157,7 @@ export const LogEditPage = () => {
                   quantity: Number(e.target.value),
                 }));
               }}
-              className="flex-1 p-3 rounded-lg border border-border_color text-base text-center"
+              className="flex-1 p-3 rounded-lg border border-border_color text-base text-center bg-white"
             />
             <button
               type="button"
@@ -185,7 +185,7 @@ export const LogEditPage = () => {
             type="time"
             value={form.eatenTime}
             onChange={(e) => setForm({ ...form, eatenTime: e.target.value })}
-            className="p-3 rounded-lg border border-border_color text-base"
+            className="p-3 rounded-lg border border-border_color text-base bg-white"
           />
         </label>
       </div>
