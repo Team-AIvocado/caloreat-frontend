@@ -29,7 +29,6 @@ export default function LogCard({ item, meal, index }) {
       to={`/main/log/${meal.id}/${index}?date=${dateString}`}
       className="no-underline text-inherit w-full"
     >
-      {/* shadow 제거 및 border 스타일 유지 */}
       <div className="w-full max-w-full p-4 rounded-lg bg-sub_background border border-border_color flex items-center gap-4 cursor-pointer">
         {/* 이미지 영역 */}
         <div className="w-[95px] h-[95px] rounded-lg overflow-hidden shrink-0 aspect-square">

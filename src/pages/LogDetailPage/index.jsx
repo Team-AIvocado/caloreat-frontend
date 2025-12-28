@@ -69,7 +69,6 @@ export const LogDetailPage = () => {
   };
 
   return (
-    /* min-h-screen 제거하여 불필요한 스크롤 방지 */
     <div className="max-w-[600px] p-6 bg-main_background">
       <button
         onClick={() => navigate(-1)}
@@ -94,14 +93,12 @@ export const LogDetailPage = () => {
         {item.foodname}
       </div>
 
-      {/* shadow 제거 */}
       <img
         src={imageUrl}
         alt={item.foodname}
         className="w-full rounded-[14px] mb-4"
       />
 
-      {/* 컴포넌트 간 간격 조정을 통한 스크롤 억제 */}
       <div className="bg-sub_background border border-border_color rounded-[14px] p-5 mb-5">
         <InfoRow label="칼로리" value={`${calories} kcal`} highlight />
         <InfoRow label="섭취량" value={`${item.quantity} 인분`} />

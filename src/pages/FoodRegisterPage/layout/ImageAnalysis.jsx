@@ -32,8 +32,8 @@ export const ImageAnalysis = ({
         setResultMode(true);
         setFoodDetail(res);
       }
-    } catch {
-      console.log("failed to fetch food res");
+    } catch (e) {
+      console.error("failed to fetch food res", e);
     } finally {
       setLoading(false);
     }
@@ -66,7 +66,7 @@ export const ImageAnalysis = ({
     closeAlert();
   };
 
-  //selected 되지 않은 후보군(2개) 버튼생성을 위한 배열
+  // 선택되지 않은 후보군 버튼 생성을 위한 필터링
   const candidateButtons = foodCandi.filter((_, index) => index !== selected);
 
   //TODO: 음식 추가 버튼 및 기능

@@ -7,7 +7,7 @@ export const fetchDailyStats = async (date) => {
     const response = await api.get(`/stats/daily?date=${formattedDate}`);
     return response.data;
   } catch (e) {
-    console.log("failed to fetch daily stats", e);
+    console.error("failed to fetch daily stats", e);
     // 에러 발생 시 빈 데이터 반환 또는 에러 처리
     throw e;
   }
@@ -22,7 +22,7 @@ export const fetchWeeklyStats = async (startDate) => {
     const response = await api.get(`/stats/weekly?startDate=${formattedDate}`);
     return response.data;
   } catch (e) {
-    console.log("failed to fetch weekly stats", e);
+    console.error("failed to fetch weekly stats", e);
     throw e;
   }
 };
@@ -34,7 +34,7 @@ export const fetchMonthlyStats = async (year, month) => {
     );
     return response.data;
   } catch (e) {
-    console.log("failed to fetch monthly stats", e);
+    console.error("failed to fetch monthly stats", e);
     throw e;
   }
 };

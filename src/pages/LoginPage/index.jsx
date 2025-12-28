@@ -38,7 +38,6 @@ export const LoginPage = () => {
     navigate("/signup");
   };
 
-  //TODO: 로그인 성공시 main or userinfo로 강제 라우팅 해버리기 (App.jsx에서 해야 할 수도)
   const onMain = async () => {
     if (!userId.trim()) {
       setError({ ...error, id: true });
@@ -53,7 +52,6 @@ export const LoginPage = () => {
 
     try {
       const response = await login(userId, password);
-      console.log("login success", response);
 
       if (response.userInfoData) {
         navigate("/main/dashboard");

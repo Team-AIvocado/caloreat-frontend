@@ -15,7 +15,7 @@ import { backBtn } from "../../../utils/styles";
 import { useAlert } from "../../../context/AlertContext";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DigitalClock } from "@mui/x-date-pickers/DigitalClock";
+import { MultiSectionDigitalClock } from "@mui/x-date-pickers/MultiSectionDigitalClock";
 import dayjs from "dayjs";
 
 export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
@@ -26,7 +26,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
   const [eatenAt, setEatenAt] = useState(dayjs());
   const [showClock, setShowClock] = useState(false);
 
-  // Lazy init for mealType based on current time
+  // 현재 시간에 따른 식사 타입 초기 설정 (아침, 점심, 저녁, 간식)
   const [mealType, setMealType] = useState(() => {
     const hour = dayjs().hour();
     if (hour >= 5 && hour < 11) return "breakfast";
@@ -48,7 +48,6 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
     nutritions = {},
   } = result;
 
-  // Derived state (No useEffect needed)
   const currentCarbs = Math.round(carbs * intake);
   const currentProtein = Math.round(protein * intake);
   const currentFat = Math.round(fat * intake);
@@ -168,13 +167,20 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
                 {showClock && (
                   <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DigitalClock
+                      <MultiSectionDigitalClock
                         value={eatenAt}
                         onChange={(newValue) => {
                           setEatenAt(newValue);
-                          setShowClock(false);
                         }}
                       />
+                      <div className="flex justify-end mt-2 pt-2">
+                        <button
+                          onClick={() => setShowClock(false)}
+                          className="text-sm text-main_color font-bold px-2 py-1 hover:bg-sub_background "
+                        >
+                          확인
+                        </button>
+                      </div>
                     </LocalizationProvider>
                   </div>
                 )}

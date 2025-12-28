@@ -4,7 +4,6 @@ import { ImageInput } from "./layout/ImageInput";
 import { ImageAnalysis } from "./layout/ImageAnalysis";
 import { ImageResult } from "./layout/ImageResult";
 import { useNavigate } from "react-router-dom";
-import { alertBtn } from "../../utils/styles";
 
 export const FoodRegisterPage = () => {
   const { showAlert, closeAlert } = useAlert();
@@ -22,7 +21,7 @@ export const FoodRegisterPage = () => {
       footer: (
         <div className="flex justify-center gap-3">
           <button
-            className="bg-sub_background rounded-lg text-sm px-6 py-2 text-primary_text cursor-pointer"
+            className="bg-sub_background rounded-lg text-sm px-6 py-2 border border-secondary_text text-primary_text cursor-pointer"
             onClick={closeAlert}
           >
             아니요
