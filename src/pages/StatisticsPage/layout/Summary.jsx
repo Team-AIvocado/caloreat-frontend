@@ -30,7 +30,7 @@ export const Summary = ({ stats, goalCalories }) => {
       return {
         label: "유의",
         color: "text-alert_color",
-        border: "border-2 border-over",
+        border: "border-2 border-alert_color",
       };
     return {
       label: "주의",

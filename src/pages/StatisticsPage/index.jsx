@@ -210,7 +210,11 @@ export const StatisticsPage = () => {
               calculateStatus={calculateStatus}
             />
             {activeTab === "daily" ? (
-              <DailyLog logs={statsData.dailyLogs} />
+              <DailyLog
+                logs={(statsData.dailyLogs || []).filter(
+                  (log) => Math.round(log.calories) > 0
+                )}
+              />
             ) : (
               <Summary stats={statsData} goalCalories={goalCalories} />
             )}
