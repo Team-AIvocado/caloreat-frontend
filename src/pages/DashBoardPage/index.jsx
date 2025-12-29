@@ -47,7 +47,8 @@ export const DashBoardPage = () => {
 
       {logs && logs.length > 0 ? (
         <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
-          {logs
+          {[...logs]
+            .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
             .filter((meal) => {
               const mealKcal = (meal.meal_items || []).reduce(
                 (acc, item) =>

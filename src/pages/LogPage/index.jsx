@@ -68,23 +68,25 @@ export const LogPage = () => {
 
       {/* 로그 카드 */}
       <div className="mt-1.5 flex flex-col items-center gap-2">
-        {logs.map((meal) =>
-          meal.meal_items
-            .filter(
-              (item) =>
-                Math.round(
-                  (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
-                ) > 0
-            )
-            .map((item, idx) => (
-              <LogCard
-                key={`${meal.id}-${idx}`}
-                item={item}
-                meal={meal}
-                index={idx}
-              />
-            ))
-        )}
+        {[...logs]
+          .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
+          .map((meal) =>
+            meal.meal_items
+              .filter(
+                (item) =>
+                  Math.round(
+                    (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
+                  ) > 0
+              )
+              .map((item, idx) => (
+                <LogCard
+                  key={`${meal.id}-${idx}`}
+                  item={item}
+                  meal={meal}
+                  index={idx}
+                />
+              ))
+          )}
       </div>
     </div>
   );
