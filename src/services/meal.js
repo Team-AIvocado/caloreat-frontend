@@ -35,41 +35,30 @@ export const foodDetect = async (imgSrc) => {
   }
 };
 
-const transformNutrition = (item) => {
-  const nuts = item.nutritions || {};
-  return {
-    ...item,
-    calories: nuts.calories,
-    carbs: nuts.carbs_g,
-    protein: nuts.protein_g,
-    fat: nuts.fat_g,
-    sugar: nuts.sugar_g,
-    sodium: nuts.sodium_mg,
-    micronutrients: nuts.micronutrients,
-    nutritions: nuts,
-  };
-};
-
-export const foodAnalyzeSingle = async (foodname) => {
-  try {
-    const response = await api.post("/meals/analyze/single", { foodname });
-    if (response.data) {
-      return { results: [transformNutrition(response.data)] };
-    }
-    return response.data;
-  } catch (e) {
-    console.error("failed to analyze single food", e);
-    throw e;
-  }
-};
-
-export const fetchFood = async (foods) => {
-  const data = { foodnames: [foods] };
+// items: [{image_id: string, foodname: string}]
+export const fetchFood = async (items) => {
+  const data = { foodnames: items };
   try {
     const response = await api.post("/meals/analyze", data);
 
+    // Backend returns nested structure, flatten it for frontend
     if (response.data && response.data.results) {
-      return { results: response.data.results.map(transformNutrition) };
+      const transformedResults = response.data.results.map((item) => {
+        const nuts = item.nutritions || {};
+        return {
+          ...item,
+          calories: nuts.calories,
+          carbs: nuts.carbs_g,
+          protein: nuts.protein_g,
+          fat: nuts.fat_g,
+          sugar: nuts.sugar_g,
+          sodium: nuts.sodium_mg,
+          micronutrients: nuts.micronutrients,
+          // Keep original nutritions for other fields like sugar
+          nutritions: nuts,
+        };
+      });
+      return { results: transformedResults };
     }
 
     return response.data;
