@@ -30,7 +30,7 @@ export const Summary = ({ stats, goalCalories }) => {
       return {
         label: "유의",
         color: "text-alert_color",
-        border: "border-2 border-over",
+        border: "border-2 border-alert_color",
       };
     return {
       label: "주의",
@@ -52,7 +52,7 @@ export const Summary = ({ stats, goalCalories }) => {
         return (
           <div
             key={item.name}
-            className={`bg-white rounded-xl p-4 flex flex-col items-center justify-center ${status.border}`}
+            className={`bg-white rounded-lg p-4 flex flex-col items-center justify-center ${status.border}`}
           >
             <div className="text-secondary_text text-sm mb-2">{item.name}</div>
             <div className={`text-xl font-bold mb-2 ${status.color}`}>

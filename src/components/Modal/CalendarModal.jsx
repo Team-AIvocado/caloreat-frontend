@@ -38,7 +38,7 @@ export const CalendarModal = ({ open, value, onClose, onSelect }) => {
       onClick={onClose}
     >
       <div
-        className="bg-white/90 rounded-2xl shadow-xl w-96 border border-border_color overflow-hidden"
+        className="bg-white/90 rounded-2xl w-96 border border-border_color overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="w-full flex justify-center">
