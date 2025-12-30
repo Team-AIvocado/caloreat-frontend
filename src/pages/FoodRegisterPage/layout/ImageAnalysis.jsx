@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAlert } from "../../../context/AlertContext";
 import { ModifyInput } from "./ModifyInput";
-import { foodAnalyzeSingle } from "../../../services/meal";
+import { fetchFood } from "../../../services/meal";
 
 export const ImageAnalysis = ({
   imgSrc,
@@ -24,12 +24,30 @@ export const ImageAnalysis = ({
   const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
 
+  // Helper for generating UUIDs for manual items
+  // eslint-disable-next-line no-unused-vars
+  const generateUUID = () => {
+    return self.crypto.randomUUID();
+  };
+
   const onResult = async () => {
     setLoading(true);
     try {
-      const res = await foodAnalyzeSingle(foodText);
-      if (res) {
+      // 1. Construct Main Item (Image Detected)
+      const mainItem = {
+        image_id: foodInfe.image_id, 
+        foodname: foodText
+      };
+
+      // TODO: Combine with manual items here (use generateUUID for them)
+      // const manualItems = sideDishes.map(d => ({ image_id: generateUUID(), foodname: d.name }));
+
+      const payload = [mainItem];
+
+      const res = await fetchFood(payload);
+      if (res && res.results && res.results.length > 0) {
         setResultMode(true);
+        // Pass the entire response object because ImageResult expects foodDetail.results
         setFoodDetail(res);
       }
     } catch (e) {

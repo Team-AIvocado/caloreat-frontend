@@ -165,12 +165,17 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
                   {eatenAt.format("hh:mm A")}
                 </div>
                 {showClock && (
-                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2">
+                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2 left-0 md:left-auto max-w-[280px] sm:max-w-none">
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <MultiSectionDigitalClock
                         value={eatenAt}
                         onChange={(newValue) => {
                           setEatenAt(newValue);
+                        }}
+                        sx={{
+                          "& .MuiMenuItem-root": {
+                            padding: "4px 8px",
+                          },
                         }}
                       />
                       <div className="flex justify-end mt-2 pt-2">
