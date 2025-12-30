@@ -165,28 +165,36 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
                   {eatenAt.format("hh:mm A")}
                 </div>
                 {showClock && (
-                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2 left-0 md:left-auto max-w-[280px] sm:max-w-none">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <MultiSectionDigitalClock
-                        value={eatenAt}
-                        onChange={(newValue) => {
-                          setEatenAt(newValue);
-                        }}
-                        sx={{
-                          "& .MuiMenuItem-root": {
-                            padding: "4px 8px",
-                          },
-                        }}
-                      />
-                      <div className="flex justify-end mt-2 pt-2">
-                        <button
-                          onClick={() => setShowClock(false)}
-                          className="text-sm text-main_color font-bold px-2 py-1 hover:bg-sub_background "
-                        >
-                          확인
-                        </button>
-                      </div>
-                    </LocalizationProvider>
+                  <div
+                    className="md:pl-52 fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+                    onClick={() => setShowClock(false)}
+                  >
+                    <div
+                      className="bg-white border border-border_color rounded-lg p-4"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <MultiSectionDigitalClock
+                          value={eatenAt}
+                          onChange={(newValue) => {
+                            setEatenAt(newValue);
+                          }}
+                          sx={{
+                            "& .MuiMenuItem-root": {
+                              padding: "4px 8px",
+                            },
+                          }}
+                        />
+                        <div className="flex justify-end mt-2 pt-2 border-t border-border_color">
+                          <button
+                            onClick={() => setShowClock(false)}
+                            className="text-sm text-main_color font-bold px-4 py-2 hover:bg-sub_background rounded"
+                          >
+                            확인
+                          </button>
+                        </div>
+                      </LocalizationProvider>
+                    </div>
                   </div>
                 )}
               </div>
