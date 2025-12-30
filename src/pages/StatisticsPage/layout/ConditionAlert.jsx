@@ -52,11 +52,12 @@ export const ConditionAlert = ({
           message: `${config.label} 섭취량이 적정량을 초과했어요!`,
           detail: `권장: ${goalDisplay}${config.unit} 미만 / 섭취: ${value}${config.unit}`,
         });
-      } else if (status === "부족") {
+      } else if (status === "부족" && !config.isLimit) {
+        // fiber만 부족 경고 (isLimit: false인 것만)
         alerts.push({
           type: "lack",
           message: `${config.label} 섭취량이 부족해요!`,
-          detail: `권장: ${goalDisplay}${config.unit} 미만 / 섭취: ${value}${config.unit}`,
+          detail: `권장: ${goalDisplay}${config.unit} 이상 / 섭취: ${value}${config.unit}`,
         });
       }
     }
@@ -69,12 +70,12 @@ export const ConditionAlert = ({
       {alerts.map((alert, index) => (
         <div
           key={index}
-          className={`w-full p-4 rounded-xl border flex items-center gap-3 ${
+          className={`w-full p-4 rounded-lg border flex items-center gap-3 ${
             alert.type === "over"
-              ? "bg-lack_bg border-3 border-lack_border"
+              ? "bg-lack_bg border-2 border-lack_border"
               : alert.type === "lack"
-              ? "bg-light-alert border-3 border-light-alert-border"
-              : "bg-enough border-3 border-enough-border"
+              ? "bg-light-alert border-2 border-light-alert-border"
+              : "bg-enough border-2 border-enough-border"
           }`}
         >
           <div className="text-xs text-primary_text pl-3 pb-10 mr-5">

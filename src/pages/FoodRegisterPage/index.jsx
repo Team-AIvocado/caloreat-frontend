@@ -16,13 +16,34 @@ export const FoodRegisterPage = () => {
   const navigate = useNavigate();
 
   const resetAll = () => {
-    setCameraMode(false);
-    setImgSrc("");
-    setAnalysisMode(false);
-    setFoodInfe("");
-    setResultMode(false);
-    setFoodDetail("");
-    navigate("/main/dashboard");
+    showAlert({
+      msg: "정말로 그만두시겠습니까?",
+      footer: (
+        <div className="flex justify-center gap-3">
+          <button
+            className="bg-sub_background rounded-lg text-sm px-6 py-2 border border-secondary_text text-primary_text cursor-pointer"
+            onClick={closeAlert}
+          >
+            아니요
+          </button>
+          <button
+            className="bg-error_color rounded-lg text-sm px-6 py-2 border-none text-white cursor-pointer"
+            onClick={() => {
+              setCameraMode(false);
+              setImgSrc("");
+              setAnalysisMode(false);
+              setFoodInfe("");
+              setResultMode(false);
+              setFoodDetail("");
+              closeAlert();
+              navigate("/main/dashboard");
+            }}
+          >
+            네
+          </button>
+        </div>
+      ),
+    });
   };
 
   return (
@@ -33,7 +54,7 @@ export const FoodRegisterPage = () => {
       >
         기록 그만두기
       </button>
-      <div className="mt-20 pb-7 text-center text-2xl text-secondary_text">
+      <div className="mt-10  text-center text-2xl text-secondary_text">
         음식 기록하기
       </div>
       <div className="flex flex-col justify-center">
@@ -42,6 +63,7 @@ export const FoodRegisterPage = () => {
             imgSrc={imgSrc}
             foodDetail={foodDetail}
             imageId={foodInfe?.image_id}
+            setResultMode={setResultMode}
           />
         ) : (
           <>

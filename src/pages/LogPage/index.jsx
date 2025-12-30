@@ -51,25 +51,42 @@ export const LogPage = () => {
       {!loading &&
         !error &&
         (logs.length === 0 ||
-          logs.every((meal) => meal.meal_items.length === 0)) && (
-          <div className="mt-[50px] text-center text-secondary_text text-[15px] bg-sub_background p-5 rounded-xl border border-border_color">
+          logs.every(
+            (meal) =>
+              meal.meal_items.filter(
+                (item) =>
+                  Math.round(
+                    (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
+                  ) > 0
+              ).length === 0
+          )) && (
+          <div className="mt-[50px] text-center text-secondary_text text-[15px] bg-sub_background p-5 rounded-lg border border-border_color">
             <p>아직 기록된 식단이 없습니다.</p>
             <p>상단의 날짜를 선택해 다른 날도 확인해보세요.</p>
           </div>
         )}
 
       {/* 로그 카드 */}
-      <div className="mt-2.5 flex flex-col items-center gap-5">
-        {logs.map((meal) =>
-          meal.meal_items.map((item, idx) => (
-            <LogCard
-              key={`${meal.id}-${idx}`}
-              item={item}
-              meal={meal}
-              index={idx}
-            />
-          ))
-        )}
+      <div className="mt-1.5 flex flex-col items-center gap-2">
+        {[...logs]
+          .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
+          .map((meal) =>
+            meal.meal_items
+              .filter(
+                (item) =>
+                  Math.round(
+                    (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
+                  ) > 0
+              )
+              .map((item, idx) => (
+                <LogCard
+                  key={`${meal.id}-${idx}`}
+                  item={item}
+                  meal={meal}
+                  index={idx}
+                />
+              ))
+          )}
       </div>
     </div>
   );

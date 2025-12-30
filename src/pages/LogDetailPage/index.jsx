@@ -69,25 +69,37 @@ export const LogDetailPage = () => {
   };
 
   return (
-    <div className="max-w-[600px] mx-auto p-6 bg-main_background min-h-screen">
+    <div className="max-w-[600px] p-6 bg-main_background">
       <button
         onClick={() => navigate(-1)}
-        className="border-none bg-transparent text-base text-primary_text cursor-pointer mb-4"
+        className="mr-4 text-gray-600 hover:text-gray-900 mb-4"
       >
-        ← back
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
       </button>
-
-      <h2 className="text-2xl font-semibold text-primary_text mb-5">
+      <div className="text-2xl font-semibold ml-5 text-primary_text mb-4">
         {item.foodname}
-      </h2>
+      </div>
 
       <img
         src={imageUrl}
         alt={item.foodname}
-        className="w-full rounded-[14px] shadow-[0_4px_10px_rgba(0,0,0,0.1)] mb-5"
+        className="w-full rounded-[14px] mb-4"
       />
 
-      <div className="bg-sub_background border border-border_color rounded-[14px] p-5 mb-7">
+      <div className="bg-sub_background border border-border_color rounded-[14px] p-5 mb-5">
         <InfoRow label="칼로리" value={`${calories} kcal`} highlight />
         <InfoRow label="섭취량" value={`${item.quantity} 인분`} />
         <InfoRow label="섭취 시간" value={formatTime(meal.eaten_at)} />
@@ -129,7 +141,11 @@ const InfoRow = ({ label, value, highlight }) => {
     <div className="flex justify-between py-3 border-b border-border_color last:border-b-0">
       <span className="text-secondary_text">{label}</span>
       <span
-        className={`${highlight ? "font-bold text-main_color" : "font-medium text-primary_text"}`}
+        className={`${
+          highlight
+            ? "font-bold text-main_color"
+            : "font-medium text-primary_text"
+        }`}
       >
         {value}
       </span>

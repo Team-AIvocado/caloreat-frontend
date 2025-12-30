@@ -8,14 +8,14 @@ export const DailyLog = ({ logs }) => {
 
   if (!logs || logs.length === 0) {
     return (
-      <div className="bg-white rounded-xl p-5 border border-sub_border w-full mt-4 text-center text-secondary_text">
+      <div className="bg-white rounded-lg p-5 border-3 border-sub_color w-full mt-4 text-center text-secondary_text">
         기록된 식단이 없습니다.
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-xl p-5 border-3 border-sub_border w-full mt-4">
+    <div className="bg-white rounded-lg p-5 border-2 border-sub_color w-full mt-4">
       <div className="flex text-primary_text text-xl pl-5 pt-4 mb-7">
         오늘의 식단
       </div>

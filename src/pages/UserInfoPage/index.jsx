@@ -6,8 +6,10 @@ import { BodyProfile } from "./layout/BodyProfile";
 import { GoalSelector } from "./layout/GoalSelector";
 import { ConditionSelector } from "./layout/ConditionSelector";
 import { createUserInfo } from "../../services/users";
+import { useAuth } from "../../context/AuthContext";
 
 export const UserInfoPage = () => {
+  const { checkPreInfo } = useAuth();
   const numberRegex = /^\d+(\.\d+)?$/;
 
   const initialCondition = {
@@ -88,6 +90,14 @@ export const UserInfoPage = () => {
         setError({ ...error, height: "숫자만 입력가능합니다." });
         return;
       } else {
+        const h = parseFloat(userProfile.height.trim());
+        if (h < 110 || h > 250) {
+          setError({
+            ...error,
+            height: "올바른 키 값을 입력해주세요",
+          });
+          return;
+        }
         setError({ ...error, height: "" });
       }
 
@@ -98,6 +108,14 @@ export const UserInfoPage = () => {
         setError({ ...error, weight: "숫자만 입력가능합니다." });
         return;
       } else {
+        const w = parseFloat(userProfile.weight.trim());
+        if (w < 40 || w > 160) {
+          setError({
+            ...error,
+            weight: "올바른 몸무게 값을 입력해주세요",
+          });
+          return;
+        }
         setError({ ...error, weight: "" });
       }
       setStep(4);
@@ -123,6 +141,7 @@ export const UserInfoPage = () => {
 
     try {
       await createUserInfo(userProfile, modeSelect, trueConditions);
+      await checkPreInfo();
       navigate("/main/dashboard");
     } catch (e) {
       console.error("failed to create user info", e);
@@ -153,7 +172,7 @@ export const UserInfoPage = () => {
                 setError={setError}
                 error={error}
                 onNext={onNext}
-                onPrev={() => navigate(-1)}
+                onPrev={() => navigate("/")}
               />
             )}
 

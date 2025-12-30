@@ -6,7 +6,7 @@ export default function LogCard({ item, meal, index }) {
 
   // 백엔드 필드명에 맞게 추출
   const { foodname, quantity, nutritions } = item;
-  const calories = nutritions?.calories ?? 0;
+  const calories = Math.round((nutritions?.calories ?? 0) * (quantity ?? 1));
   const imageUrl = meal.image_urls?.[0] ?? "";
 
   // selectedDate를 문자열로 변환
@@ -29,13 +29,13 @@ export default function LogCard({ item, meal, index }) {
       to={`/main/log/${meal.id}/${index}?date=${dateString}`}
       className="no-underline text-inherit w-full"
     >
-      <div className="w-full max-w-full p-4 rounded-[14px] bg-sub_background border border-border_color shadow-[0_3px_8px_rgba(0,0,0,0.06)] flex items-center gap-4 cursor-pointer">
+      <div className="w-full max-w-full p-4 rounded-lg bg-sub_background border border-border_color flex items-center gap-4 cursor-pointer">
         {/* 이미지 영역 */}
-        <div className="w-[95px] h-[95px] rounded-[10px] overflow-hidden shrink-0">
+        <div className="w-[95px] h-[95px] rounded-lg shrink-0 aspect-square">
           <img
             src={imageUrl}
             alt={foodname}
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover object-center"
           />
         </div>
 

@@ -6,15 +6,15 @@
   /* 메인 배경 */
   --color-main_background: #f4f6fa;
   /* 메인 브랜드 컬러, CTA */
-  --color-main_color: #3a7dff;
-  --color-sub_color: #d9e9ff;
+  --color-main_color: #27d0c3;
+  --color-sub_color: #83e7e0;
   /* border_color (Divider/Border) */
   --color-border_color: #dcdcdc;
   /* text_secondary (Text Secondary) */
   --color-secondary_text: #6c6c6c;
   /* 헤더, 타이틀, 그래프 핵심선 */
   --color-primary_text: #1d2e50;
-  --color-sub_background: #e9f1fc;
+  --color-sub_background: #f4fffe;
   /* 성공 상태 표시(달성/양호) 좋아요 */
   --color-complete_color: #a6f2e8;
   /* 경고, 영양 불균형 영역 표시 (부드러운 경고) */
@@ -34,16 +34,16 @@
   /* 영양소 */
   --color-icon_color4: #d9e3f3;
 
-  --color-sub_border: #e3eefd;
+  --color-sub_border: #edfcfa;
   --color-third_text: #a8b2c7;
   --color-light-alert-border: #ffebab;
-  --color-light-alert: #fffdf6;
+  --color-light-alert: #fffef6;
   --color-lack_bg: #fffaf6;
   --color-lack_border: #ffb373;
   --color-lack: #ffe2c1;
   --color-enough: #edfcfa;
   --color-enough-border: #b1f3eb;
-  --color-over: #ff6b6b;
+  --color-over: #fd7b7b;
   --color-sufficient: #45c4b0;
 }
 
@@ -84,7 +84,6 @@ body {
 .react-datepicker__month-container {
   border: none !important;
   border-radius: 12px;
-  overflow: hidden;
   width: 100%;
 }
 
@@ -133,12 +132,12 @@ body {
 }
 
 .react-datepicker__day--today {
-  border: 1px solid var(--color-main_color);
+  border: 1px solid var(--color-sub_color);
   font-weight: 600;
 }
 
 .react-datepicker__day--selected {
-  background-color: var(--color-main_color) !important;
+  background-color: var(--color-sub_color) !important;
   color: white !important;
 }
 
@@ -159,4 +158,20 @@ body {
 .custom-sat {
   color: #3a7dff !important;
   font-weight: 600;
+}
+
+/* Pc + 모바일 모든 브라우저에서 스크롤바를 숨기는 전역 코드 */
+* {
+  -ms-overflow-style: none;
+  /* IE, 구형 Edge 전용 속성으로 스크롤바 완전히 숨김 */
+  scrollbar-width: none;
+  /* Firefox 전용 속성으로 스크롤바 완전히 숨심 */
+}
+
+/* 스크롤바 자체를 가리키는 가상 요소 */
+*::-webkit-scrollbar {
+  /* 스크롤바를 아예 렌더링하지 않음 */
+  display: none !important;
+  /* 스크롤바의 폭을 0으로 설정해 혹시 남아 있을 여백 제거 */
+  width: 0 !important;
 }

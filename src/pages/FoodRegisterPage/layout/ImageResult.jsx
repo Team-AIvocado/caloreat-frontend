@@ -13,16 +13,22 @@ import {
 import { createMealLog } from "../../../services/meal";
 import { backBtn } from "../../../utils/styles";
 import { useAlert } from "../../../context/AlertContext";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { MultiSectionDigitalClock } from "@mui/x-date-pickers/MultiSectionDigitalClock";
+import dayjs from "dayjs";
 
-export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
+export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
+  const [eatenAt, setEatenAt] = useState(dayjs());
+  const [showClock, setShowClock] = useState(false);
 
-  // Lazy init for mealType based on current time
+  // 현재 시간에 따른 식사 타입 초기 설정 (아침, 점심, 저녁, 간식)
   const [mealType, setMealType] = useState(() => {
-    const hour = new Date().getHours();
+    const hour = dayjs().hour();
     if (hour >= 5 && hour < 11) return "breakfast";
     if (hour >= 11 && hour < 17) return "lunch";
     if (hour >= 17 && hour < 22) return "dinner";
@@ -42,7 +48,6 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     nutritions = {},
   } = result;
 
-  // Derived state (No useEffect needed)
   const currentCarbs = Math.round(carbs * intake);
   const currentProtein = Math.round(protein * intake);
   const currentFat = Math.round(fat * intake);
@@ -65,7 +70,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     try {
       await createMealLog({
         meal_type: mealType,
-        eaten_at: new Date().toISOString(),
+        eaten_at: eatenAt.toISOString(),
         meal_items: [
           {
             foodname: foodname,
@@ -115,10 +120,31 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
-      <div className="w-full max-w-[600px] bg-white rounded-xl border-3 border-sub_border px-6 md:p-6">
-        <div className="flex flex-row md:flex-row gap-6 pt-7 items-center md:items-start">
+      <div className="w-full max-w-[600px] flex justify-start mb-4">
+        <button
+          onClick={() => setResultMode(false)}
+          className="text-gray-600 hover:text-gray-900"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-6 w-6"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
+          </svg>
+        </button>
+      </div>
+      <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6">
+        <div className="flex flex-row md:flex-row gap-6 pt-3 items-center md:items-start">
           <img
-            className="w-40 h-40 md:w-48 md:h-48 rounded-xl border border-border_color object-cover "
+            className="w-40 h-40 md:w-48 md:h-48 rounded-lg border border-border_color object-cover "
             src={imgSrc}
             alt={foodname}
             draggable="false"
@@ -130,6 +156,39 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
               </h2>
               <div className="text-secondary_text text-sm">
                 1인분 ({calories}kcal) 기준
+              </div>
+              <div className="mt-4 relative">
+                <div
+                  className="text-lg font-semibold text-main_color cursor-pointer hover:bg-sub_background px-2 py-1 rounded transition-colors inline-block"
+                  onClick={() => setShowClock(!showClock)}
+                >
+                  {eatenAt.format("hh:mm A")}
+                </div>
+                {showClock && (
+                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2 left-0 md:left-auto max-w-[280px] sm:max-w-none">
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                      <MultiSectionDigitalClock
+                        value={eatenAt}
+                        onChange={(newValue) => {
+                          setEatenAt(newValue);
+                        }}
+                        sx={{
+                          "& .MuiMenuItem-root": {
+                            padding: "4px 8px",
+                          },
+                        }}
+                      />
+                      <div className="flex justify-end mt-2 pt-2">
+                        <button
+                          onClick={() => setShowClock(false)}
+                          className="text-sm text-main_color font-bold px-2 py-1 hover:bg-sub_background "
+                        >
+                          확인
+                        </button>
+                      </div>
+                    </LocalizationProvider>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -148,7 +207,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
             marks={intakeMarks}
             onChange={handleSliderChange}
             sx={{
-              color: "#3a7dff",
+              color: "#27D0C3",
             }}
           />
         </div>
@@ -204,7 +263,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
       </div>
 
       {showWarning && (
-        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-xl flex items-center gap-3">
+        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center gap-3">
           <div className="text-xl">⚠️</div>
           <div className="text-primary_text text-sm">
             <span className="font-bold">주의:</span> 당류 섭취량이 높습니다.

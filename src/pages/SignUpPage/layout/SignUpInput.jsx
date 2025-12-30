@@ -2,9 +2,11 @@ import { checkBtn, errorInput } from "../../../utils/styles";
 
 export const SignUpInput = ({
   error,
+  accessMessage,
   userEmail,
   setUserEmail,
   setError,
+  setAccessMessage,
   setdbCheck,
   dbCheck,
   onEmailCheck,
@@ -33,12 +35,18 @@ export const SignUpInput = ({
               onChange={(e) => {
                 setUserEmail(e.target.value);
                 setError({ ...error, email: false });
+                setAccessMessage((prev) => ({ ...prev, email: "" }));
                 setdbCheck({ ...dbCheck, email: false });
               }}
             />
             {error.email && (
               <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
                 {error.email}
+              </div>
+            )}
+            {accessMessage.email && !error.email && (
+              <div className="ml-3 text-green-500 text-xs text-nowrap font-light">
+                {accessMessage.email}
               </div>
             )}
           </div>
@@ -63,12 +71,18 @@ export const SignUpInput = ({
               onChange={(e) => {
                 setUserId(e.target.value);
                 setError({ ...error, id: false });
+                setAccessMessage((prev) => ({ ...prev, id: "" }));
                 setdbCheck({ ...dbCheck, id: false });
               }}
             />
             {error.id && (
               <div className="ml-3 text-red-400 text-xs text-nowrap font-light">
                 {error.id}
+              </div>
+            )}
+            {accessMessage.id && !error.id && (
+              <div className="ml-3 text-green-500 text-xs text-nowrap font-light">
+                {accessMessage.id}
               </div>
             )}
           </div>

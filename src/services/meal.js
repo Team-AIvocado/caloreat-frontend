@@ -35,8 +35,9 @@ export const foodDetect = async (imgSrc) => {
   }
 };
 
-export const fetchFood = async (foods) => {
-  const data = { foodnames: [foods] };
+// items: [{image_id: string, foodname: string}]
+export const fetchFood = async (items) => {
+  const data = { foodnames: items };
   try {
     const response = await api.post("/meals/analyze", data);
 

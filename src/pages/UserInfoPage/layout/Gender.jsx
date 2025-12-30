@@ -10,7 +10,7 @@ export const Gender = ({
 }) => {
   return (
     <div className="flex flex-col items-center w-full">
-      <div className="text-lg text-secondary_text mb-3 font-semibold w-full text-center">
+      <div className="text-lg text-secondary_text mb-6 font-semibold w-full text-center">
         성별 입력
       </div>
       <div className="flex flex-row justify-center w-full mb-4">

@@ -79,7 +79,7 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
   });
 
   return (
-    <div className="bg-white rounded-xl p-7 border-3 border-sub_border w-full mt-4 ">
+    <div className="bg-white rounded-lg p-7 border-2 border-sub_color w-full mt-4 ">
       <div className="flex text-primary_text text-xl pl-5 pt-4">
         <div className="text-primary_text ">필수 영양분</div>
         <div className="flex pl-10 items-end gap-2 text-xs">
@@ -89,7 +89,7 @@ export const NutritionChart = ({ stats, goals, calculateStatus }) => {
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full bg-[#A6F2E8] "></div>
-            <span className="text-secondary_text">충분</span>
+            <span className="text-secondary_text">적절</span>
           </div>
           <div className="flex items-center gap-1">
             <div className="w-3 h-3 rounded-full bg-[#ff6b6b]"></div>
