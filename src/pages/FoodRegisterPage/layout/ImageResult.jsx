@@ -15,10 +15,10 @@ import { backBtn } from "../../../utils/styles";
 import { useAlert } from "../../../context/AlertContext";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { MultiSectionDigitalClock } from "@mui/x-date-pickers/MultiSectionDigitalClock";
+import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
 import dayjs from "dayjs";
 
-export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
+export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
   const [intake, setIntake] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -120,36 +120,15 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
 
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
-      <div className="w-full max-w-[600px] flex justify-start mb-4">
-        <button
-          onClick={() => setResultMode(false)}
-          className="text-gray-600 hover:text-gray-900"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-        </button>
-      </div>
-      <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6">
-        <div className="flex flex-row md:flex-row gap-6 pt-3 items-center md:items-start">
+      <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6 mt-4">
+        <div className="flex flex-row md:flex-row gap-4 pt-3 items-center md:items-start">
           <img
-            className="w-40 h-40 md:w-48 md:h-48 rounded-lg border border-border_color object-cover "
+            className="w-28 h-28 md:w-36 md:h-36 rounded-lg border border-border_color object-cover "
             src={imgSrc}
             alt={foodname}
             draggable="false"
           />
-          <div className="flex flex-col justify-between w-full pt-2 h-auto md:h-48">
+          <div className="flex flex-col justify-between w-full pt-2 h-auto md:h-36">
             <div className=" md:mb-0">
               <h2 className="text-2xl md:text-3xl font-bold text-primary_text mb-2">
                 {foodname}
@@ -162,31 +141,34 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
                   className="text-lg font-semibold text-main_color cursor-pointer hover:bg-sub_background px-2 py-1 rounded transition-colors inline-block"
                   onClick={() => setShowClock(!showClock)}
                 >
-                  {eatenAt.format("hh:mm A")}
+                  {eatenAt.format("MM/DD A hh:mm")}
                 </div>
                 {showClock && (
-                  <div className="absolute z-50 bg-white border border-border_color rounded-lg p-2 mt-2 left-0 md:left-auto max-w-[280px] sm:max-w-none">
-                    <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <MultiSectionDigitalClock
-                        value={eatenAt}
-                        onChange={(newValue) => {
-                          setEatenAt(newValue);
-                        }}
-                        sx={{
-                          "& .MuiMenuItem-root": {
-                            padding: "4px 8px",
-                          },
-                        }}
-                      />
-                      <div className="flex justify-end mt-2 pt-2">
-                        <button
-                          onClick={() => setShowClock(false)}
-                          className="text-sm text-main_color font-bold px-2 py-1 hover:bg-sub_background "
-                        >
-                          확인
-                        </button>
-                      </div>
-                    </LocalizationProvider>
+                  <div
+                    className="md:pl-52 fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+                    onClick={() => setShowClock(false)}
+                  >
+                    <div
+                      className="bg-white border border-border_color rounded-lg p-4 max-w-[90vw] max-h-[90vh] overflow-auto"
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <StaticDateTimePicker
+                          displayStaticWrapperAs="mobile"
+                          value={eatenAt}
+                          onChange={(newValue) => {
+                            setEatenAt(newValue);
+                          }}
+                          onAccept={() => setShowClock(false)}
+                          onClose={() => setShowClock(false)}
+                          slotProps={{
+                            actionBar: {
+                              actions: ["accept"],
+                            },
+                          }}
+                        />
+                      </LocalizationProvider>
+                    </div>
                   </div>
                 )}
               </div>
@@ -219,7 +201,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId, setResultMode }) => {
           </span>
         </div>
 
-        <div className="w-full h-40 mb-7">
+        <div className="w-full h-32 mb-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               key={intake}

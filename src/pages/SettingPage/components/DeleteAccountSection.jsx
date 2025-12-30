@@ -102,10 +102,10 @@ export const DeleteAccountSection = ({ currentUser }) => {
   if (!isExpanded) {
     return (
       <div className="bg-[#FFD7D7] p-6 rounded-lg mb-4 border border-red-300 flex justify-between items-center">
-        <h3 className="text-lg font-bold text-red-600">회원 탈퇴</h3>
+        <h3 className="text-lg font-bold text-red-600 min-w-0">회원 탈퇴</h3>
         <button
           onClick={() => setIsExpanded(true)}
-          className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors font-medium border-transparent"
+          className="shrink-0 px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 transition-colors font-medium border-transparent"
         >
           탈퇴하기
         </button>

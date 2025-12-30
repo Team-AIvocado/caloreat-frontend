@@ -2,7 +2,6 @@ import { useRef, useState } from "react";
 import { alertBtn, backBtn } from "../../../utils/styles";
 import { WebCamera } from "../../../components/WebCamera/index";
 import { foodDetect } from "../../../services/meal";
-import { useNavigate } from "react-router-dom";
 
 export const ImageInput = ({
   showAlert,
@@ -15,7 +14,6 @@ export const ImageInput = ({
   setFoodInfe,
 }) => {
   const fileRef = useRef();
-  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -64,27 +62,6 @@ export const ImageInput = ({
   return (
     <>
       <div className="flex flex-col items-center justify-center">
-        <div className="w-full max-w-[500px] flex justify-start mb-4">
-          <button
-            onClick={() => navigate("/main/dashboard")}
-            className="text-gray-600 hover:text-gray-900"
-          >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M15 19l-7-7 7-7"
-              />
-            </svg>
-          </button>
-        </div>
         {imgSrc && (
           <div className="text-secondary_text pb-2 cursor-pointer">
             <span className="text-sm">

@@ -47,23 +47,50 @@ export const FoodRegisterPage = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center relative">
+    <div className="flex flex-col justify-start items-center relative h-[calc(100dvh-10rem)] md:h-screen overflow-hidden">
       <button
-        className="absolute top-5 right-5 text-xs text-secondary_text underline cursor-pointer"
+        className="absolute top-5 left-5 text-gray-600 hover:text-gray-900 z-10"
+        onClick={() => {
+          if (resultMode) {
+            setResultMode(false);
+          } else if (analysisMode) {
+            setAnalysisMode(false);
+          } else {
+            navigate("/main/dashboard");
+          }
+        }}
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-6 w-6"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 19l-7-7 7-7"
+          />
+        </svg>
+      </button>
+
+      <button
+        className="absolute top-5 right-5 text-xs text-secondary_text underline cursor-pointer z-10"
         onClick={resetAll}
       >
         기록 그만두기
       </button>
-      <div className="mt-10  text-center text-2xl text-secondary_text">
+      <div className="pt-10 pb-4 text-center text-2xl text-secondary_text shrink-0">
         음식 기록하기
       </div>
-      <div className="flex flex-col justify-center">
+      <div className="flex flex-col justify-start w-full flex-1 overflow-y-auto pb-2">
         {resultMode ? (
           <ImageResult
             imgSrc={imgSrc}
             foodDetail={foodDetail}
             imageId={foodInfe?.image_id}
-            setResultMode={setResultMode}
           />
         ) : (
           <>

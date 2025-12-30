@@ -56,12 +56,12 @@ export const NicknameSection = ({ initialNickname, onUpdate }) => {
                 setNickname(e.target.value);
                 setMessage("");
               }}
-              className="flex-1 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main_color"
+              className="flex-1 min-w-0 p-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-main_color"
             />
             <button
               onClick={handleUpdate}
               disabled={isDisabled}
-              className={`px-4 py-2 rounded-md transition-colors font-medium border ${
+              className={`shrink-0 px-4 py-2 rounded-md transition-colors font-medium border ${
                 isDisabled
                   ? "bg-gray-100 text-gray-400 border-gray-200 cursor-not-allowed"
                   : "bg-main_color text-white border-transparent hover:bg-main_color_hover"
