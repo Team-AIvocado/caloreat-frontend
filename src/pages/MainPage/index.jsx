@@ -8,7 +8,7 @@ export const MainPage = () => {
   return (
     <div className="min-h-screen bg-main_background">
       <MainNavBar nickname={userInfo?.nickname || user?.nickname || ""} />
-      <div className="md:ml-52 pt-16 md:pt-0 pb-0">
+      <div className="md:ml-52 pt-16 md:pt-0 pb-24 md:pb-0">
         <Outlet />
       </div>
     </div>
