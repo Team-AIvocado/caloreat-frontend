@@ -74,7 +74,7 @@ export const LogEditPage = () => {
   }
 
   return (
-    <div className="max-w-[600px] mx-auto p-6 bg-main_background">
+    <div className="max-w-[600px] mx-auto p-4 sm:p-6 bg-main_background">
       <button
         onClick={() => navigate(-1)}
         className="mr-4 text-gray-600 hover:text-gray-900 mb-4"
@@ -124,7 +124,7 @@ export const LogEditPage = () => {
 
         <div className="flex flex-col gap-1.5">
           <span className="text-secondary_text text-sm">섭취량 (인분)</span>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <button
               type="button"
               onClick={() => {
@@ -139,7 +139,7 @@ export const LogEditPage = () => {
                   quantity: prev.quantity - 0.5,
                 }));
               }}
-              className="w-10 h-10 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
+              className="w-10 h-10 shrink-0 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
             >
               -
             </button>
@@ -157,7 +157,7 @@ export const LogEditPage = () => {
                   quantity: Number(e.target.value),
                 }));
               }}
-              className="flex-1 p-3 rounded-lg border border-border_color text-base text-center bg-white"
+              className="flex-1 min-w-0 p-3 rounded-lg border border-border_color text-base text-center bg-white"
             />
             <button
               type="button"
@@ -172,7 +172,7 @@ export const LogEditPage = () => {
                   quantity: prev.quantity + 0.5,
                 }));
               }}
-              className="w-10 h-10 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
+              className="w-10 h-10 shrink-0 rounded-lg bg-main_color text-white text-xl font-bold cursor-pointer border-none"
             >
               +
             </button>
