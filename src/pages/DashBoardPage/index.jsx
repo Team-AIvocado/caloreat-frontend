@@ -38,6 +38,18 @@ export const DashBoardPage = () => {
     snack: "간식",
   };
 
+  // 칼로리가 있는 식사만 필터링
+  const filteredLogs = [...(logs || [])]
+    .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
+    .filter((meal) => {
+      const mealKcal = (meal.meal_items || []).reduce(
+        (acc, item) =>
+          acc + (item.nutritions?.calories * item?.quantity || 0),
+        0
+      );
+      return Math.round(mealKcal) > 0;
+    });
+
   return (
     <div className="min-h-[calc(100vh-10rem)] md:min-h-screen flex flex-col justify-center items-center px-4">
       <div className="pb-6 text-center text-2xl text-secondary_text">
@@ -45,19 +57,9 @@ export const DashBoardPage = () => {
       </div>
       <RingProgressBar totalkcal={goalCalories} kcal={Math.round(totalKcal)} />
 
-      {logs && logs.length > 0 ? (
+      {filteredLogs.length > 0 ? (
         <div className="border w-full max-w-[400px] border-sub_color px-8 py-6 mt-6 rounded-lg bg-white/60 flex flex-col gap-4">
-          {[...logs]
-            .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
-            .filter((meal) => {
-              const mealKcal = (meal.meal_items || []).reduce(
-                (acc, item) =>
-                  acc + (item.nutritions?.calories * item?.quantity || 0),
-                0
-              );
-              return Math.round(mealKcal) > 0;
-            })
-            .map((meal) => {
+          {filteredLogs.map((meal) => {
               const mealKcal = (meal.meal_items || []).reduce(
                 (acc, item) =>
                   acc + (item.nutritions?.calories * item?.quantity || 0),
@@ -66,10 +68,10 @@ export const DashBoardPage = () => {
               return (
                 <div
                   key={meal.id}
-                  className="text-secondary_text w-full flex justify-between items-start gap-2"
+                  className="text-secondary_text w-full flex justify-between items-center gap-2"
                 >
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className="text-lg text-primary_text font-bold min-w-10 pt-0.5">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="text-lg text-primary_text font-bold min-w-10">
                       {mealTypeLabels[meal.meal_type] || meal.meal_type}
                     </div>
                     <div className="text-sm wrap-break-word leading-relaxed">
@@ -78,7 +80,7 @@ export const DashBoardPage = () => {
                         .join(", ")}
                     </div>
                   </div>
-                  <div className="text-primary_text font-light whitespace-nowrap pt-1">
+                  <div className="text-primary_text font-light whitespace-nowrap">
                     {Math.round(mealKcal)} kcal
                   </div>
                 </div>

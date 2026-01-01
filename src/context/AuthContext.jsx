@@ -24,9 +24,12 @@ export const AuthProvider = ({ children }) => {
   const checkAuth = async () => {
     try {
       const userData = await getUser();
-      setUser(userData);
-      if (userData) {
+      // userData가 유효한 사용자 객체인지 확인 (id 또는 nickname이 있어야 함)
+      if (userData && (userData.id || userData.nickname)) {
+        setUser(userData);
         await checkPreInfo();
+      } else {
+        setUser(null);
       }
     } catch (error) {
       // 네트워크 오류 등 예상치 못한 에러만 로깅
