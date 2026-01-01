@@ -66,26 +66,29 @@ export const LogPage = () => {
           </div>
         )}
 
-      {/* 로그 카드 */}
+      {/* 로그 카드 리스트 */}
       <div className="mt-1.5 flex flex-col items-center gap-2">
         {[...logs]
           .sort((a, b) => new Date(a.eaten_at) - new Date(b.eaten_at))
           .map((meal) =>
-            meal.meal_items
-              .filter(
-                (item) =>
-                  Math.round(
-                    (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
-                  ) > 0
-              )
-              .map((item, idx) => (
+            meal.meal_items.map((item, originalIdx) => {
+              // 칼로리가 0인 항목은 표시하지 않음
+              const isVisible =
+                Math.round(
+                  (item.nutritions?.calories ?? 0) * (item.quantity ?? 1)
+                ) > 0;
+
+              if (!isVisible) return null;
+
+              return (
                 <LogCard
-                  key={`${meal.id}-${idx}`}
+                  key={`${meal.id}-${originalIdx}`}
                   item={item}
                   meal={meal}
-                  index={idx}
+                  index={originalIdx} // 원본 인덱스를 전달하여 상세 페이지 이동 및 이미지 표시 로직 유지
                 />
-              ))
+              );
+            })
           )}
       </div>
     </div>

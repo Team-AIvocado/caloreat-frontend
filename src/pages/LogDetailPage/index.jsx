@@ -2,6 +2,7 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { useMeals } from "../../context/MealContext";
 import { useEffect, useState } from "react";
 import { ConfirmModal } from "../../components/Modal/ConfirmModal";
+import { liquidKeywords } from "../../utils/food";
 
 export const LogDetailPage = () => {
   const { logs, selectedDate, fetchLogs, deleteFood } = useMeals();
@@ -25,9 +26,40 @@ export const LogDetailPage = () => {
   const meal = logs.find((m) => m.id === Number(mealId));
   const item = meal?.meal_items[Number(foodIndex)];
 
+  if (!item || !meal) {
+    return (
+      <div className="p-5 text-center">
+        <p>해당 음식 정보를 찾을 수 없습니다.</p>
+        <button onClick={() => navigate(-1)}>← back</button>
+      </div>
+    );
+  }
+
   // meal 레벨에서 이미지, 시간 추출
-  const imageUrl = meal?.image_urls?.[0] ?? "";
-  const calories = item?.nutritions?.calories ?? 0;
+  // Only show image for the first item (index 0)
+  const imageUrl = Number(foodIndex) === 0 ? meal?.image_urls?.[0] ?? "" : "";
+  const calories = Math.round(
+    (item?.nutritions?.calories ?? 0) * (item?.quantity ?? 1)
+  );
+
+  const isLiquid = (name) => {
+    return liquidKeywords.some((keyword) => name?.includes(keyword));
+  };
+
+  const getBaseWeight = (food) => {
+    const {
+      carbs = 0,
+      protein = 0,
+      fat = 0,
+      sugar = 0,
+      sodium = 0,
+    } = food.nutritions || {};
+    const total = carbs + protein + fat + sugar + sodium / 1000;
+    return Math.max(Math.round(total), 100);
+  };
+
+  const unit = isLiquid(item.foodname) ? "ml" : "g";
+  const weight = Math.round(item.quantity * getBaseWeight(item));
 
   const handleDeleteClick = () => {
     setShowDeleteConfirm(true);
@@ -49,15 +81,6 @@ export const LogDetailPage = () => {
   const handleEdit = () => {
     navigate(`/main/log/${mealId}/${foodIndex}/edit?date=${dateFromUrl}`);
   };
-
-  if (!item) {
-    return (
-      <div className="p-5 text-center">
-        <p>해당 음식 정보를 찾을 수 없습니다.</p>
-        <button onClick={() => navigate(-1)}>← back</button>
-      </div>
-    );
-  }
 
   const formatTime = (t) => {
     if (!t) return "";
@@ -89,19 +112,21 @@ export const LogDetailPage = () => {
           />
         </svg>
       </button>
-      <div className="text-2xl font-semibold ml-5 text-primary_text mb-4">
+      <div className="text-2xl font-semibold ml-5 text-primary_text mb-4 wrap-break-word">
         {item.foodname}
       </div>
 
-      <img
-        src={imageUrl}
-        alt={item.foodname}
-        className="w-full rounded-[14px] mb-4"
-      />
+      {imageUrl && (
+        <img
+          src={imageUrl}
+          alt={item.foodname}
+          className="w-full rounded-[14px] mb-4"
+        />
+      )}
 
       <div className="bg-sub_background border border-border_color rounded-[14px] p-5 mb-5">
         <InfoRow label="칼로리" value={`${calories} kcal`} highlight />
-        <InfoRow label="섭취량" value={`${item.quantity} 인분`} />
+        <InfoRow label="섭취량" value={`${weight} ${unit}`} />
         <InfoRow label="섭취 시간" value={formatTime(meal.eaten_at)} />
       </div>
 

@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { alertBtn, backBtn } from "../../../utils/styles";
 import { WebCamera } from "../../../components/WebCamera/index";
 import { foodDetect } from "../../../services/meal";
+import { TailSpin } from "react-loader-spinner";
 
 export const ImageInput = ({
   showAlert,
@@ -61,6 +62,16 @@ export const ImageInput = ({
 
   return (
     <>
+      {loading && (
+        <div className="fixed inset-0 bg-white/80 z-100 mb-10 flex flex-col items-center justify-center ">
+          <div className="px-2 pt-5 pb-2 flex justify-center flex-col items-center bg-white border border-border_color">
+            <TailSpin color="#27d0c3" height={80} width={80} />
+            <p className="mt-4 text-main_color font-semibold text-lg px-3 py-1">
+              음식 분석중입니다..
+            </p>
+          </div>
+        </div>
+      )}
       <div className="flex flex-col items-center justify-center">
         {imgSrc && (
           <div className="text-secondary_text pb-2 cursor-pointer">
