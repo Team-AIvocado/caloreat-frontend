@@ -31,10 +31,10 @@ export default function LogCard({ item, meal, index }) {
   const unit = isLiquid(foodname) ? "ml" : "g";
   const weight = Math.round(quantity * getBaseWeight(item));
 
-  // selectedDate를 문자열로 변환
+  // selectedDate를 문자열로 변환 (로컬 시간 기준)
   const dateString =
     selectedDate instanceof Date
-      ? selectedDate.toISOString().slice(0, 10)
+      ? new Intl.DateTimeFormat("sv-SE").format(selectedDate)
       : selectedDate;
 
   const formatTime = (t) => {
