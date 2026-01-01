@@ -18,17 +18,22 @@ export const ImageInput = ({
 
   const [loading, setLoading] = useState(false);
 
-  //image file preview 가능하도록 encoding
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImgSrc(reader.result);
-        resolve();
-      };
+  //image file preview 가능하도록 encoding (EXIF orientation 자동 보정)
+  const encodeFileToBase64 = async (fileBlob) => {
+    // createImageBitmap으로 EXIF orientation 자동 적용
+    const bitmap = await createImageBitmap(fileBlob, {
+      imageOrientation: "from-image",
     });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0);
+
+    const base64 = canvas.toDataURL("image/jpeg", 0.9);
+    setImgSrc(base64);
   };
 
   const addImage = async (e) => {
