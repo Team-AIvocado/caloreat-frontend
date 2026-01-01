@@ -1,3 +1,3 @@
 export function getToday() {
-  return new Date().toISOString().split("T")[0];
+  return new Intl.DateTimeFormat("sv-SE").format(new Date());
 }

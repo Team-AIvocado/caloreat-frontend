@@ -60,7 +60,7 @@ export const fetchFood = async (items) => {
             nuts.saturated_fat_g ??
             Number(((nuts.fat_g || 0) * 0.25).toFixed(1)),
           micronutrients: nuts.micronutrients,
-          // Keep original nutritions for other fields like sugar
+          // Keep original nutritions for other fields
           nutritions: nuts,
         };
       });
