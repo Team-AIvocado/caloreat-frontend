@@ -25,11 +25,13 @@ export const DailyLog = ({ logs }) => {
             key={index}
             className="flex justify-between items-center text-sm border-b px-3 border-sub_border pb-2 last:border-0 "
           >
-            <div className="flex items-center gap-3">
-              <span className="text-secondary_text font-medium w-10">
+            <div className="flex items-center gap-3 flex-1">
+              <span className="text-secondary_text font-medium w-10 shrink-0">
                 {mealTypeMap[log.mealType] || log.mealType}
               </span>
-              <span className="text-primary_text font-bold">{log.name}</span>
+              <span className="text-primary_text font-bold wrap-break-word">
+                {log.name}
+              </span>
             </div>
             <div className="flex items-center gap-4">
               <span className="text-main_color font-bold">

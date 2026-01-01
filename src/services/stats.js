@@ -3,7 +3,7 @@ import { api } from "../api/axios";
 export const fetchDailyStats = async (date) => {
   try {
     const formattedDate =
-      date instanceof Date ? date.toISOString().split("T")[0] : date;
+      date instanceof Date ? new Intl.DateTimeFormat("sv-SE").format(date) : date;
     const response = await api.get(`/stats/daily?date=${formattedDate}`);
     return response.data;
   } catch (e) {
@@ -17,7 +17,7 @@ export const fetchWeeklyStats = async (startDate) => {
   try {
     const formattedDate =
       startDate instanceof Date
-        ? startDate.toISOString().split("T")[0]
+        ? new Intl.DateTimeFormat("sv-SE").format(startDate)
         : startDate;
     const response = await api.get(`/stats/weekly?startDate=${formattedDate}`);
     return response.data;

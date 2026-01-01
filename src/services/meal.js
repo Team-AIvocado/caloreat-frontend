@@ -53,8 +53,14 @@ export const fetchFood = async (items) => {
           fat: nuts.fat_g,
           sugar: nuts.sugar_g,
           sodium: nuts.sodium_mg,
+          // 백엔드 데이터가 없을 경우를 대비한 더미 데이터 (통계 출력용)
+          cholesterol:
+            nuts.cholesterol_mg ?? Math.round((nuts.fat_g || 0) * 3.5),
+          saturated_fat:
+            nuts.saturated_fat_g ??
+            Number(((nuts.fat_g || 0) * 0.25).toFixed(1)),
           micronutrients: nuts.micronutrients,
-          // Keep original nutritions for other fields like sugar
+          // Keep original nutritions for other fields
           nutritions: nuts,
         };
       });
