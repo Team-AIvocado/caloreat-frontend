@@ -16,7 +16,7 @@ export const MealProvider = ({ children }) => {
 
     try {
       // Date 객체 → "YYYY-MM-DD" 문자열로 변환
-      const dateString = date.toISOString().slice(0, 10);
+      const dateString = new Intl.DateTimeFormat("sv-SE").format(date);
 
       const response = await api.get("/meals/logs", {
         params: { date: dateString },
@@ -24,7 +24,7 @@ export const MealProvider = ({ children }) => {
 
       // API 응답이 배열인지 확인하고, 객체면 data 속성에서 추출
       const data = response.data;
-      const logsData = Array.isArray(data) ? data : (data?.data ?? []);
+      const logsData = Array.isArray(data) ? data : data?.data ?? [];
       setLogs(logsData);
     } catch (err) {
       console.error("로그 불러오기 실패:", err);
@@ -64,7 +64,12 @@ export const MealProvider = ({ children }) => {
     }
   };
 
-  const updateFood = async (mealId, itemIndex, updatedFields, mealFields = {}) => {
+  const updateFood = async (
+    mealId,
+    itemIndex,
+    updatedFields,
+    mealFields = {}
+  ) => {
     const meal = logs.find((m) => m.id === mealId);
     if (!meal) return;
 
@@ -88,7 +93,9 @@ export const MealProvider = ({ children }) => {
 
       // 성공 시 로컬 상태 업데이트
       const updated = logs.map((m) =>
-        m.id === mealId ? { ...m, meal_items: updatedItems, eaten_at: newEatenAt } : m
+        m.id === mealId
+          ? { ...m, meal_items: updatedItems, eaten_at: newEatenAt }
+          : m
       );
       setLogs(updated);
     } catch (err) {
