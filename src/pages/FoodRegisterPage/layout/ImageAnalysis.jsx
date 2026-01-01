@@ -132,7 +132,7 @@ export const ImageAnalysis = ({
       {loading && (
         <div className="fixed inset-0 bg-white/80 z-100 flex flex-col items-center justify-center">
           <TailSpin color="#27d0c3" height={80} width={80} />
-          <p className="mt-4 text-secondary_text font-bold text-lg">
+          <p className="mt-4  text-secondary_text font-semibold text-lg">
             영양소 분석중입니다..
           </p>
         </div>
