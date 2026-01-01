@@ -106,13 +106,18 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
           carbs: food.carbs,
           protein: food.protein,
           fat: food.fat,
+          sugar: food.sugar,
+          sodium: food.sodium,
+          fiber: food.fiber,
+          cholesterol: food.cholesterol,
+          saturated_fat: food.saturated_fat,
           ...food.nutritions,
         },
       }));
 
       await createMealLog({
         meal_type: mealType,
-        eaten_at: eatenAt.toISOString(),
+        eaten_at: eatenAt.format("YYYY-MM-DDTHH:mm:ssZ"),
         meal_items: mealItems,
         tmp_image_ids: imageId ? [imageId] : [],
       });

@@ -53,8 +53,11 @@ export const fetchFood = async (items) => {
           fat: nuts.fat_g,
           sugar: nuts.sugar_g,
           sodium: nuts.sodium_mg,
+          fiber: nuts.fiber_g,
+          cholesterol: nuts.cholesterol_mg,
+          saturated_fat: nuts.saturated_fat_g,
           micronutrients: nuts.micronutrients,
-          // Keep original nutritions for other fields like sugar
+          // Keep original nutritions for other fields
           nutritions: nuts,
         };
       });

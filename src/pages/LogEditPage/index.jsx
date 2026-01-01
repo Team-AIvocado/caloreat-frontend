@@ -75,7 +75,13 @@ export const LogEditPage = () => {
       const originalDate = new Date(meal.eaten_at);
       const [hours, minutes] = form.eatenTime.split(":").map(Number);
       originalDate.setHours(hours, minutes, 0, 0);
-      const newEatenAt = originalDate.toISOString();
+      // 로컬 시간을 타임존 포함 ISO 형식으로 변환
+      const pad = (n) => String(n).padStart(2, "0");
+      const offset = -originalDate.getTimezoneOffset();
+      const offsetSign = offset >= 0 ? "+" : "-";
+      const offsetHours = pad(Math.floor(Math.abs(offset) / 60));
+      const offsetMins = pad(Math.abs(offset) % 60);
+      const newEatenAt = `${originalDate.getFullYear()}-${pad(originalDate.getMonth() + 1)}-${pad(originalDate.getDate())}T${pad(originalDate.getHours())}:${pad(originalDate.getMinutes())}:${pad(originalDate.getSeconds())}${offsetSign}${offsetHours}:${offsetMins}`;
 
       // nutritions 객체 구조 유지하면서 calories만 업데이트
       // quantity는 다시 servings 단위로 변환 (액체인 경우만 weight / baseWeight)
