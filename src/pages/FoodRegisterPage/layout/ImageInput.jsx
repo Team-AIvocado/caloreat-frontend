@@ -2,6 +2,7 @@ import { useRef, useState } from "react";
 import { alertBtn, backBtn } from "../../../utils/styles";
 import { WebCamera } from "../../../components/WebCamera/index";
 import { foodDetect } from "../../../services/meal";
+import { TailSpin } from "react-loader-spinner";
 
 export const ImageInput = ({
   showAlert,
@@ -17,17 +18,22 @@ export const ImageInput = ({
 
   const [loading, setLoading] = useState(false);
 
-  //image file preview 가능하도록 encoding
-  const encodeFileToBase64 = (fileBlob) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(fileBlob);
-
-    return new Promise((resolve) => {
-      reader.onload = () => {
-        setImgSrc(reader.result);
-        resolve();
-      };
+  //image file preview 가능하도록 encoding (EXIF orientation 자동 보정)
+  const encodeFileToBase64 = async (fileBlob) => {
+    // createImageBitmap으로 EXIF orientation 자동 적용
+    const bitmap = await createImageBitmap(fileBlob, {
+      imageOrientation: "from-image",
     });
+
+    const canvas = document.createElement("canvas");
+    canvas.width = bitmap.width;
+    canvas.height = bitmap.height;
+
+    const ctx = canvas.getContext("2d");
+    ctx.drawImage(bitmap, 0, 0);
+
+    const base64 = canvas.toDataURL("image/jpeg", 0.9);
+    setImgSrc(base64);
   };
 
   const addImage = async (e) => {
@@ -61,6 +67,14 @@ export const ImageInput = ({
 
   return (
     <>
+      {loading && (
+        <div className="fixed inset-0 bg-white/80 z-100 flex flex-col items-center justify-center">
+          <TailSpin color="#27d0c3" height={80} width={80} />
+          <p className="mt-4 text-secondary_text font-semibold text-lg">
+            음식 분석중입니다..
+          </p>
+        </div>
+      )}
       <div className="flex flex-col items-center justify-center">
         {imgSrc && (
           <div className="text-secondary_text pb-2 cursor-pointer">

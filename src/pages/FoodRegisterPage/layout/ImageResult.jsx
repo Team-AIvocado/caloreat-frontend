@@ -17,10 +17,26 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { StaticDateTimePicker } from "@mui/x-date-pickers/StaticDateTimePicker";
 import dayjs from "dayjs";
+import { TailSpin } from "react-loader-spinner";
+import { liquidKeywords } from "../../../utils/food";
 
 export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
   const navigate = useNavigate();
-  const [intake, setIntake] = useState(1);
+  const results = foodDetail?.results || [];
+
+  //일단 액체임을 판단하는 기준을 하드코딩
+  const isLiquid = (name) => {
+    return liquidKeywords.some((keyword) => name.includes(keyword));
+  };
+
+  const getBaseWeight = (food) => {
+    const { carbs = 0, protein = 0, fat = 0, sugar = 0, sodium = 0 } = food;
+    const total = carbs + protein + fat + sugar + sodium / 1000;
+    return Math.max(Math.round(total), 100); // Default to 100 if sum is too small
+  };
+
+  // Initialize intakes: 모든 음식을 1인분(1.0)으로 초기화
+  const [intakes, setIntakes] = useState(results.map(() => 1.0));
   const [loading, setLoading] = useState(false);
   const { showAlert, closeAlert } = useAlert();
   const [eatenAt, setEatenAt] = useState(dayjs());
@@ -35,55 +51,69 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     return "snack";
   });
 
-  const result = foodDetail?.results?.[0] || {};
+  // Calculate total nutrients across all foods
+  const totalNutrients = results.reduce(
+    (acc, food, index) => {
+      const ratio = intakes[index]; // intakes가 이제 인분(servings) 단위임
 
-  const {
-    foodname = "",
-    calories = 0,
-    carbs = 0,
-    protein = 0,
-    fat = 0,
-    sugar = 0,
-    sodium = 0,
-    nutritions = {},
-  } = result;
-
-  const currentCarbs = Math.round(carbs * intake);
-  const currentProtein = Math.round(protein * intake);
-  const currentFat = Math.round(fat * intake);
-  const currentSugar = Math.round(sugar * intake);
-  const currentSodium = Math.round(sodium * intake) / 1000;
+      acc.calories += (food.calories || 0) * ratio;
+      acc.carbs += (food.carbs || 0) * ratio;
+      acc.protein += (food.protein || 0) * ratio;
+      acc.fat += (food.fat || 0) * ratio;
+      acc.sugar += (food.sugar || 0) * ratio;
+      acc.sodium += (food.sodium || 0) * ratio;
+      return acc;
+    },
+    { calories: 0, carbs: 0, protein: 0, fat: 0, sugar: 0, sodium: 0 }
+  );
 
   const chartData = [
-    { name: "탄수화물", value: currentCarbs, fill: "#bec9ff" },
-    { name: "단백질", value: currentProtein, fill: "#cfe7ff" },
-    { name: "지방", value: currentFat, fill: "#ffe2c1" },
-    { name: "당류", value: currentSugar, fill: "#d9e3f3" },
-    { name: "나트륨", value: currentSodium, fill: "#b1f3eb" },
+    {
+      name: "탄수화물",
+      value: Math.round(totalNutrients.carbs),
+      fill: "#bec9ff",
+    },
+    {
+      name: "단백질",
+      value: Math.round(totalNutrients.protein),
+      fill: "#cfe7ff",
+    },
+    { name: "지방", value: Math.round(totalNutrients.fat), fill: "#ffe2c1" },
+    { name: "당류", value: Math.round(totalNutrients.sugar), fill: "#d9e3f3" },
+    {
+      name: "나트륨",
+      value: Math.round(totalNutrients.sodium / 1000),
+      fill: "#b1f3eb",
+    },
   ];
 
-  //TODO:로직 추가 경고창 출력, 예시
-  const showWarning = (nutritions.sodium || 0) * intake > 5;
+  // 성인 적정 섭취량 기준 경고 로직 (당류 25g, 나트륨 1000mg, 지방 30g 초과 시)
+  const warningReasons = [];
+  if (totalNutrients.sugar > 25) warningReasons.push("당류");
+  if (totalNutrients.sodium > 1000) warningReasons.push("나트륨");
+  if (totalNutrients.fat > 30) warningReasons.push("지방");
+
+  const showWarning = warningReasons.length > 0;
 
   const onSave = async () => {
     setLoading(true);
     try {
+      const mealItems = results.map((food, index) => ({
+        foodname: food.foodname,
+        quantity: intakes[index],
+        nutritions: {
+          calories: food.calories,
+          carbs: food.carbs,
+          protein: food.protein,
+          fat: food.fat,
+          ...food.nutritions,
+        },
+      }));
+
       await createMealLog({
         meal_type: mealType,
         eaten_at: eatenAt.toISOString(),
-        meal_items: [
-          {
-            foodname: foodname,
-            quantity: intake,
-            nutritions: {
-              calories: calories,
-              carbs: carbs,
-              protein: protein,
-              fat: fat,
-              ...nutritions,
-            },
-          },
-        ],
+        meal_items: mealItems,
         tmp_image_ids: imageId ? [imageId] : [],
       });
       navigate("/main/dashboard");
@@ -105,11 +135,33 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     }
   };
 
-  const handleSliderChange = (_event, newValue) => {
-    setIntake(newValue);
+  const handleSliderChange = (index, newValue) => {
+    const newIntakes = [...intakes];
+    const food = results[index];
+    if (isLiquid(food.foodname)) {
+      // 액체인 경우 슬라이더 값이 ml이므로 인분으로 변환하여 저장
+      newIntakes[index] = newValue / getBaseWeight(food);
+    } else {
+      // 일반 음식인 경우 슬라이더 값이 인분이므로 그대로 저장
+      newIntakes[index] = newValue;
+    }
+    setIntakes(newIntakes);
   };
 
-  const intakeMarks = [
+  // 액체용 ml 마크
+  const liquidMarks = [
+    { value: 50, label: "50" },
+    { value: 100, label: "100" },
+    { value: 150, label: "150" },
+    { value: 200, label: "200" },
+    { value: 250, label: "250" },
+    { value: 300, label: "300" },
+    { value: 350, label: "350" },
+    { value: 400, label: "400" },
+  ];
+
+  // 일반 음식용 인분 마크
+  const foodMarks = [
     { value: 0.5, label: "0.5" },
     { value: 1, label: "1" },
     { value: 1.5, label: "1.5" },
@@ -118,30 +170,45 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
     { value: 3, label: "3" },
   ];
 
+  const allFoodNames = results.map((f) => f.foodname).join(", ");
+
+  const formatEatenAt = (date) => {
+    const formatted = date.format("A hh:mm");
+    return formatted.replace("AM", "오전").replace("PM", "오후");
+  };
+
   return (
     <div className="w-full flex flex-col items-center px-4 pb-3">
+      {loading && (
+        <div className="fixed inset-0 bg-white/80 z-100 flex flex-col items-center justify-center">
+          <TailSpin color="#27d0c3" height={80} width={80} />
+          <p className="mt-4  text-secondary_text font-semibold text-lg">
+            기록 저장중입니다..
+          </p>
+        </div>
+      )}
       <div className="w-full max-w-[600px] bg-white rounded-lg border-2 border-sub_border px-4 md:p-6 mt-4">
-        <div className="flex flex-row md:flex-row gap-4 pt-3 items-center md:items-start">
+        <div className="flex flex-row gap-4 pt-3 items-center md:items-start">
           <img
-            className="w-28 h-28 md:w-36 md:h-36 rounded-lg border border-border_color object-cover "
+            className="w-36 h-36 md:w-48 md:h-48 rounded-lg border border-border_color object-cover "
             src={imgSrc}
-            alt={foodname}
+            alt={allFoodNames}
             draggable="false"
           />
-          <div className="flex flex-col justify-between w-full pt-2 h-auto md:h-36">
-            <div className=" md:mb-0">
-              <h2 className="text-2xl md:text-3xl font-bold text-primary_text mb-2">
-                {foodname}
+          <div className="flex flex-col justify-between w-full pt-2 h-auto md:h-48">
+            <div className="ml-5 md:mb-0">
+              <h2 className="text-xl md:text-2xl font-bold text-primary_text mb-2 wrap-break-word">
+                {allFoodNames}
               </h2>
               <div className="text-secondary_text text-sm">
-                1인분 ({calories}kcal) 기준
+                총 {Math.round(totalNutrients.calories)}kcal
               </div>
               <div className="mt-4 relative">
                 <div
                   className="text-lg font-semibold text-main_color cursor-pointer hover:bg-sub_background px-2 py-1 rounded transition-colors inline-block"
                   onClick={() => setShowClock(!showClock)}
                 >
-                  {eatenAt.format("MM/DD A hh:mm")}
+                  {formatEatenAt(eatenAt)}
                 </div>
                 {showClock && (
                   <div
@@ -155,6 +222,8 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
                       <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <StaticDateTimePicker
                           displayStaticWrapperAs="mobile"
+                          // 시간과 분만 변경 가능하도록 설정
+                          views={["hours", "minutes"]}
                           value={eatenAt}
                           onChange={(newValue) => {
                             setEatenAt(newValue);
@@ -176,26 +245,58 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
           </div>
         </div>
 
-        <div className="w-full p-4">
-          <div className="text font-semibold text-primary_text">섭취량</div>
-          <div className="text-sm text-secondary_text mb-2 pl-2">
-            : {intake}인분
-          </div>
-          <Slider
-            value={intake}
-            min={0.5}
-            max={3}
-            step={0.5}
-            marks={intakeMarks}
-            onChange={handleSliderChange}
-            sx={{
-              color: "#27D0C3",
-            }}
-          />
+        {/* Sliders for each food */}
+        <div className="w-full mt-6 space-y-6">
+          {results.map((food, index) => {
+            const baseWeight = getBaseWeight(food);
+            const liquid = isLiquid(food.foodname);
+            const unit = liquid ? "ml" : "인분";
+
+            // 표시용 값 계산
+            const displayValue = liquid
+              ? Math.round(intakes[index] * baseWeight)
+              : intakes[index];
+
+            return (
+              <div
+                key={index}
+                className="w-full p-2 border-b border-sub_border last:border-none"
+              >
+                <div className="flex justify-between items-center mb-1">
+                  <div className="text font-semibold text-primary_text wrap-break-word flex-1 mr-2">
+                    {food.foodname}
+                  </div>
+                  <div className="text-sm text-secondary_text whitespace-nowrap">
+                    : {displayValue}
+                    {unit}{" "}
+                    {!liquid && `(${Math.round(intakes[index] * baseWeight)}g)`}
+                  </div>
+                </div>
+                <div className="text-[10px] text-secondary_text mb-2">
+                  1인분({baseWeight}
+                  {liquid ? "ml" : "g"}) = {Math.round(food.calories)}kcal
+                </div>
+                <Slider
+                  value={displayValue}
+                  min={liquid ? 50 : 0.5}
+                  max={liquid ? 400 : 3}
+                  step={liquid ? 50 : 0.5}
+                  marks={liquid ? liquidMarks : foodMarks}
+                  onChange={(_e, val) => handleSliderChange(index, val)}
+                  sx={{
+                    color: "#27D0C3",
+                    "& .MuiSlider-mark": {
+                      backgroundColor: "#27D0C3",
+                    },
+                  }}
+                />
+              </div>
+            );
+          })}
         </div>
 
-        <div className="text-xl text-main_color font-bold text-right">
-          {Math.round(calories * intake)}{" "}
+        <div className="text-xl text-main_color font-bold text-right mt-4">
+          {Math.round(totalNutrients.calories)}{" "}
           <span className="text-secondary_text text-base font-normal">
             kcal
           </span>
@@ -204,7 +305,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
         <div className="w-full h-32 mb-4">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
-              key={intake}
+              key={JSON.stringify(intakes)}
               layout="vertical"
               data={chartData}
               margin={{
@@ -235,7 +336,9 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
                 <LabelList
                   dataKey="value"
                   position="right"
-                  formatter={(value) => `${value}g`}
+                  formatter={(value, name) =>
+                    name === "나트륨" ? `${value}mg` : `${value}g`
+                  }
                   style={{ fill: "#6c6c6c", fontSize: "12px" }}
                 />
               </Bar>
@@ -245,11 +348,11 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
       </div>
 
       {showWarning && (
-        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center gap-3">
+        <div className="w-full max-w-[600px] mt-4 py-8 px-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center justify-center gap-3">
           <div className="text-xl">⚠️</div>
-          <div className="text-primary_text text-sm">
-            <span className="font-bold">주의:</span> 당류 섭취량이 높습니다.
-            조절이 필요할 수 있습니다.
+          <div className="text-primary_text text-sm whitespace-nowrap">
+            <span className="font-semibold">{warningReasons.join(", ")}</span>{" "}
+            섭취량의 조절이 필요할 수 있습니다.
           </div>
         </div>
       )}
@@ -280,7 +383,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
         onClick={onSave}
         disabled={loading}
       >
-        {loading ? "저장 중..." : "기록 저장하기"}
+        기록 저장하기
       </button>
     </div>
   );
