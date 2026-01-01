@@ -348,7 +348,7 @@ export const ImageResult = ({ imgSrc, foodDetail, imageId }) => {
       </div>
 
       {showWarning && (
-        <div className="w-full max-w-[600px] mt-4 py-8 pl-10 pr-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center gap-3">
+        <div className="w-full max-w-[600px] mt-4 py-8 px-4 bg-light-alert border border-light-alert-border rounded-lg flex items-center justify-center gap-3">
           <div className="text-xl">⚠️</div>
           <div className="text-primary_text text-sm whitespace-nowrap">
             <span className="font-semibold">{warningReasons.join(", ")}</span>{" "}

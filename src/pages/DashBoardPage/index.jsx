@@ -68,10 +68,10 @@ export const DashBoardPage = () => {
               return (
                 <div
                   key={meal.id}
-                  className="text-secondary_text w-full flex justify-between items-start gap-2"
+                  className="text-secondary_text w-full flex justify-between items-center gap-2"
                 >
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className="text-lg text-primary_text font-bold min-w-10 pt-0.5">
+                  <div className="flex items-center gap-4 flex-1">
+                    <div className="text-lg text-primary_text font-bold min-w-10">
                       {mealTypeLabels[meal.meal_type] || meal.meal_type}
                     </div>
                     <div className="text-sm wrap-break-word leading-relaxed">
@@ -80,7 +80,7 @@ export const DashBoardPage = () => {
                         .join(", ")}
                     </div>
                   </div>
-                  <div className="text-primary_text font-light whitespace-nowrap pt-1">
+                  <div className="text-primary_text font-light whitespace-nowrap">
                     {Math.round(mealKcal)} kcal
                   </div>
                 </div>
